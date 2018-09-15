@@ -22,7 +22,7 @@ namespace FlashCardPager
         /***************************************************************
          *                             操作
          **************************************************************/
-        public static async void FavAsync(long id, View view)
+        private static async void FavAsync(long id, View view)
         {
             try
             {
@@ -38,7 +38,21 @@ namespace FlashCardPager
             }
         }
 
-        public static async void BoostAsync(long id, View view)
+        public static void FavAsync(Status status, View view)
+        {
+            if (status.Favourited.Equals(false))
+            {
+                UserAction.FavAsync(status.Id, view);
+            }
+            else if (status.Favourited.Equals(true))
+            {
+                Snackbar.Make(view, "愛が深すぎる．．．（ふぁぼ済み）",
+                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            }
+        }
+
+
+        private static async void BoostAsync(long id, View view)
         {
             try
             {
@@ -54,16 +68,23 @@ namespace FlashCardPager
 
         }
 
+        public static void BoostAsync(Status status, View view)
+        {
+            if (status.Reblogged.Equals(false) )
+            {
+                BoostAsync(status.Id, view);
+            }
+            else if(status.Reblogged.Equals(true) )
+            {
+                Snackbar.Make(view, "愛が深すぎる．．．（ぶーすと済み）",
+                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            }
+        }
+
         public static void UrlOpen(string item_url, View view)
         {
             try
             {
-                //外部ブラウザ
-                //Android.Net.Uri uri;
-                //uri = Android.Net.Uri.Parse(item_url);
-                //Intent intentB = new Android.Content.Intent(Intent.ActionView, uri);
-                //view.Context.StartActivity(intentB);
-                
                 //内部ブラウザ
                 Intent intentC = new Intent(view.Context, typeof(BrowserActivity));
                 intentC.PutExtra("url", item_url);
@@ -75,6 +96,25 @@ namespace FlashCardPager
                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
         }
+
+        public static void UrlOpenChrome(string item_url, View view)
+        {
+            try
+            {
+                //外部ブラウザ
+                Android.Net.Uri uri;
+                uri = Android.Net.Uri.Parse(item_url);
+                Intent intentB = new Android.Content.Intent(Intent.ActionView, uri);
+                view.Context.StartActivity(intentB);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Make(view, "URLの取得に失敗しました",
+                       Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            }
+        }
+
+
 
         public static void Reply(Status status, View view)
         {
@@ -111,7 +151,7 @@ namespace FlashCardPager
                 var dlg = new Android.App.AlertDialog.Builder(view.Context);
 
                 dlg.SetTitle(status.Account.DisplayName + "@" + status.Account.UserName
-                    + "さん\r\n" + OtherTool.HTML_removeTag(status.Content));
+                    + "さん\r\n" + OtherTool.HTML_removeTag(status.Content) );
                 dlg.SetItems(items, async (s, ee) =>
                 {
                     select = ee.Which;
@@ -122,7 +162,7 @@ namespace FlashCardPager
                             break;
 
                         case 1://fav
-                            UserAction.FavAsync(status.Id, view);
+                            UserAction.FavAsync(status, view);
                             break;
 
                         case 2://boost

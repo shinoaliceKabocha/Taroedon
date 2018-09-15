@@ -32,9 +32,7 @@ namespace FlashCardPager
             image = _image;
         }
 
-        protected override void OnPreExecute()
-        {
-        }
+        protected override void OnPreExecute() { }
 
         protected override Bitmap RunInBackground(params string[] @params)
         {
@@ -109,6 +107,64 @@ namespace FlashCardPager
 
             }
             return null;
+        }
+
+        protected override void OnPostExecute(Bitmap result)
+        {
+            image.SetImageBitmap(result);//imageview にBitmapデータ格納
+
+        }
+    }
+
+
+    public class ImageGetTask2 : AsyncTask<string, string, Bitmap>
+    {
+        private ImageView image;
+        static BinaryManager bm = new BinaryManager();
+
+        public ImageGetTask2(ImageView _image)
+        {
+            image = _image;
+        }
+
+        protected override void OnPreExecute() { }
+
+        protected override Bitmap RunInBackground(params string[] @params)
+        {
+            Bitmap bitmap_image = null;
+            try
+            {
+                using (var webClient = new WebClient())
+                {
+
+                    byte[] imageBytes = webClient.DownloadData(@params[0]);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        try
+                        {
+                            bitmap_image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
+                            bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, 48, 48, false);//低画質化
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error("download low error", ex.Message);
+                        }
+                        return bitmap_image;
+                    }
+                    else return bitmap_image;//null
+                };
+
+            }
+            catch (MalformedURLException e)
+            {
+                return null;
+            }
+            catch (System.IO.IOException e)
+            {
+                return null;
+            }
+
         }
 
         protected override void OnPostExecute(Bitmap result)

@@ -72,7 +72,7 @@ namespace FlashCardPager
                         if (re_status != null) status = re_status;
                     }
                     catch (Exception ex) { }
-                    UserAction.FavAsync(status.Id, view);
+                    UserAction.FavAsync(status, view);
                 }
             };
 

@@ -64,7 +64,7 @@ namespace FlashCardPager
                 }
                 catch (Exception ex) { }
 
-                UserAction.FavAsync(status.Id, view);
+                UserAction.FavAsync(status, view);
             };
 
             //swipe refersh

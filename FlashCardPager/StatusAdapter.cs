@@ -20,6 +20,7 @@ namespace FlashCardPager
     {
         List<Status> statuslist;
         LayoutInflater inflater;
+        List<string> imageurls;
 
         public StatusAdapter(LayoutInflater inflater, List<Status> statuslist)
         {
@@ -68,10 +69,7 @@ namespace FlashCardPager
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
             imageGetTask.Execute(status.Account.StaticAvatarUrl);
-            avatar.Click += async (sender, e) =>
-            {
-                Log.Debug("post", "user name:" + status.Account.UserName + " status id:" + status.Id + "myfav:" + status.Favourited + "myBoosted:" + status.Reblogged);
-            };
+            avatar.Click += (sender, e) => { };
 
 
             //profile
@@ -91,14 +89,24 @@ namespace FlashCardPager
 
             ////画像URL取得 → contentに追加
             List<string> list = OtherTool.DLG_ITEM_getURL(status);
+            imageurls = new List<string>();
             foreach (var add in list)
             {
                 if (!_content.Contains("@") && add != UserClient.instance)
                 {
                     if (add.Contains("media"))
                     {
-                        if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                        else content.Text += "\r\nimg:" + add;
+                        //自鯖にあるやつなら，サムネイルに表示する
+                        if (add.Contains(UserClient.instance))
+                        {
+                            imageurls.Add(add);
+                        }
+                        //それ以外の画像なら，サムネイルに表示しないでおく
+                        else
+                        {
+                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
+                            else content.Text += "\r\nimg:" + add;
+                        }
                     }
                     else
                     {
@@ -117,21 +125,22 @@ namespace FlashCardPager
                 createdat.Text = status.CreatedAt.ToLocalTime() + "";
 
 
-            //image
+            //サムネイルの表示
             int i = 0;
-            //サムネイル
-            //foreach (var image_url in images_urls)
-            //{
-            //    ImageGetTask imageGetTask2 = new ImageGetTask(imageViews[i]);
-            //    imageGetTask2.Execute(image_url.Url);
-            //    i++;
-            //}
+            for(i=0; i<imageurls.Count; i++)
+            {
+                ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
+                imageGetTask2.Execute(imageurls[i]);
+            }
             for (int j = i; j < 4; j++)
             {
                 imageViews[j].Visibility = ViewStates.Gone;
             }
-            view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
-            view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimagedown).Visibility = ViewStates.Gone;
+
+            if(imageurls.Count == 0)
+            {
+                view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+            }
 
             return view;
         }

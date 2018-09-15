@@ -20,6 +20,7 @@ namespace FlashCardPager
     {
         LayoutInflater inflater;
         List<Mastonet.Entities.Notification> notifications;
+        List<string> imageUrls;
 
         public NotificationAdapter(LayoutInflater inflater, List<Mastonet.Entities.Notification> notifications)
         {
@@ -55,6 +56,7 @@ namespace FlashCardPager
             TextView content = view.FindViewById<TextView>(Resource.Id.textViewContent);
             TextView createdat = view.FindViewById<TextView>(Resource.Id.textViewCreatedAt);
 
+            imageUrls = new List<string>();
             ImageView[] imageViews = new ImageView[4];
             imageViews[0] = view.FindViewById<ImageView>(Resource.Id.imageViewImage0);
             imageViews[1] = view.FindViewById<ImageView>(Resource.Id.imageViewImage1);
@@ -65,18 +67,12 @@ namespace FlashCardPager
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
             imageGetTask.Execute(notification.Account.StaticAvatarUrl);
+            avatar.Click += (sender, e) => { };
+
 
             //name
             string accountname = notification.Account.AccountName;
             string displayname = notification.Account.DisplayName;
-
-            //サムネイル
-            for (int j = 0; j < 4; j++)
-            {
-                imageViews[j].Visibility = ViewStates.Gone;
-            }
-            view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
-            view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimagedown).Visibility = ViewStates.Gone;
 
 
             //対応
@@ -94,6 +90,12 @@ namespace FlashCardPager
 
                 createdat.SetTextColor(Color.DarkGray);
                 createdat.Text = notification.CreatedAt.ToLocalTime().ToString();
+
+                for (int k = 0; k < 4; k++)
+                {
+                    imageViews[k].Visibility = ViewStates.Gone;
+                }
+                view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
 
                 return view;
             }
@@ -136,8 +138,17 @@ namespace FlashCardPager
                 {
                     if (add.Contains("media"))
                     {
-                        if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                        else content.Text += "\r\nimg:" + add;
+                        //自鯖にあるやつなら，サムネイルに表示する
+                        if (add.Contains(UserClient.instance))
+                        {
+                            imageUrls.Add(add);
+                        }
+                        //それ以外の画像なら，サムネイルに表示しないでおく
+                        else
+                        {
+                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
+                            else content.Text += "\r\nimg:" + add;
+                        }
                     }
                     else
                     {
@@ -147,9 +158,26 @@ namespace FlashCardPager
                 }
             }
             
-
             createdat.SetTextColor(Color.DarkGray);
             createdat.Text = notification.Status.CreatedAt.ToLocalTime().ToString();
+
+
+            //サムネイルの表示
+            int i = 0;
+            for (i = 0; i < imageUrls.Count; i++)
+            {
+                ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
+                imageGetTask2.Execute(imageUrls[i]);
+            }
+            for (int j = i; j < 4; j++)
+            {
+                imageViews[j].Visibility = ViewStates.Gone;
+            }
+
+            if (imageUrls.Count == 0)
+            {
+                view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+            }
 
             return view;
         }
