@@ -166,7 +166,7 @@ namespace FlashCardPager
                             break;
 
                         case 2://boost
-                            UserAction.BoostAsync(status.Id, view);
+                            UserAction.BoostAsync(status, view);
                             break;
 
                         case 3://close

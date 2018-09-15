@@ -69,7 +69,7 @@ namespace FlashCardPager
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
             imageGetTask.Execute(status.Account.StaticAvatarUrl);
-            avatar.Click += (sender, e) => { };
+            avatar.Click += (sender, e) => { Log.Info("hog", status.FavouritesCount.ToString()+ ": " +status.Reblogged); };
 
 
             //profile
