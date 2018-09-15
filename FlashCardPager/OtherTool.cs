@@ -71,6 +71,26 @@ namespace FlashCardPager
 
             return additemlist;
         }
+
+        public static string ImageUrl_x_from_Status (Status status, int n)
+        {
+            var imageUrls = status.MediaAttachments;
+            List<string> rtns = new List<string>();
+            foreach(var url in imageUrls)
+            {
+                if (url.PreviewUrl.Contains("media")) rtns.Add(url.PreviewUrl);
+                if (n + 1 == rtns.Count) return rtns[n];
+            }
+
+            try
+            {
+                return rtns[n];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 
 }

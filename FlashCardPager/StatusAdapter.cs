@@ -142,6 +142,31 @@ namespace FlashCardPager
                 view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
             }
 
+
+            //サムネイル クリックイベント
+            imageViews[0].Click+=(sender, e) =>
+            {
+                string u = OtherTool.ImageUrl_x_from_Status(status, 0);
+                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+            };
+            imageViews[1].Click += (sender, e) =>
+            {
+                string u = OtherTool.ImageUrl_x_from_Status(status, 1);
+                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+            };
+            imageViews[2].Click += (sender, e) =>
+            {
+                string u = OtherTool.ImageUrl_x_from_Status(status, 2);
+                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+            };
+            imageViews[3].Click += (sender, e) =>
+            {
+                string u = OtherTool.ImageUrl_x_from_Status(status, 3);
+                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+            };
+
+
+
             return view;
         }
 

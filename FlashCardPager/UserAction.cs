@@ -152,7 +152,7 @@ namespace FlashCardPager
 
                 dlg.SetTitle(status.Account.DisplayName + "@" + status.Account.UserName
                     + "さん\r\n" + OtherTool.HTML_removeTag(status.Content) );
-                dlg.SetItems(items, async (s, ee) =>
+                dlg.SetItems(items,  (s, ee) =>
                 {
                     select = ee.Which;
                     switch (select)
