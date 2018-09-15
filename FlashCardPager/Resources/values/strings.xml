@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">たろえどん</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_reconnect">Refresh</string>
+    <string name="action_add">Add</string>
+</resources>
