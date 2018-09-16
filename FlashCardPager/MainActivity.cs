@@ -20,7 +20,10 @@ namespace FlashCardPager
         protected override void OnCreate(Bundle savedInstanceState)
         {
             //setting load
-            var pref = GetSharedPreferences("USER", FileCreationMode.Private);//file name + style
+            var pref = GetSharedPreferences("SETTING", FileCreationMode.Private);
+            UserAction.SettingsLoad(pref);
+
+            pref = GetSharedPreferences("USER", FileCreationMode.Private);//file name + style
             string instance = pref.GetString("instance", "");
             string clientId = pref.GetString("clientId", "");
             string clientSecret = pref.GetString("clientSecret", "");
@@ -47,7 +50,16 @@ namespace FlashCardPager
             ViewPager pager = (ViewPager)FindViewById(Resource.Id.pager);
             pager.Adapter = adapter;
             //画面を消さない
-            Window.AddFlags(WindowManagerFlags.KeepScreenOn);//on
+            if (UserAction.bDisplay)
+            {
+                Window.AddFlags(WindowManagerFlags.KeepScreenOn);//on
+            }
+            else
+            {
+                Window.ClearFlags(WindowManagerFlags.KeepScreenOn);//off
+            }
+
+
             //toolbar
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -91,9 +103,9 @@ namespace FlashCardPager
             int id = item.ItemId;
             if (id == Resource.Id.action_settings)
             {
-                Intent intent = new Intent(this, typeof(SettingsActivity));
-                StartActivity(intent);
-                //Toast.MakeText(this, "Settingにいくよ", ToastLength.Short).Show();
+                Intent intent = new Intent(this, typeof(SettingListActivity));
+                //StartActivity(intent);
+                StartActivityForResult(intent, 0);
             }
 
             return base.OnOptionsItemSelected(item);
@@ -115,6 +127,30 @@ namespace FlashCardPager
             SupportActionBar.Title += "   "+ TOOLBAR_TITLE;
         }
 
+
+        /***************************************************************
+         *                   Activity 結果の受け取り
+        **************************************************************/
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            switch (requestCode)
+            {
+                case 0:
+                    //Display On
+                    if(resultCode == Result.Ok)
+                    {
+                        Window.AddFlags(WindowManagerFlags.KeepScreenOn);//on
+                    }
+                    //Display off
+                    else
+                    {
+                        Window.ClearFlags(WindowManagerFlags.KeepScreenOn);//off
+                    }
+                    break;
+                default: break;
+
+            }
+        }
 
     }
 }

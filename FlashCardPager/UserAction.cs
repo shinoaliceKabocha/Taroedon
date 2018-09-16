@@ -18,6 +18,22 @@ namespace FlashCardPager
     public static class UserAction
     {
         private static Mastonet.MastodonClient client = new UserClient().getClient();
+        public static bool bBrowser = true;
+        public static bool bDisplay =true;
+        public static bool bImagePre = true;
+        
+        /**************************************************************
+         *                              設定
+         *************************************************************/
+        public static void SettingsLoad(ISharedPreferences pref)
+        {
+            //現在の設定の読み込み
+            bBrowser = pref.GetBoolean("browser", true);
+            bDisplay = pref.GetBoolean("display", true);
+            bImagePre = pref.GetBoolean("imagePre", true);
+
+        }
+
 
         /***************************************************************
          *                             操作
@@ -85,10 +101,17 @@ namespace FlashCardPager
         {
             try
             {
-                //内部ブラウザ
-                Intent intentC = new Intent(view.Context, typeof(BrowserActivity));
-                intentC.PutExtra("url", item_url);
-                view.Context.StartActivity(intentC);
+                if (bBrowser)
+                {
+                    //内部ブラウザ
+                    Intent intentC = new Intent(view.Context, typeof(BrowserActivity));
+                    intentC.PutExtra("url", item_url);
+                    view.Context.StartActivity(intentC);
+                }
+                else
+                {
+                    UrlOpenChrome(item_url, view);
+                }
             }
             catch (Exception ex)
             {
@@ -97,7 +120,7 @@ namespace FlashCardPager
             }
         }
 
-        public static void UrlOpenChrome(string item_url, View view)
+        private static void UrlOpenChrome(string item_url, View view)
         {
             try
             {

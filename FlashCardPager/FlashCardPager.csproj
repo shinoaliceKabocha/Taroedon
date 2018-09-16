@@ -116,6 +116,7 @@
     <Compile Include="NotificationAdapter.cs" />
     <Compile Include="OtherTool.cs" />
     <Compile Include="PostStatusActivity.cs" />
+    <Compile Include="SettingListActivity.cs" />
     <Compile Include="SettingsActivity.cs" />
     <Compile Include="StatusAdapter.cs" />
     <Compile Include="StatusDeckAdapter.cs" />
@@ -188,6 +189,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Browser.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SettingList.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

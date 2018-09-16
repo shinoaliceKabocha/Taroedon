@@ -116,60 +116,72 @@ namespace FlashCardPager
                 createdat.Text = status.CreatedAt.ToLocalTime() + "";
 
 
-            //サムネイルの表示
-            int i = 0;
-            imageurls = OtherTool.ImageUrlPreviewfromStatus(status);
-            for(i=0; i<imageurls.Count; i++)
+            //プレビューを使う
+            if (UserAction.bImagePre)
             {
-                ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
-                imageGetTask2.Execute(imageurls[i]);
-            }
-            for (int j = i; j < 4; j++)
-            {
-                imageViews[j].Visibility = ViewStates.Gone;
-            }
+                //サムネイルの表示
+                int i = 0;
+                imageurls = OtherTool.ImageUrlPreviewfromStatus(status);
+                for (i = 0; i < imageurls.Count; i++)
+                {
+                    ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
+                    imageGetTask2.Execute(imageurls[i]);
+                }
+                for (int j = i; j < 4; j++)
+                {
+                    imageViews[j].Visibility = ViewStates.Gone;
+                }
 
-            if(imageurls.Count == 0)
+                if (imageurls.Count == 0)
+                {
+                    view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+                }
+
+
+                //サムネイル クリックイベント
+                List<string> thumbnail = OtherTool.ImageUrlRemotefromStatus(status);
+                imageViews[0].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 0)
+                    {
+                        string u = thumbnail[0];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+                imageViews[1].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 1)
+                    {
+                        string u = thumbnail[1];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+                imageViews[2].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 2)
+                    {
+                        string u = thumbnail[2];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+                imageViews[3].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 3)
+                    {
+                        string u = thumbnail[3];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+            }
+            //プレビューを使わない
+            else
             {
+                for(int k = 0; k < 4; k++)
+                {
+                    imageViews[k].Visibility = ViewStates.Gone;
+                }
                 view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
             }
-
-
-            //サムネイル クリックイベント
-            List<string> thumbnail= OtherTool.ImageUrlRemotefromStatus(status);
-            imageViews[0].Click+=(sender, e) =>
-            {
-                if (thumbnail.Count > 0)
-                {
-                    string u = thumbnail[0];
-                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                }
-            };
-            imageViews[1].Click += (sender, e) =>
-            {
-                if (thumbnail.Count > 1)
-                {
-                    string u = thumbnail[1];
-                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                }
-            };
-            imageViews[2].Click += (sender, e) =>
-            {
-                if (thumbnail.Count > 2)
-                {
-                    string u = thumbnail[2];
-                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                }
-            };
-            imageViews[3].Click += (sender, e) =>
-            {
-                if (thumbnail.Count > 3)
-                {
-                    string u = thumbnail[3];
-                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                }
-            };
-
 
             return view;
         }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="fill_parent"
+    android:gravity="center_vertical"
+    android:layout_height="wrap_content">
+    <Switch
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="内部ブラウザを使う"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:id="@+id/switchBrowser" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+    <Switch
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="起動中は画面を常にON"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:id="@+id/switchDisplayOn" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+    <Switch
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="画像のプレビューを表示"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:id="@+id/switchImagePreview" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="認証する"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:id="@+id/textViewAuth" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="このアプリについて"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:id="@+id/textViewLicense" />
+</LinearLayout>

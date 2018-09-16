@@ -152,7 +152,7 @@ namespace FlashCardPager
             createdat.SetTextColor(Color.DarkGray);
             createdat.Text = notification.Status.CreatedAt.ToLocalTime().ToString();
 
-            if(notification.Status != null)
+            if(notification.Status != null && UserAction.bImagePre==true)
             {
                 //サムネイルの表示
                 int i = 0;
@@ -207,6 +207,14 @@ namespace FlashCardPager
                     }
                 };
 
+            }
+            else
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    imageViews[k].Visibility = ViewStates.Gone;
+                }
+                view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
             }
 
             return view;
