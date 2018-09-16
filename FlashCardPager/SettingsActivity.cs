@@ -33,6 +33,10 @@ namespace FlashCardPager
             e_address.Text = "";
             e_pass.Text = "";
 
+            FindViewById<TextView>(Resource.Id.textViewSettings1_1).LongClick+=(sender, e) =>
+            {
+                e_instance.Text = "taroedon.com";
+            };
 
             regist.Click += async (sender, e) =>
             {

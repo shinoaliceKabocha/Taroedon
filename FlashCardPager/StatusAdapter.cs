@@ -96,17 +96,8 @@ namespace FlashCardPager
                 {
                     if (add.Contains("media"))
                     {
-                        //自鯖にあるやつなら，サムネイルに表示する
-                        if (add.Contains(UserClient.instance))
-                        {
-                            imageurls.Add(add);
-                        }
-                        //それ以外の画像なら，サムネイルに表示しないでおく
-                        else
-                        {
-                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                            else content.Text += "\r\nimg:" + add;
-                        }
+                        if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
+                        else content.Text += "\r\nimg:" + add;
                     }
                     else
                     {
@@ -127,6 +118,7 @@ namespace FlashCardPager
 
             //サムネイルの表示
             int i = 0;
+            imageurls = OtherTool.ImageUrlPreviewfromStatus(status);
             for(i=0; i<imageurls.Count; i++)
             {
                 ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
@@ -144,27 +136,39 @@ namespace FlashCardPager
 
 
             //サムネイル クリックイベント
+            List<string> thumbnail= OtherTool.ImageUrlRemotefromStatus(status);
             imageViews[0].Click+=(sender, e) =>
             {
-                string u = OtherTool.ImageUrl_x_from_Status(status, 0);
-                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                if (thumbnail.Count > 0)
+                {
+                    string u = thumbnail[0];
+                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                }
             };
             imageViews[1].Click += (sender, e) =>
             {
-                string u = OtherTool.ImageUrl_x_from_Status(status, 1);
-                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                if (thumbnail.Count > 1)
+                {
+                    string u = thumbnail[1];
+                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                }
             };
             imageViews[2].Click += (sender, e) =>
             {
-                string u = OtherTool.ImageUrl_x_from_Status(status, 2);
-                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                if (thumbnail.Count > 2)
+                {
+                    string u = thumbnail[2];
+                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                }
             };
             imageViews[3].Click += (sender, e) =>
             {
-                string u = OtherTool.ImageUrl_x_from_Status(status, 3);
-                if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                if (thumbnail.Count > 3)
+                {
+                    string u = thumbnail[3];
+                    if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                }
             };
-
 
 
             return view;

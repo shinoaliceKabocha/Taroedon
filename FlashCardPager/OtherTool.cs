@@ -61,9 +61,10 @@ namespace FlashCardPager
                 var urls = status.MediaAttachments;
                 foreach (var url in urls)
                 {
-                    if (url.PreviewUrl != "" && url.PreviewUrl.Length > 8)
+                    if (url.RemoteUrl != "" && url.RemoteUrl.Length > 8)
                     {
-                        additemlist.Add(url.PreviewUrl);
+                        //additemlist.Add(url.PreviewUrl);
+                        additemlist.Add(url.RemoteUrl);
                     }
                 }
             }
@@ -72,19 +73,44 @@ namespace FlashCardPager
             return additemlist;
         }
 
-        public static string ImageUrl_x_from_Status (Status status, int n)
+        public static List<string> ImageUrlPreviewfromStatus (Status status)
         {
             var imageUrls = status.MediaAttachments;
             List<string> rtns = new List<string>();
             foreach(var url in imageUrls)
             {
                 if (url.PreviewUrl.Contains("media")) rtns.Add(url.PreviewUrl);
-                if (n + 1 == rtns.Count) return rtns[n];
             }
 
             try
             {
-                return rtns[n];
+                return rtns;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static List<string> ImageUrlRemotefromStatus(Status status)
+        {
+            var imageUrls = status.MediaAttachments;
+            List<string> rtns = new List<string>();
+            foreach (var url in imageUrls)
+            {
+                try
+                {
+                    if (url.RemoteUrl.Contains("media")) rtns.Add(url.RemoteUrl);
+                }
+                catch(Exception e)
+                {
+                    if (url.TextUrl.Contains("media")) rtns.Add(url.PreviewUrl);
+                }
+            }
+
+            try
+            {
+                return rtns;
             }
             catch (Exception)
             {

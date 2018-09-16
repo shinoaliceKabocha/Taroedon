@@ -21,10 +21,10 @@ using Android.Util;
 
 namespace FlashCardPager
 {
+    //アイコン用
     public class ImageGetTask : AsyncTask<string, string, Bitmap>
     {
         private ImageView image;
-        //static Dictionary<string, byte[]> avatar_map = new Dictionary<string, byte[]>();
         static BinaryManager bm = new BinaryManager();
 
         public ImageGetTask(ImageView _image)
@@ -83,7 +83,6 @@ namespace FlashCardPager
                                 MemoryStream memoryStream = new MemoryStream();//byte[] stream
                                 bitmap_image.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
 
-                                //avatar_map.Add(@params[0], memoryStream.ToArray());
                                 bm.WriteBin_To_File(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
                             }
                             catch (Exception ex)
@@ -116,7 +115,7 @@ namespace FlashCardPager
         }
     }
 
-
+    //イメージ用
     public class ImageGetTask2 : AsyncTask<string, string, Bitmap>
     {
         private ImageView image;
@@ -132,40 +131,80 @@ namespace FlashCardPager
         protected override Bitmap RunInBackground(params string[] @params)
         {
             Bitmap bitmap_image = null;
-            try
+            bool convert_error_flg = false;
+
+            //1 or 2 次キャッシュにあるか確認する
+            byte[] imageBytes = bm.ReadMap_to_Byte(@params[0]);
+            //ある場合
+            if (imageBytes != null)
             {
-                using (var webClient = new WebClient())
+                try
                 {
-
-                    byte[] imageBytes = webClient.DownloadData(@params[0]);
-                    if (imageBytes != null && imageBytes.Length > 0)
+                    bitmap_image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    return bitmap_image;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("convert erorr", ex.Message);
+                    convert_error_flg = true;
+                }
+            }
+            else if (imageBytes == null || convert_error_flg == true) //ない場合 もしくはエラー
+            {
+                try
+                {
+                    using (var webClient = new WebClient())
                     {
-                        try
+
+                        imageBytes = webClient.DownloadData(@params[0]);
+                        if (imageBytes != null && imageBytes.Length > 0)
                         {
-                            bitmap_image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
-                            bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, 48, 48, false);//低画質化
+                            try
+                            {
+                                bitmap_image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
+                                int bmpWidth, bmpHeight;
+                                //縦長  h:w = 48:ww
+                                if (bitmap_image.Height > bitmap_image.Width)
+                                {
+                                    bmpHeight = 60;
+                                    bmpWidth = bitmap_image.Width * bmpHeight / bitmap_image.Height;
+                                }
+                                //正方形 or 横長  h:w = hh:48
+                                else
+                                {
+                                    bmpWidth = 60;
+                                    bmpHeight = bitmap_image.Height * bmpWidth / bitmap_image.Width;
+                                }
+                                bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, bmpWidth, bmpHeight, false);//低画質化
 
+                                MemoryStream memoryStream = new MemoryStream();//byte[] stream
+                                bitmap_image.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
+
+                                bm.WriteBin_To_Map(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error("download low error", ex.Message);
+                            }
+                            return bitmap_image;
                         }
-                        catch (Exception ex)
-                        {
-                            Log.Error("download low error", ex.Message);
-                        }
-                        return bitmap_image;
-                    }
-                    else return bitmap_image;//null
-                };
+                        else return bitmap_image;//null
+                    };
+
+                }
+                catch (MalformedURLException e)
+                {
+                    return null;
+                }
+                catch (System.IO.IOException e)
+                {
+                    return null;
+                }
 
             }
-            catch (MalformedURLException e)
-            {
-                return null;
-            }
-            catch (System.IO.IOException e)
-            {
-                return null;
-            }
-
+            return null;
         }
+
 
         protected override void OnPostExecute(Bitmap result)
         {

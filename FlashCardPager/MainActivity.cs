@@ -52,7 +52,7 @@ namespace FlashCardPager
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             //toolbar title
-            SupportActionBar.Title = "Home   ";//init
+            //SupportActionBar.Title = "Home   ";//init
             pager.PageSelected += (sender, e) =>
             {
                 string state_title;
@@ -72,7 +72,6 @@ namespace FlashCardPager
             {
                 var intent = new Intent(this, typeof(PostStatusActivity));
                 this.StartActivity(intent);
-                //Toast.MakeText(this, "Tootする", ToastLength.Short).Show();
             };
 
         }
@@ -104,7 +103,16 @@ namespace FlashCardPager
         {
             var currentuser = await new UserClient().getClient().GetCurrentUser();
             TOOLBAR_TITLE = currentuser.DisplayName + "@" + currentuser.AccountName;
-            SupportActionBar.Title += "   "+currentuser.DisplayName + "@" + currentuser.AccountName;
+
+            ViewPager pager = (ViewPager)FindViewById(Resource.Id.pager);
+            int n = pager.CurrentItem;
+            switch (n)
+            {
+                case 0: SupportActionBar.Title = "Home"; break;
+                case 1: SupportActionBar.Title = "Mention"; break;
+                default: SupportActionBar.Title = "Public"; break;
+            }
+            SupportActionBar.Title += "   "+ TOOLBAR_TITLE;
         }
 
 

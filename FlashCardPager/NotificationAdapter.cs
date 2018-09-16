@@ -138,17 +138,8 @@ namespace FlashCardPager
                 {
                     if (add.Contains("media"))
                     {
-                        //自鯖にあるやつなら，サムネイルに表示する
-                        if (add.Contains(UserClient.instance))
-                        {
-                            imageUrls.Add(add);
-                        }
-                        //それ以外の画像なら，サムネイルに表示しないでおく
-                        else
-                        {
-                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                            else content.Text += "\r\nimg:" + add;
-                        }
+                        if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
+                        else content.Text += "\r\nimg:" + add;
                     }
                     else
                     {
@@ -161,22 +152,61 @@ namespace FlashCardPager
             createdat.SetTextColor(Color.DarkGray);
             createdat.Text = notification.Status.CreatedAt.ToLocalTime().ToString();
 
+            if(notification.Status != null)
+            {
+                //サムネイルの表示
+                int i = 0;
+                imageUrls = OtherTool.ImageUrlPreviewfromStatus(notification.Status);
+                for (i = 0; i < imageUrls.Count; i++)
+                {
+                    ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
+                    imageGetTask2.Execute(imageUrls[i]);
+                }
+                for (int j = i; j < 4; j++)
+                {
+                    imageViews[j].Visibility = ViewStates.Gone;
+                }
 
-            //サムネイルの表示
-            int i = 0;
-            for (i = 0; i < imageUrls.Count; i++)
-            {
-                ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
-                imageGetTask2.Execute(imageUrls[i]);
-            }
-            for (int j = i; j < 4; j++)
-            {
-                imageViews[j].Visibility = ViewStates.Gone;
-            }
+                if (imageUrls.Count == 0)
+                {
+                    view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+                }
 
-            if (imageUrls.Count == 0)
-            {
-                view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+                //サムネイル クリックイベント
+                List<string> thumbnail = OtherTool.ImageUrlRemotefromStatus(notification.Status);
+                imageViews[0].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 0)
+                    {
+                        string u = thumbnail[0];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+                imageViews[1].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 1)
+                    {
+                        string u = thumbnail[1];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+                imageViews[2].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 2)
+                    {
+                        string u = thumbnail[2];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+                imageViews[3].Click += (sender, e) =>
+                {
+                    if (thumbnail.Count > 3)
+                    {
+                        string u = thumbnail[3];
+                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
+                    }
+                };
+
             }
 
             return view;
