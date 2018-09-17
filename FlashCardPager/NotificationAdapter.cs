@@ -99,32 +99,45 @@ namespace FlashCardPager
 
                 return view;
             }
-            //fav
-            else if (type.Equals("favourite"))
-            {
-                profile.SetTextColor(Color.DarkOrange);
-                profile.Text = displayname + accountname + "さんからふぁぼられた";
-
-            }
-            //rebolog
-            else if (type.Equals("reblog"))
-            {
-                profile.SetTextColor(Color.DarkGreen);
-                profile.Text = displayname + accountname + "さんからぶーすとされた";
-            }
-            //mention
-            else if (type.Equals("mention"))
-            {
-                profile.SetTextColor(Color.DarkMagenta);
-                profile.Text = displayname + accountname + "さんからとぅーと!";
-            }
             else
             {
-                profile.Text = "なんかの通知がきた";
-                content.Text = "内容はわからんちん";
-                createdat.Text = "時間を気にするやつは何してもだめ";
-                return view;
+                if (notification.Status.Visibility == Visibility.Private)
+                {
+                    profile.Text = "🔒";
+                }
+                else if (notification.Status.Visibility == Visibility.Direct)
+                {
+                    profile.Text = "📨";
+                }
+
+                //fav
+                if (type.Equals("favourite"))
+                {
+                    profile.SetTextColor(Color.DarkOrange);
+                    profile.Text += displayname + accountname + "さんからふぁぼられた";
+
+                }
+                //rebolog
+                else if (type.Equals("reblog"))
+                {
+                    profile.SetTextColor(Color.DarkGreen);
+                    profile.Text += displayname + accountname + "さんからぶーすとされた";
+                }
+                //mention
+                else if (type.Equals("mention"))
+                {
+                    profile.SetTextColor(Color.DarkMagenta);
+                    profile.Text += displayname + accountname + "さんからとぅーと!";
+                }
+                else
+                {
+                    profile.Text = "なんかの通知がきた";
+                    content.Text = "内容はわからんちん";
+                    createdat.Text = "時間を気にするやつは何してもだめ";
+                    return view;
+                }
             }
+
 
             content.SetTextColor(Color.Black);
             //普通の文章を追加

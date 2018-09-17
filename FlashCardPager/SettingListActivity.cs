@@ -86,7 +86,8 @@ namespace FlashCardPager
             var textViewLicense = FindViewById<TextView>(Resource.Id.textViewLicense);
             textViewLicense.Click+=(sender, e) =>
             {
-                Toast.MakeText(this, "このアプリについて", ToastLength.Short).Show();
+                intent = new Intent(this, typeof(LicenseActivity));
+                StartActivity(intent);
             };
         }
     }

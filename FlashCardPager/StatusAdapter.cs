@@ -79,8 +79,15 @@ namespace FlashCardPager
             {
                 profile.SetTextColor(Color.DarkRed);
             }
-            profile.Text = status.Account.DisplayName + "@" + status.Account.AccountName;
-
+            if(status.Visibility == Visibility.Private)
+            {
+                profile.Text = "🔒";
+            }
+            else
+            {
+                profile.Text = "";
+            }
+            profile.Text += status.Account.DisplayName + "@" + status.Account.AccountName;
 
             //content
             content.SetTextColor(Color.Black);

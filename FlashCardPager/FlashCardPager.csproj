@@ -113,6 +113,7 @@
     <Compile Include="BinaryManager.cs" />
     <Compile Include="BrowserActivity.cs" />
     <Compile Include="ImageGetTask.cs" />
+    <Compile Include="LicenseActivity.cs" />
     <Compile Include="NotificationAdapter.cs" />
     <Compile Include="OtherTool.cs" />
     <Compile Include="PostStatusActivity.cs" />
@@ -194,6 +195,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\SettingList.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\License.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
