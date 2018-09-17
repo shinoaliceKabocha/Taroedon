@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace FlashCardPager
 {
-    [Activity(Label = "LicenseActivity", Theme = "@style/AppTheme")]
+    [Activity(Label = "About this Application", Theme = "@style/AppTheme")]
     public class LicenseActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -23,8 +23,6 @@ namespace FlashCardPager
 
             var licenseTextView = FindViewById<TextView>(Resource.Id.textViewLicense);
             string amazon = "https://www.amazon.co.jp/registry/wishlist/1RU8JEI9QE27B/ref=cm_sw_r_tw";
-
-
             
 
             var textviewMessage = FindViewById<TextView>(Resource.Id.textViewMessage);

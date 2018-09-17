@@ -41,9 +41,10 @@ namespace FlashCardPager
          **************************************************************/
         private static async void FavAsync(long id, View view)
         {
+            Mastonet.MastodonClient clientfav = new UserClient().getClient();
             try
             {
-                await client.Favourite(id);
+                await clientfav.Favourite(id);
                 var snakbar = Snackbar.Make(view, "ふぁぼりました",
                     Snackbar.LengthLong);
                 snakbar.SetAction("ACTION", (Android.Views.View.IOnClickListener)null).Show();
@@ -52,6 +53,7 @@ namespace FlashCardPager
             {
                 Snackbar.Make(view, "ふぁぼに失敗しました",
                Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Android.Util.Log.Error("", ex.Message);
             }
         }
 
@@ -71,9 +73,10 @@ namespace FlashCardPager
 
         private static async void BoostAsync(long id, View view)
         {
+            Mastonet.MastodonClient clientReb = new UserClient().getClient();
             try
             {
-                await client.Reblog(id);
+                await clientReb.Reblog(id);
                 Snackbar.Make(view, "ぶーすとしました",
                     Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
@@ -81,6 +84,7 @@ namespace FlashCardPager
             {
                 Snackbar.Make(view, "ぶーすとに失敗しました",
                      Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Android.Util.Log.Error("", ex.Message);
             }
 
         }
