@@ -94,7 +94,7 @@ namespace FlashCardPager
             {
                 if (!_content.Contains("@") && add != UserClient.instance)
                 {
-                    if (add.Contains("media"))
+                    if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg"))
                     {
                         if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
                         else content.Text += "\r\nimg:" + add;
@@ -139,7 +139,17 @@ namespace FlashCardPager
 
 
                 //サムネイル クリックイベント
-                List<string> thumbnail = OtherTool.ImageUrlRemotefromStatus(status);
+                //画質の設定
+                List<string> thumbnail;
+                if (UserAction.bImageQuality)
+                {
+                    thumbnail = OtherTool.ImageUrlRemotefromStatus(status);
+                }
+                else
+                {
+                    thumbnail = OtherTool.ImageUrlPreviewfromStatus(status);
+                }
+                //イベント発行
                 imageViews[0].Click += (sender, e) =>
                 {
                     if (thumbnail.Count > 0)

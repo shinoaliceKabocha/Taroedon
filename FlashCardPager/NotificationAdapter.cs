@@ -173,7 +173,17 @@ namespace FlashCardPager
                 }
 
                 //サムネイル クリックイベント
-                List<string> thumbnail = OtherTool.ImageUrlRemotefromStatus(notification.Status);
+                //画質の設定
+                List<string> thumbnail;
+                if (UserAction.bImageQuality)
+                {
+                    thumbnail = OtherTool.ImageUrlRemotefromStatus(notification.Status);
+                }
+                else
+                {
+                    thumbnail = OtherTool.ImageUrlPreviewfromStatus(notification.Status);
+                }
+                //イベント発行
                 imageViews[0].Click += (sender, e) =>
                 {
                     if (thumbnail.Count > 0)

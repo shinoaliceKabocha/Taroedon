@@ -63,8 +63,14 @@ namespace FlashCardPager
                 {
                     if (url.RemoteUrl != "" && url.RemoteUrl.Length > 8)
                     {
-                        //additemlist.Add(url.PreviewUrl);
-                        additemlist.Add(url.RemoteUrl);
+                        if (UserAction.bImageQuality)
+                        {
+                            additemlist.Add(url.RemoteUrl);
+                        }
+                        else
+                        {
+                            additemlist.Add(url.PreviewUrl);
+                        }
                     }
                 }
             }
@@ -79,7 +85,7 @@ namespace FlashCardPager
             List<string> rtns = new List<string>();
             foreach(var url in imageUrls)
             {
-                if (url.PreviewUrl.Contains("media")) rtns.Add(url.PreviewUrl);
+                rtns.Add(url.PreviewUrl);
             }
 
             try
@@ -100,11 +106,18 @@ namespace FlashCardPager
             {
                 try
                 {
-                    if (url.RemoteUrl.Contains("media")) rtns.Add(url.RemoteUrl);
+                    if (url.RemoteUrl != null)
+                    {
+                        rtns.Add(url.RemoteUrl);
+                    }
+                    else
+                    {
+                        rtns.Add(url.PreviewUrl);
+                    }
                 }
                 catch(Exception e)
                 {
-                    if (url.TextUrl.Contains("media")) rtns.Add(url.PreviewUrl);
+                    rtns.Add(url.PreviewUrl);
                 }
             }
 

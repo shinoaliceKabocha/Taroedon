@@ -21,6 +21,7 @@ namespace FlashCardPager
         public static bool bBrowser = true;
         public static bool bDisplay =true;
         public static bool bImagePre = true;
+        public static bool bImageQuality = true;
         
         /**************************************************************
          *                              設定
@@ -31,7 +32,7 @@ namespace FlashCardPager
             bBrowser = pref.GetBoolean("browser", true);
             bDisplay = pref.GetBoolean("display", true);
             bImagePre = pref.GetBoolean("imagePre", true);
-
+            bImageQuality = pref.GetBoolean("imageQuality", true);
         }
 
 

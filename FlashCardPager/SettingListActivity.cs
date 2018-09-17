@@ -64,6 +64,16 @@ namespace FlashCardPager
                 UserAction.bImagePre = mImagePreview.Checked;
             };
 
+            //画像の画質
+            var mImageQuolity = FindViewById<Switch>(Resource.Id.switchImageQuality);
+            mImageQuolity.Checked = UserAction.bImageQuality;
+            mImageQuolity.CheckedChange += (sender, e) =>
+            {
+                editor.PutBoolean("imageQuality", mImageQuolity.Checked);
+                editor.Commit();
+                UserAction.bImageQuality = mImageQuolity.Checked;
+            };
+
 
             //認証画面への移行
             var textViewAuth = FindViewById<TextView>(Resource.Id.textViewAuth);

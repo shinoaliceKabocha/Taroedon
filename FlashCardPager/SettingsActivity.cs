@@ -14,7 +14,7 @@ using Mastonet;
 
 namespace FlashCardPager
 {
-    [Activity(Label = "Certification", Theme = "@style/AppTheme")]
+    [Activity(Label = "Authentication", Theme = "@style/AppTheme")]
     public class SettingsActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
