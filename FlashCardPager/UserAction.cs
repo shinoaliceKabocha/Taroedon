@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Views;
@@ -17,7 +18,6 @@ namespace FlashCardPager
 {
     public static class UserAction
     {
-        private static Mastonet.MastodonClient client = new UserClient().getClient();
         public static bool bBrowser = true;
         public static bool bDisplay =true;
         public static bool bImagePre = true;
@@ -214,7 +214,6 @@ namespace FlashCardPager
                     Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
         }
-
     }
 
     public class MstWebViewClient : WebViewClient

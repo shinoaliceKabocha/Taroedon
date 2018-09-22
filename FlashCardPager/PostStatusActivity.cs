@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Android.App;
@@ -15,6 +16,7 @@ using Android.Views;
 using Android.Widget;
 using Java.Lang;
 using Mastonet.Entities;
+using Newtonsoft.Json;
 
 namespace FlashCardPager
 {
@@ -25,7 +27,6 @@ namespace FlashCardPager
         long status_id;
         List<long> media_id_list;
         static int spin_position = 0;
-        private Android.Net.Uri uploadUri = null;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -67,27 +68,18 @@ namespace FlashCardPager
                 edittext.SetSelection(edittext.Text.Length);
             }
 
-            FindViewById<ImageView>(Resource.Id.imageupload).Visibility = ViewStates.Gone;
-            /****************************************************
+            //FindViewById<ImageView>(Resource.Id.imageupload).Visibility = ViewStates.Gone;
+            /****************************************************/
             //image uploader
             media_id_list = new List<long>();
             var image_uploade = FindViewById<ImageView>(Resource.Id.imageupload);
             image_uploade.Click += (sender, e) =>
             {
-                Image_uploade_Click(sender, e);
-
-                BackgroundWorker imageWorker = new BackgroundWorker();
-                imageWorker.DoWork += Worker_DoWork;
-                imageWorker.RunWorkerCompleted += Worker_RunWorkerCompletedAsync;
-                imageWorker.RunWorkerAsync();
+                Intent intent = new Intent();
+                intent.SetType("image/*");
+                intent.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 0);
             };
-            //image_uploade.Click += Image_uploade_Click;
-            //image_uploade.Visibility = ViewStates.Gone;
-            /*
-             BackgroundWorker worker = new BackgroundWorker();
-                worker.DoWork += Worker_DoWork;
-                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-                worker.RunWorkerAsync();*/
             //****************************************************/
 
             //SPIN settings
@@ -130,6 +122,13 @@ namespace FlashCardPager
                 case 3: option = Mastonet.Visibility.Unlisted; break;  //unlimited
             }
 
+            //media check
+            if(UploadAsyncTask.sDoneAttachment != null)
+            {
+                media_id_list.Clear();//TODO:マルチ投稿するときは，外す．
+                media_id_list.Add(UploadAsyncTask.sDoneAttachment.id);
+            }
+
             if (edittext.Text.Length > 0)
             {
                 try
@@ -137,7 +136,7 @@ namespace FlashCardPager
                     //リプライする時
                     if (status_id != 0)
                     {
-                        client.PostStatus(edittext.Text, option, status_id);
+                        client.PostStatus(edittext.Text, option, status_id, media_id_list);
                         intent.PutExtra("reply", 1);
                         SetResult(Android.App.Result.Ok, intent);
                     }
@@ -145,7 +144,7 @@ namespace FlashCardPager
                     else if (status_id == 0)
                     {
                         //post
-                        client.PostStatus(edittext.Text, option);
+                        client.PostStatus(edittext.Text, option, null, media_id_list);
                     }
                     edittext.Text = "";
                     Finish();
@@ -166,92 +165,39 @@ namespace FlashCardPager
         }
 
 
-        /*
-        //image upload
-        int PickImageId = 1000;
-        private void Image_uploade_Click(object sender, EventArgs e)
-        {
-            Intent intent = new Intent();
-            intent.SetType("image/*");
-            intent.SetAction(Intent.ActionGetContent);
-            StartActivityForResult(Intent.CreateChooser(intent, "select picture"), PickImageId);
-        }
+        //image upload 結果の受け取り（アクティビティからの）
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if ((requestCode == PickImageId) && (resultCode == Result.Ok) && (data != null))
+            if ((requestCode == 0) && (resultCode == Result.Ok) && (data != null))
             {
+                Toast.MakeText(this, "upload now...", ToastLength.Short).Show();
+                var button_post = FindViewById<Button>(Resource.Id.buttonPOST);
+                button_post.Enabled = false;
+                
                 Android.Net.Uri uri = data.Data;
                 ImageView image = FindViewById<ImageView>(Resource.Id.imageupload);
                 image.SetImageURI(uri);
+                //画像のアップロード
+                Thread.Sleep(10);
+                UploadAsyncTask uploadAsyncTask = new UploadAsyncTask(this);
+                uploadAsyncTask.Execute(uri);
+                ////投稿準備
+                //media_id_list.Clear();//TODO:マルチ投稿するときは，外す．
+                //try
+                //{
+                //    media_id_list.Add(uploadAsyncTask.GetResult().id);
+                //}
+                //catch(NullPointerException nullpo)
+                //{
+                //    Toast.MakeText(this, "おや？何かがおかしいよ", ToastLength.Short).Show();
+                //}
+                //finally
+                //{
+                //    button_post.Enabled = true;
+                //}
 
-                this.uploadUri = uri;
-                //media_id_list.Insert(0,Image_Upload_getimageID(uri) ) ;//image id get
-                //media_id_list.Add(Image_Upload_getimageID(uri) );//image id get
-                //var get_attach =  Image_Upload_getimageID(uri);
-                
-                //media_id_list.Add(get_attach.Id);
             }
         }
-        //this method 廃止予定
-        private Attachment Image_Upload_getimageID(Android.Net.Uri uri)
-        {
-            Task<Attachment> media = null;
-            Attachment rtn = null;
-            try
-            {
-                System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
-                Android.Graphics.Bitmap bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                bitmap = Android.Graphics.Bitmap.CreateScaledBitmap(bitmap, 200, 200, false);//低画質
-                bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 100, memoryStream);//->byte
-
-                media = client.UploadMedia(memoryStream);
-                rtn = media.Result;
-            }
-            catch (Java.Lang.Exception e)
-            {
-                Android.Util.Log.Debug("bitmap image", e.StackTrace);
-            }
-            catch (System.Exception e)
-            {
-                Android.Util.Log.Debug("bitmap image", e.StackTrace);
-            }
-
-            return rtn;
-        }
-
-        private async void Worker_RunWorkerCompletedAsync(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //Task<Attachment> media = null;
-            Attachment rtn = null;
-            try
-            {
-                System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
-                Android.Graphics.Bitmap bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, uploadUri);
-                bitmap = Android.Graphics.Bitmap.CreateScaledBitmap(bitmap, 200, 200, false);//低画質
-                bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 100, memoryStream);//->byte
-
-                rtn =await  client.UploadMedia(memoryStream);
-                //rtn = media.Result;
-
-                Toast.MakeText(this, "OK uploaded", ToastLength.Short).Show();
-                
-            }
-            catch (Java.Lang.Exception ex)
-            {
-                Android.Util.Log.Debug("hoge *********", ex.Message);
-            }
-            catch (System.Exception)
-            {
-            }
-        }
-
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            Thread.Sleep(2000);
-        }
-        */
-
-
 
 
         //text watcher
@@ -272,4 +218,117 @@ namespace FlashCardPager
 
 
     }
+
+    /****************************/
+    //     Image upload task
+    /****************************/
+    public class UploadAsyncTask : AsyncTask<Android.Net.Uri, Android.Net.Uri, Attachment>
+    {
+        private Activity activity;
+        public static Attachment sDoneAttachment;
+
+        public UploadAsyncTask(Activity activity)
+        {
+            this.activity = activity;
+        }
+
+        //バックグラウンド処理開始前の処理
+        protected override void OnPreExecute()
+        {
+            activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = false;
+            sDoneAttachment = null;//error
+        }
+
+        //バックグラウンド処理
+        protected override Attachment RunInBackground(params Android.Net.Uri[] @params)
+        {
+            try
+            {
+                Android.Net.Uri uploadUri = @params[0];
+                //Uri からビットマップの生成→圧縮→byte[]化
+                System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
+                Android.Graphics.Bitmap bitmap = MediaStore.Images.Media.GetBitmap(activity.ContentResolver, uploadUri);
+                bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 85, memoryStream);//->byte
+                var bytedata = memoryStream.ToArray();
+
+                var uploadTask = UploadMedia(bytedata);
+                uploadTask.Wait();
+                var jsonStylUploadResult = uploadTask.Result;
+                Android.Util.Log.Info("", jsonStylUploadResult);
+
+                Attachment attachment =
+                    JsonConvert.DeserializeObject<Attachment>(jsonStylUploadResult,
+                        new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+
+                return attachment;
+            }
+            catch (System.Exception e)
+            {
+                return null;
+            }
+        }
+        ////バックグラウンドのUI側処理
+        protected override void OnProgressUpdate(params Android.Net.Uri[] values) { }
+
+        //終了処理
+        protected override void OnPostExecute(Attachment result)
+        {
+            Toast.MakeText(activity, "upload complated", ToastLength.Short).Show();
+            activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = true;
+
+            sDoneAttachment = result;
+        }
+
+
+
+        ////独自アップローダー
+        public async Task<string> UploadMedia(byte[] image)
+        {
+            var client = new HttpClient(new Xamarin.Android.Net.AndroidClientHandler())
+            //var client = new HttpClient(new HttpClientHandler())
+            {
+                BaseAddress = new Uri($"https://"+UserClient.instance)
+            };
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", UserClient.accessToken);
+
+            var content = new MultipartFormDataContent();
+            content.Add(new ByteArrayContent(image), "file", "file");
+
+            var response = await client.PostAsync("/api/v1/media", content).ConfigureAwait(false);
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        }
+
+    }
+
+    //独自 media class
+    [JsonObject("media")]
+    public class Attachment
+    {
+        [JsonProperty("id")]
+        public long id { get; set; }
+        [JsonProperty("type")]
+        public string type { get; set; }
+        [JsonProperty("url")]
+        public string url { get; set; }
+        [JsonProperty("preview_url")]
+        public string preview_url { get; set; }
+        [JsonProperty("remote_url")]
+        public string remote_url { get; set; }
+        [JsonProperty("text_url")]
+        public string text_url { get; set; }
+
+        /*形式は以下の通り．した２つは飛ばす．
+        {
+        "id":"2503",
+        "type":"image",
+        "url":"https://taroedon.com/system/media_attachments/files/000/002/503/original/7209e2502ead12be.png?1537629234",
+        "preview_url":"https://taroedon.com/system/media_attachments/files/000/002/503/small/7209e2502ead12be.png?1537629234",
+        "remote_url":null,
+        "text_url":"https://taroedon.com/media/Kzqmc0Ef5bvC4ftqXtk",
+        "meta":{"original":{"width":312,"height":416,"size":"312x416","aspect":0.75},
+        "small":{"width":312,"height":416,"size":"312x416","aspect":0.75}},"description":null
+        }*/
+
+    }
+
 }
