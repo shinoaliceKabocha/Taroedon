@@ -37,16 +37,20 @@ namespace FlashCardPager
             Display display = windowManager.DefaultDisplay;
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetRealSize(point);
-            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.55));
+            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.65));
             Window.SetBackgroundDrawable(new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Transparent));
 
             //Edittext にTextwatcherを仕込む
             var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
             edittext.AddTextChangedListener(this);
 
+
             //POST button
             var button_post = FindViewById<Button>(Resource.Id.buttonPOST);
             button_post.Text = "POST";
+            //POST button event
+            button_post.Click += Button_post_Click;
+
 
             //Reply時のデータの受取
             try
@@ -71,6 +75,8 @@ namespace FlashCardPager
             //FindViewById<ImageView>(Resource.Id.imageupload).Visibility = ViewStates.Gone;
             /****************************************************/
             //image uploader
+            UploadAsyncTask.sVsDoneAttachment = new Attachment[4] { null, null, null, null };
+
             media_id_list = new List<long>();
             var image_uploade = FindViewById<ImageView>(Resource.Id.imageupload);
             image_uploade.Click += (sender, e) =>
@@ -79,6 +85,30 @@ namespace FlashCardPager
                 intent.SetType("image/*");
                 intent.SetAction(Intent.ActionGetContent);
                 StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 0);
+            };
+            var image_uploade1 = FindViewById<ImageView>(Resource.Id.imageupload1);
+            image_uploade1.Click += (sender, e) =>
+            {
+                Intent intent = new Intent();
+                intent.SetType("image/*");
+                intent.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 1);
+            };
+            var image_uploade2 = FindViewById<ImageView>(Resource.Id.imageupload2);
+            image_uploade2.Click += (sender, e) =>
+            {
+                Intent intent = new Intent();
+                intent.SetType("image/*");
+                intent.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 2);
+            };
+            var image_uploade3 = FindViewById<ImageView>(Resource.Id.imageupload3);
+            image_uploade3.Click += (sender, e) =>
+            {
+                Intent intent = new Intent();
+                intent.SetType("image/*");
+                intent.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 3);
             };
             //****************************************************/
 
@@ -97,10 +127,6 @@ namespace FlashCardPager
             {
                 spin_position = e.Position;
             };
-
-
-            //POST button event
-            button_post.Click += Button_post_Click;
 
         }
 
@@ -123,11 +149,18 @@ namespace FlashCardPager
             }
 
             //media check
-            if(UploadAsyncTask.sDoneAttachment != null)
+            media_id_list.Clear();
+            foreach(Attachment at in UploadAsyncTask.sVsDoneAttachment)
             {
-                media_id_list.Clear();//TODO:マルチ投稿するときは，外す．
-                media_id_list.Add(UploadAsyncTask.sDoneAttachment.id);
+                if(at != null)  media_id_list.Add(at.id);
             }
+
+
+            //if(UploadAsyncTask.sDoneAttachment != null)
+            //{
+            //    media_id_list.Clear();//TODO:マルチ投稿するときは，外す．
+            //    media_id_list.Add(UploadAsyncTask.sDoneAttachment.id);
+            //}
 
             if (edittext.Text.Length > 0)
             {
@@ -168,33 +201,42 @@ namespace FlashCardPager
         //image upload 結果の受け取り（アクティビティからの）
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if ((requestCode == 0) && (resultCode == Result.Ok) && (data != null))
+            if ((resultCode == Result.Ok) && (data != null))
             {
                 Toast.MakeText(this, "upload now...", ToastLength.Short).Show();
                 var button_post = FindViewById<Button>(Resource.Id.buttonPOST);
                 button_post.Enabled = false;
-                
+
                 Android.Net.Uri uri = data.Data;
-                ImageView image = FindViewById<ImageView>(Resource.Id.imageupload);
-                image.SetImageURI(uri);
+
                 //画像のアップロード
-                Thread.Sleep(10);
-                UploadAsyncTask uploadAsyncTask = new UploadAsyncTask(this);
-                uploadAsyncTask.Execute(uri);
-                ////投稿準備
-                //media_id_list.Clear();//TODO:マルチ投稿するときは，外す．
-                //try
-                //{
-                //    media_id_list.Add(uploadAsyncTask.GetResult().id);
-                //}
-                //catch(NullPointerException nullpo)
-                //{
-                //    Toast.MakeText(this, "おや？何かがおかしいよ", ToastLength.Short).Show();
-                //}
-                //finally
-                //{
-                //    button_post.Enabled = true;
-                //}
+                UploadAsyncTask uploadAsyncTask = new UploadAsyncTask(this, requestCode);
+
+                ImageView image;
+                switch (requestCode)
+                {
+                    case 0:
+                        image = FindViewById<ImageView>(Resource.Id.imageupload);
+                        image.SetImageURI(uri);
+                        uploadAsyncTask.Execute(uri);
+                        break;
+                    case 1:
+                        image = FindViewById<ImageView>(Resource.Id.imageupload1);
+                        image.SetImageURI(uri);
+                        uploadAsyncTask.Execute(uri);
+                        break;
+                    case 2:
+                        image = FindViewById<ImageView>(Resource.Id.imageupload2);
+                        image.SetImageURI(uri);
+                        uploadAsyncTask.Execute(uri);
+                        break;
+                    case 3:
+                        image = FindViewById<ImageView>(Resource.Id.imageupload3);
+                        image.SetImageURI(uri);
+                        uploadAsyncTask.Execute(uri);
+                        break;
+                    default: break;
+                }
 
             }
         }
@@ -225,18 +267,20 @@ namespace FlashCardPager
     public class UploadAsyncTask : AsyncTask<Android.Net.Uri, Android.Net.Uri, Attachment>
     {
         private Activity activity;
-        public static Attachment sDoneAttachment;
+        private int requestcode;
+        public static Attachment[] sVsDoneAttachment = new Attachment[4] { null,null,null,null };
 
-        public UploadAsyncTask(Activity activity)
+        public UploadAsyncTask(Activity activity, int requestcode)
         {
             this.activity = activity;
+            this.requestcode = requestcode;
         }
 
         //バックグラウンド処理開始前の処理
         protected override void OnPreExecute()
         {
             activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = false;
-            sDoneAttachment = null;//error
+            //sDoneAttachment = null;//error
         }
 
         //バックグラウンド処理
@@ -276,7 +320,20 @@ namespace FlashCardPager
             Toast.MakeText(activity, "upload complated", ToastLength.Short).Show();
             activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = true;
 
-            sDoneAttachment = result;
+            sVsDoneAttachment[requestcode] = result;
+
+            switch (requestcode)
+            {
+                case 0:
+                    activity.FindViewById<ImageView>(Resource.Id.imageupload1).Visibility = ViewStates.Visible;
+                    break;
+                case 1:
+                    activity.FindViewById<ImageView>(Resource.Id.imageupload2).Visibility = ViewStates.Visible;
+                    break;
+                case 2:
+                    activity.FindViewById<ImageView>(Resource.Id.imageupload3).Visibility = ViewStates.Visible;
+                    break;
+            }
         }
 
 

@@ -33,12 +33,37 @@
         android:minHeight="25px"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="right"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/linearLayoutImageButon">
         <ImageView
             android:id="@+id/imageupload"
             android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp" />
+        <ImageView
+            android:id="@+id/imageupload1"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:visibility="gone"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp" />
+        <ImageView
+            android:id="@+id/imageupload2"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:visibility="gone"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp" />
+        <ImageView
+            android:id="@+id/imageupload3"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:visibility="gone"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -51,11 +76,14 @@
             android:background="@color/background_floating_material_light"
             android:layout_marginBottom="6.0dp"
             android:id="@+id/spinnerTootRange" />
-        <Button
-            android:text="POST"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonPOST"
-            android:layout_marginBottom="6.0dp" />
     </LinearLayout>
+    <Button
+        android:text="POST"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPOST"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="6.0dp" />
+<!--</LinearLayout>-->
 </LinearLayout>
