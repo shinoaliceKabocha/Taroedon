@@ -46,7 +46,7 @@ namespace FlashCardPager
                 + "\n"
                 + "右下の投稿ボタンから．．．\n"
                 + "    ・500文字以内，4枚までの画像でトゥート\n"
-                + "    ・投稿範囲(Public, Private, Direct, unlited)に対応\n"
+                + "    ・投稿範囲(Public, Private, Direct, unlisted)に対応\n"
                 + "\n"
                 + "トゥートをタップして表示するダイアログから．．．\n"
                 + "    ・favorite, boost，Mentionに対応\n"

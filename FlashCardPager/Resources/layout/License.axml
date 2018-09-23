@@ -53,24 +53,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
-        <!--ライセンス-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-            <TextView
-                android:text="ライセンス"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="license"
-                android:id="@+id/textViewLicense" />
         <!--寄付-->
             <View
                 android:layout_width="match_parent"
@@ -89,6 +71,24 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:id="@+id/textViewAMAZON" />
+        <!--ライセンス-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+            <TextView
+                android:text="ライセンス"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="license"
+                android:id="@+id/textViewLicense" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

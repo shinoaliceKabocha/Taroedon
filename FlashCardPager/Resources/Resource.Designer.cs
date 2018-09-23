@@ -2900,8 +2900,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070069
 			public const int textSpacerNoTitle = 2131165289;
 			
-			// aapt resource value: 0x7f07009f
-			public const int textViewAMAZON = 2131165343;
+			// aapt resource value: 0x7f07009e
+			public const int textViewAMAZON = 2131165342;
 			
 			// aapt resource value: 0x7f0700c4
 			public const int textViewAuth = 2131165380;
@@ -2915,8 +2915,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07009d
 			public const int textViewHowToUse = 2131165341;
 			
-			// aapt resource value: 0x7f07009e
-			public const int textViewLicense = 2131165342;
+			// aapt resource value: 0x7f07009f
+			public const int textViewLicense = 2131165343;
 			
 			// aapt resource value: 0x7f07009c
 			public const int textViewMessage = 2131165340;
