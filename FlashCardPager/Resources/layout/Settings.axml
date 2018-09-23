@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/buttonSettings1_Registration" />
     <TextView
-        android:text="Tips\n1.入力後は再起動で反映します\n\n2.認証にはインスタンス管理者の許可がいるときもある\n\n3.ログイン情報は一つまで管理しています"
+        android:text="Tips\n\n1.入力後は再起動で反映します\n\n2.どのインスタンスでも使用可能なはずです\n\n3.認証には所属インスタンスの管理者の許可が必要かもしれません\n\n4.ログイン情報は一つまで管理しています\n\n5.インスタンス独自の設定には対応できません"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

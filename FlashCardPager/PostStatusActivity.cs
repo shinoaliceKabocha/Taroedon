@@ -117,7 +117,7 @@ namespace FlashCardPager
             spin.Background = button_post.Background;
 
             ArrayAdapter spin_adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerItem);
-            List<string> spin_list = new List<string>() { "1. Public", "2. Private", "3. Direct", "4. Unlistrd" };
+            List<string> spin_list = new List<string>() { "1. Public", "2. Private", "3. Direct", "4. Unlisted" };
             spin_adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleDropDownItem1Line);
             spin_adapter.AddAll(spin_list);
             spin.Adapter = spin_adapter;

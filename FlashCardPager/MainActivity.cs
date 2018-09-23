@@ -49,6 +49,9 @@ namespace FlashCardPager
             StatusDeckAdapter adapter = new StatusDeckAdapter(SupportFragmentManager, statusDeck);
             ViewPager pager = (ViewPager)FindViewById(Resource.Id.pager);
             pager.Adapter = adapter;
+
+            //バグ対策？
+            Window.AddFlags(WindowManagerFlags.KeepScreenOn);//on
             //画面を消さない
             if (UserAction.bDisplay)
             {
