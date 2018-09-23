@@ -155,13 +155,7 @@ namespace FlashCardPager
                 if(at != null)  media_id_list.Add(at.id);
             }
 
-
-            //if(UploadAsyncTask.sDoneAttachment != null)
-            //{
-            //    media_id_list.Clear();//TODO:マルチ投稿するときは，外す．
-            //    media_id_list.Add(UploadAsyncTask.sDoneAttachment.id);
-            //}
-
+            //投稿
             if (edittext.Text.Length > 0)
             {
                 try
@@ -184,14 +178,14 @@ namespace FlashCardPager
                 }
                 catch (System.Exception ex)
                 {
-                    var ts = Toast.MakeText(this, "Posted fail", ToastLength.Short);
+                    var ts = Toast.MakeText(this, "なにかがおかしいよ", ToastLength.Short);
                     ts.SetGravity(GravityFlags.Center, 0, 0);
                     ts.Show();
                 }
             }
             else
             {
-                var ts = Toast.MakeText(this, "Posted fail", ToastLength.Short);
+                var ts = Toast.MakeText(this, "なにかがおかしいよ", ToastLength.Short);
                 ts.SetGravity(GravityFlags.Center, 0, 0);
                 ts.Show();
             }
@@ -203,7 +197,7 @@ namespace FlashCardPager
         {
             if ((resultCode == Result.Ok) && (data != null))
             {
-                Toast.MakeText(this, "upload now...", ToastLength.Short).Show();
+                //Toast.MakeText(this, "upload now...", ToastLength.Short).Show();
                 var button_post = FindViewById<Button>(Resource.Id.buttonPOST);
                 button_post.Enabled = false;
 
@@ -270,16 +264,21 @@ namespace FlashCardPager
         private int requestcode;
         public static Attachment[] sVsDoneAttachment = new Attachment[4] { null,null,null,null };
 
+        //ProgressBar
+        private ProgressBar progressBar;
+        //コンストラクタ
         public UploadAsyncTask(Activity activity, int requestcode)
         {
             this.activity = activity;
             this.requestcode = requestcode;
+            progressBar = activity.FindViewById<ProgressBar>(Resource.Id.progressBarMediaUpload);
         }
 
         //バックグラウンド処理開始前の処理
         protected override void OnPreExecute()
         {
             activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = false;
+            progressBar.Visibility = ViewStates.Visible;
             //sDoneAttachment = null;//error
         }
 
@@ -317,9 +316,8 @@ namespace FlashCardPager
         //終了処理
         protected override void OnPostExecute(Attachment result)
         {
-            Toast.MakeText(activity, "upload complated", ToastLength.Short).Show();
+            //Toast.MakeText(activity, "アップロード完了", ToastLength.Short).Show();
             activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = true;
-
             sVsDoneAttachment[requestcode] = result;
 
             switch (requestcode)
@@ -334,8 +332,8 @@ namespace FlashCardPager
                     activity.FindViewById<ImageView>(Resource.Id.imageupload3).Visibility = ViewStates.Visible;
                     break;
             }
+            progressBar.Visibility = ViewStates.Gone;
         }
-
 
 
         ////独自アップローダー
