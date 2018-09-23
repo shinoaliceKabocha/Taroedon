@@ -101,14 +101,19 @@ namespace FlashCardPager
             }
             else
             {
-                if (notification.Status.Visibility == Visibility.Private)
-                {
-                    profile.Text = "🔒";
-                }
-                else if (notification.Status.Visibility == Visibility.Direct)
+                if (notification.Status.Visibility == Visibility.Direct)
                 {
                     profile.Text = "📨";
                 }
+                else if (notification.Status.Visibility == Visibility.Private)
+                {
+                    profile.Text = "🔒";
+                }
+                else
+                {
+                    profile.Text = "";
+                }
+
 
                 //fav
                 if (type.Equals("favourite"))

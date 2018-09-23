@@ -138,14 +138,14 @@ namespace FlashCardPager
         {
             Intent intent = new Intent();
             var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
-            int option_num = FindViewById<Spinner>(Resource.Id.spinnerTootRange).SelectedItemPosition;//0:Public, 1:Private , 2:Direct, 3:Ubnlited
+            int option_num = FindViewById<Spinner>(Resource.Id.spinnerTootRange).SelectedItemPosition;//0:Public, 1:Private , 2:Direct, 3:Unlisted
             var option = Mastonet.Visibility.Public;
             switch (option_num)
             {
                 case 0: option = Mastonet.Visibility.Public; break;     //public
                 case 1: option = Mastonet.Visibility.Private; ; break;  //private
                 case 2: option = Mastonet.Visibility.Direct; ; break;  //direct
-                case 3: option = Mastonet.Visibility.Unlisted; break;  //unlimited
+                case 3: option = Mastonet.Visibility.Unlisted; break;  //Unlisted
             }
 
             //media check

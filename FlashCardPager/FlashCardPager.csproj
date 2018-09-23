@@ -22,6 +22,11 @@
     </NuGetPackageImportStamp>
     <AndroidTlsProvider>
     </AndroidTlsProvider>
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>D:\work2\kabocha.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>ww9012ww</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>kabocha</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>ww9012ww</AndroidSigningKeyPass>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mastonet, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
