@@ -73,6 +73,7 @@ namespace FlashCardPager
             //name
             string accountname = notification.Account.AccountName;
             string displayname = notification.Account.DisplayName;
+            profile.SetTextColor(new Color(45,45,45));
 
 
             //対応
@@ -81,10 +82,11 @@ namespace FlashCardPager
             //follow
             if (type.Equals("follow"))
             {
-                profile.SetTextColor(Color.DarkBlue);
+                //profile.SetTextColor(Color.DarkBlue);
+                view.SetBackgroundColor(new Color(191, 216, 255));
                 profile.Text = displayname + accountname + "さんからフォロー";
 
-                content.SetTextColor(Color.DarkGray);
+                content.SetTextColor(Color.Black);
                 content.Text = displayname + "さんのプロフィール\n";
                 content.Text += OtherTool.HTML_removeTag(notification.Account.Note);
 
@@ -118,20 +120,23 @@ namespace FlashCardPager
                 //fav
                 if (type.Equals("favourite"))
                 {
-                    profile.SetTextColor(Color.DarkOrange);
+                    //profile.SetTextColor(Color.DarkOrange);
+                    view.SetBackgroundColor(new Color(255, 249, 216));
                     profile.Text += displayname + accountname + "さんからふぁぼられた";
 
                 }
                 //rebolog
                 else if (type.Equals("reblog"))
                 {
-                    profile.SetTextColor(Color.DarkGreen);
+                    //profile.SetTextColor(Color.DarkGreen);
+                    view.SetBackgroundColor(new Color(211,244,203));
                     profile.Text += displayname + accountname + "さんからぶーすとされた";
                 }
                 //mention
                 else if (type.Equals("mention"))
                 {
-                    profile.SetTextColor(Color.DarkMagenta);
+                    //profile.SetTextColor(Color.DarkMagenta);
+                    view.SetBackgroundColor(new Color(255, 226, 216));
                     profile.Text += displayname + accountname + "さんからとぅーと!";
                 }
                 else

@@ -43,6 +43,12 @@ namespace FlashCardPager
             return position;
         }
 
+        //public void topAdd(Status status)
+        //{
+        //    statuslist.Insert(0, status);
+        //    NotifyDataSetChanged();
+        //}
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             Status status = statuslist[position];
@@ -69,15 +75,14 @@ namespace FlashCardPager
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
             imageGetTask.Execute(status.Account.StaticAvatarUrl);
-            avatar.Click += (sender, e) => { Log.Info("hog", status.FavouritesCount.ToString()+ ": " +status.Reblogged); };
-
 
             //profile
             profile.SetTextColor(Color.DarkOliveGreen);
             ////ブーストされてるか判断する
             if (accountname != status.Account.AccountName)
             {
-                profile.SetTextColor(Color.DarkRed);
+                profile.SetTextColor(new Color(45, 45, 45));
+                view.SetBackgroundColor(new Color(211, 244, 203));
             }
             if(status.Visibility == Visibility.Private)
             {
@@ -88,6 +93,12 @@ namespace FlashCardPager
                 profile.Text = "";
             }
             profile.Text += status.Account.DisplayName + "@" + status.Account.AccountName;
+
+            //replyを確認する
+            if(status.Content.Contains("@"+UserClient.currentAccountName))
+            {
+                view.SetBackgroundColor(new Color(255, 226, 216));
+            }
 
             //content
             content.SetTextColor(Color.Black);

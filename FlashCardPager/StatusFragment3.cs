@@ -33,7 +33,6 @@ namespace FlashCardPager
         {
             StatusFragment3 fragment = new StatusFragment3();
             statuses = ls;
-            //customStatuses.Add(new CustomStatus("a", "aa", "2012/12/12"));
 
             return fragment;
         }
@@ -45,7 +44,6 @@ namespace FlashCardPager
             listView = view.FindViewById<ListView>(Resource.Id.listViewStatus);
             statusAdapter = new StatusAdapter(inflater, statuses);
             listView.Adapter = statusAdapter;
-            statusAdapter.NotifyDataSetChanged();
 
             //イベント
             listView.ItemClick += (sender, e) =>
@@ -118,7 +116,7 @@ namespace FlashCardPager
 
             streaming.OnUpdate += (sender, e) =>
             {
-                statuses.Insert(0, e.Status);
+                statuses.Insert(0, e.Status);//list<T>に追加
                 statusAdapter.NotifyDataSetChanged();
             };
         }

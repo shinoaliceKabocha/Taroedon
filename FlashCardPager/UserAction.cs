@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Provider;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Views;
@@ -47,26 +49,27 @@ namespace FlashCardPager
                 await clientfav.Favourite(id);
                 var snakbar = Snackbar.Make(view, "ふぁぼりました",
                     Snackbar.LengthLong);
+                snakbar.View.SetBackgroundColor(new Color(193, 151, 0));
                 snakbar.SetAction("ACTION", (Android.Views.View.IOnClickListener)null).Show();
             }
             catch (System.Exception ex)
             {
+                //Toast.MakeText(view.Context, "ふぁぼに失敗しました", ToastLength.Short).Show();
                 Snackbar.Make(view, "ふぁぼに失敗しました",
                Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-                Android.Util.Log.Error("", ex.Message);
             }
         }
 
         public static void FavAsync(Status status, View view)
         {
-            if (status.Favourited.Equals(false))
-            {
-                UserAction.FavAsync(status.Id, view);
-            }
-            else if (status.Favourited.Equals(true))
+            if (status.Favourited.Equals(true))
             {
                 Snackbar.Make(view, "愛が深すぎる．．．（ふぁぼ済み）",
                         Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            }
+            else
+            {
+                UserAction.FavAsync(status.Id, view);
             }
         }
 
@@ -77,28 +80,29 @@ namespace FlashCardPager
             try
             {
                 await clientReb.Reblog(id);
-                Snackbar.Make(view, "ぶーすとしました",
-                    Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+
+                var snackbar = Snackbar.Make(view, "ぶーすとしました", Snackbar.LengthLong);
+                snackbar.View.SetBackgroundColor(new Color(61, 153, 0));
+                snackbar.SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
             catch (System.Exception ex)
             {
                 Snackbar.Make(view, "ぶーすとに失敗しました",
                      Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-                Android.Util.Log.Error("", ex.Message);
             }
 
         }
 
         public static void BoostAsync(Status status, View view)
         {
-            if (status.Reblogged.Equals(false) )
-            {
-                BoostAsync(status.Id, view);
-            }
-            else if(status.Reblogged.Equals(true) )
+            if(status.Reblogged.Equals(true) )
             {
                 Snackbar.Make(view, "愛が深すぎる．．．（ぶーすと済み）",
                         Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            }
+            else
+            {
+                BoostAsync(status.Id, view);
             }
         }
 
@@ -120,6 +124,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
+                //Toast.MakeText(view.Context, "URLの取得に失敗しました", ToastLength.Short).Show();
                 Snackbar.Make(view, "URLの取得に失敗しました",
                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
@@ -137,11 +142,11 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
+                //Toast.MakeText(view.Context, "URLの取得に失敗しました", ToastLength.Short).Show();
                 Snackbar.Make(view, "URLの取得に失敗しました",
                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
         }
-
 
 
         public static void Reply(Status status, View view)
@@ -150,7 +155,6 @@ namespace FlashCardPager
             var intent = new Intent(view.Context, typeof(PostStatusActivity));
             intent.PutExtra("status_Id", status.Id);
             intent.PutExtra("status_AcountName", status.Account.AccountName);
-            //StartActivityForResult(intent, 1);
             view.Context.StartActivity(intent);
         }
 
@@ -210,8 +214,10 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Snackbar.Make(view, "なにかがおかしいよ...",
-                    Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast.MakeText(view.Context, "なにかがおかしいよ...", ToastLength.Short).Show();
+
+                //Snackbar.Make(view, "なにかがおかしいよ...",
+                //    Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
         }
     }

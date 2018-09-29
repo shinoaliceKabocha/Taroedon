@@ -118,6 +118,7 @@ namespace FlashCardPager
         {
             var currentuser = await new UserClient().getClient().GetCurrentUser();
             TOOLBAR_TITLE = currentuser.DisplayName + "@" + currentuser.AccountName;
+            UserClient.currentAccountName = currentuser.AccountName;//currentAccountNameを使い回す
 
             ViewPager pager = (ViewPager)FindViewById(Resource.Id.pager);
             int n = pager.CurrentItem;

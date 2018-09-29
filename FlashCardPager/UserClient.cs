@@ -23,6 +23,7 @@ namespace FlashCardPager
         public static string clientId { get; set; }
         public static string clientSecret { get; set; }
         public static string accessToken { get; set; }
+        public static string currentAccountName { get; set; }
 
         //指定番号の読み取り
         //データの保存

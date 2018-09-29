@@ -28,7 +28,7 @@ namespace FlashCardPager
                 "ハジメマシテ．本アプリの作者 かぼちゃ(@taroedon @taroedon.com)と申します．\n"
                 + "本アプリは，Android向けMastodonクライアントアプリケーションです．"
                 + "\n\n"
-                + "大体のインスタンス対応しているじゃなかろうかと思います.\n"
+                + "大体のインスタンスに対応できるかと思います.\n"
                 + "気に入って頂けたらドクペをください．";
 
             //このアプリについて
@@ -46,7 +46,7 @@ namespace FlashCardPager
                 + "\n"
                 + "右下の投稿ボタンから．．．\n"
                 + "    ・500文字以内，4枚までの画像でトゥート\n"
-                + "    ・投稿範囲(Public, Private, Direct, unlisted)に対応\n"
+                + "    ・投稿範囲(Public, Private, Direct)に対応\n"
                 + "\n"
                 + "トゥートをタップして表示するダイアログから．．．\n"
                 + "    ・favorite, boost，Mentionに対応\n"
@@ -74,7 +74,7 @@ namespace FlashCardPager
             licenseTextView.Text =
             "■ ArcLight\n\n"
             + "MIT License\n\n"
-            + "Copyright(c) 2018 Kenta Maehata\n\n"
+            + "Copyright(c) 2018 Kabochan\n\n"
             + "Permission is hereby granted, free of charge, to any person obtaining a copy"
             + "of this software and associated documentation files(the " + "Software" + "), to deal"
             + "in the Software without restriction, including without limitation the rights"
