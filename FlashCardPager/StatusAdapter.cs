@@ -59,6 +59,7 @@ namespace FlashCardPager
 
             var view = convertView;
             view = inflater.Inflate(Resource.Layout.Status, parent, false);
+            view.SetBackgroundColor(Color.AliceBlue);
 
             //表示内容の設定
             ImageView avatar = view.FindViewById<ImageView>(Resource.Id.imageViewAvatar);
@@ -150,11 +151,14 @@ namespace FlashCardPager
                     imageViews[j].Visibility = ViewStates.Gone;
                 }
 
-                if (imageurls.Count == 0)
+                if (imageurls.Count <= 2)
                 {
-                    view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+                    view.FindViewById<LinearLayout>(Resource.Id.Linearlayoutimagedown).Visibility = ViewStates.Gone;
+                    if (imageurls.Count == 0)
+                    {
+                        view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+                    }
                 }
-
 
                 //サムネイル クリックイベント
                 //画質の設定
@@ -209,6 +213,7 @@ namespace FlashCardPager
                     imageViews[k].Visibility = ViewStates.Gone;
                 }
                 view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
+                view.FindViewById<LinearLayout>(Resource.Id.Linearlayoutimagedown).Visibility = ViewStates.Gone;
             }
 
             return view;

@@ -70,9 +70,9 @@ namespace FlashCardPager
             else
             {
                 UserAction.FavAsync(status.Id, view);
+                status.Favourited = true;
             }
         }
-
 
         private static async void BoostAsync(long id, View view)
         {
@@ -103,6 +103,7 @@ namespace FlashCardPager
             else
             {
                 BoostAsync(status.Id, view);
+                status.Reblogged = true;
             }
         }
 

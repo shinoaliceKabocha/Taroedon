@@ -12,7 +12,7 @@
         android:layout_gravity="top"
         android:id="@+id/linearLayouts1">
         <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
+            android:src="@drawable/none"
             android:layout_width="50.0dp"
             android:layout_gravity="top"
             android:layout_marginTop="3dp"
@@ -47,31 +47,40 @@
                 android:gravity="left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
                 android:id="@+id/linearlayoutimageup">
                 <ImageView
-                    android:src="@android:drawable/ic_menu_gallery"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:src="@drawable/none"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/imageViewImage0" />
                 <ImageView
-                    android:src="@android:drawable/ic_menu_gallery"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:src="@drawable/none"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/imageViewImage1" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:id="@+id/Linearlayoutimagedown">
                 <ImageView
-                    android:src="@android:drawable/ic_menu_gallery"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:src="@drawable/none"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/imageViewImage2" />
                 <ImageView
-                    android:src="@android:drawable/ic_menu_gallery"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:src="@drawable/none"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/imageViewImage3" />
             </LinearLayout>

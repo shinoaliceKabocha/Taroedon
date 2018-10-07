@@ -88,7 +88,6 @@ namespace FlashCardPager
                 var intent = new Intent(this, typeof(PostStatusActivity));
                 this.StartActivity(intent);
             };
-
         }
 
 
@@ -156,6 +155,48 @@ namespace FlashCardPager
             }
         }
 
+        protected override void OnStart()
+        {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.SetSmallIcon(Resource.Drawable.Ta_Notification);
+            builder.SetContentTitle("Streaming Now...");
+            builder.SetShowWhen(true);
+            builder.SetOngoing(true);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.From(this);
+            notificationManager.Notify(Resource.Drawable.Icon, builder.Build());
+
+            base.OnStart();
+        }
+
+        protected override void OnStop()
+        {
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.From(this);
+            notificationManager.Cancel(Resource.Drawable.Icon);
+            base.OnStop();
+        }
+
+        protected override void OnDestroy()
+        {
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.From(this);
+            notificationManager.Cancel(Resource.Drawable.Icon);
+            base.OnDestroy();
+        }
+
+        public override bool OnKeyDown(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
+        {
+            if (keyCode == Keycode.Back)
+            {
+                try
+                {
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.From(this);
+                    notificationManager.Cancel(Resource.Drawable.Icon);
+                    this.MoveTaskToBack(true);
+                    return true;
+                }
+                catch (Exception ex) { return true; }
+            }
+            return base.OnKeyDown(keyCode, e);
+        }
     }
 }
 

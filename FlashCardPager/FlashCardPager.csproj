@@ -122,6 +122,7 @@
     <Compile Include="BinaryManager.cs" />
     <Compile Include="BrowserActivity.cs" />
     <Compile Include="ImageGetTask.cs" />
+    <Compile Include="ImageUploadSyncTask.cs" />
     <Compile Include="LicenseActivity.cs" />
     <Compile Include="NotificationAdapter.cs" />
     <Compile Include="OtherTool.cs" />
@@ -210,6 +211,18 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\License.axml">
       <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Ta_Notification.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\None.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
