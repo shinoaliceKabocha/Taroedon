@@ -117,6 +117,13 @@ namespace FlashCardPager
             streaming.OnUpdate += (sender, e) =>
             {
                 statuses.Insert(0, e.Status);
+                if(listView.FirstVisiblePosition == 0)
+                {
+                    while (statuses.Count >= 20)
+                    {
+                        statuses.RemoveAt(statuses.Count - 1);
+                    }
+                }
                 statusAdapter.NotifyDataSetChanged();
             };
         }

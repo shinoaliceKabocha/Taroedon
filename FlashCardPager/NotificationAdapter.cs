@@ -66,7 +66,7 @@ namespace FlashCardPager
 
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
-            imageGetTask.Execute(notification.Account.StaticAvatarUrl);
+            imageGetTask.Execute(notification.Account.StaticAvatarUrl, notification.Account.UserName);
             avatar.Click += (sender, e) => { };
 
 
@@ -159,10 +159,13 @@ namespace FlashCardPager
             {
                 if (!_content.Contains("@") && add != UserClient.instance)
                 {
-                    if (add.Contains("media"))
+                    if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg"))
                     {
-                        if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                        else content.Text += "\r\nimg:" + add;
+                        if (!UserAction.bImagePre)
+                        {
+                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
+                            else content.Text += "\r\nimg:" + add;
+                        }
                     }
                     else
                     {

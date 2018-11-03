@@ -25,7 +25,7 @@ namespace FlashCardPager
     public class ImageGetTask : AsyncTask<string, string, Bitmap>
     {
         private ImageView image;
-        static BinaryManager bm = new BinaryManager();
+        //static BinaryManager bm = new BinaryManager();
 
         public ImageGetTask(ImageView _image)
         {
@@ -40,7 +40,7 @@ namespace FlashCardPager
             bool convert_error_flg = false;
 
             //1 or 2 次キャッシュにあるか確認する
-            byte[] imageBytes = bm.ReadBin_To_Byte(@params[0]);
+            byte[] imageBytes = BinaryManager.ReadBin_To_Byte(@params[1]);
             //ある場合
             if (imageBytes != null)
             {
@@ -78,12 +78,12 @@ namespace FlashCardPager
                             try
                             {
                                 bitmap_image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
-                                bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, 32, 32, false);//低画質化
+                                bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, 50, 50, false);//低画質化
 
                                 MemoryStream memoryStream = new MemoryStream();//byte[] stream
-                                bitmap_image.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
+                                bitmap_image.Compress(Bitmap.CompressFormat.Jpeg, 100, memoryStream);//bitmap -> byte[]
 
-                                bm.WriteBin_To_File(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
+                                BinaryManager.WriteBin_To_File(@params[1], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
                             }
                             catch (Exception ex)
                             {
@@ -119,7 +119,7 @@ namespace FlashCardPager
     public class ImageGetTask2 : AsyncTask<string, string, Bitmap>
     {
         private ImageView image;
-        static BinaryManager bm = new BinaryManager();
+        //static BinaryManager bm = new BinaryManager();
 
         public ImageGetTask2(ImageView _image)
         {
@@ -134,7 +134,7 @@ namespace FlashCardPager
             bool convert_error_flg = false;
 
             //1 or 2 次キャッシュにあるか確認する
-            byte[] imageBytes = bm.ReadMap_to_Byte(@params[0]);
+            byte[] imageBytes = BinaryManager.ReadMap_to_Byte(@params[0]);
             //ある場合
             if (imageBytes != null)
             {
@@ -166,13 +166,13 @@ namespace FlashCardPager
                                 //縦長  h:w = 48:ww
                                 if (bitmap_image.Height > bitmap_image.Width)
                                 {
-                                    bmpHeight = 60;
+                                    bmpHeight = 70;
                                     bmpWidth = bitmap_image.Width * bmpHeight / bitmap_image.Height;
                                 }
                                 //正方形 or 横長  h:w = hh:48
                                 else
                                 {
-                                    bmpWidth = 60;
+                                    bmpWidth = 70;
                                     bmpHeight = bitmap_image.Height * bmpWidth / bitmap_image.Width;
                                 }
                                 bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, bmpWidth, bmpHeight, false);//低画質化
@@ -180,7 +180,7 @@ namespace FlashCardPager
                                 MemoryStream memoryStream = new MemoryStream();//byte[] stream
                                 bitmap_image.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
 
-                                bm.WriteBin_To_Map(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
+                                BinaryManager.WriteBin_To_Map(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
                             }
                             catch (Exception ex)
                             {

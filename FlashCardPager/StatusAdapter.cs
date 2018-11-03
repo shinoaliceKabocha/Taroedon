@@ -75,7 +75,7 @@ namespace FlashCardPager
 
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
-            imageGetTask.Execute(status.Account.StaticAvatarUrl);
+            imageGetTask.Execute(status.Account.StaticAvatarUrl, status.Account.UserName);
 
             //profile
             profile.SetTextColor(Color.DarkOliveGreen);
@@ -108,15 +108,17 @@ namespace FlashCardPager
 
             ////画像URL取得 → contentに追加
             List<string> list = OtherTool.DLG_ITEM_getURL(status);
-            imageurls = new List<string>();
             foreach (var add in list)
             {
                 if (!_content.Contains("@") && add != UserClient.instance)
                 {
                     if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg"))
                     {
-                        if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                        else content.Text += "\r\nimg:" + add;
+                        if (!UserAction.bImagePre)
+                        {
+                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
+                            else content.Text += "\r\nimg:" + add;
+                        }
                     }
                     else
                     {
@@ -136,6 +138,7 @@ namespace FlashCardPager
 
 
             //プレビューを使う
+            imageurls = new List<string>();
             if (UserAction.bImagePre)
             {
                 //サムネイルの表示
