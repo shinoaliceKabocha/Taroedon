@@ -29,14 +29,14 @@ namespace FlashCardPager
 
         //ReadBin_To_Byte
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static byte[] ReadBin_To_Byte(string accountName)
+        public static byte[] ReadBin_To_Byte(string url)
         {
             //string[] name;
             byte[] rtn = null;
 
-            //name = url.Split('/');//10が名前
-            //string image_name = name[name.Length - 1];
-            string image_name = accountName;
+            string[] name = url.Split('/');//10が名前
+            string image_name = name[name.Length - 1];
+            //string image_name = accountName;
 
             try
             {
@@ -65,15 +65,15 @@ namespace FlashCardPager
 
         //WriteBin_To_File
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void WriteBin_To_File(string accountName, byte[] write_byte)
+        public static void WriteBin_To_File(string url, byte[] write_byte)
         {
-            //string[] name;
+            string[] name;
 
             try
             {
-                //name = url.Split('/');//10が名前
-                //string image_name = name[name.Length - 1];
-                string image_name = accountName;
+                name = url.Split('/');//10が名前
+                string image_name = name[name.Length - 1];
+                //string image_name = accountName;
 
                 System.IO.File.WriteAllBytes(path + image_name + ".bin", write_byte);
                 map.Add(image_name, write_byte);

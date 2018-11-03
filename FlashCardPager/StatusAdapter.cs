@@ -75,7 +75,7 @@ namespace FlashCardPager
 
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
-            imageGetTask.Execute(status.Account.StaticAvatarUrl, status.Account.UserName);
+            imageGetTask.Execute(status.Account.StaticAvatarUrl);
 
             //profile
             profile.SetTextColor(Color.DarkOliveGreen);

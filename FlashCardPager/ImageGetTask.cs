@@ -40,7 +40,7 @@ namespace FlashCardPager
             bool convert_error_flg = false;
 
             //1 or 2 次キャッシュにあるか確認する
-            byte[] imageBytes = BinaryManager.ReadBin_To_Byte(@params[1]);
+            byte[] imageBytes = BinaryManager.ReadBin_To_Byte(@params[0]);
             //ある場合
             if (imageBytes != null)
             {
@@ -83,7 +83,7 @@ namespace FlashCardPager
                                 MemoryStream memoryStream = new MemoryStream();//byte[] stream
                                 bitmap_image.Compress(Bitmap.CompressFormat.Jpeg, 100, memoryStream);//bitmap -> byte[]
 
-                                BinaryManager.WriteBin_To_File(@params[1], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
+                                BinaryManager.WriteBin_To_File(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
                             }
                             catch (Exception ex)
                             {
