@@ -8,6 +8,9 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
+using Android.Text;
+using Android.Text.Method;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 
@@ -21,7 +24,6 @@ namespace FlashCardPager
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.License);
 
-            
             //まずはじめに
             var textviewMessage = FindViewById<TextView>(Resource.Id.textViewMessage);
             textviewMessage.Text =
@@ -58,6 +60,7 @@ namespace FlashCardPager
 
             //欲しいものリスト
             string amazon = "https://www.amazon.co.jp/registry/wishlist/1RU8JEI9QE27B/ref=cm_sw_r_tw";
+            string headerAmazon = "Amazon干芋リスト\n(タップするとブラウザが開きます)\n";
             var textviewAmazon = FindViewById<TextView>(Resource.Id.textViewAMAZON);
             textviewAmazon.Click += (sender, e) =>
             {
@@ -66,13 +69,18 @@ namespace FlashCardPager
                 Intent intentB = new Android.Content.Intent(Intent.ActionView, uri);
                 this.StartActivity(intentB);
             };
-            textviewAmazon.Text = "Amazon干芋リスト\n(タップするとブラウザが開きます)\n" + amazon ;
+            //textviewAmazon.Text = "Amazon干芋リスト\n(タップするとブラウザが開きます)\n" + amazon ;
+            var ssAmazon = new SpannableString(headerAmazon + amazon);
+            ssAmazon.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), headerAmazon.Length, headerAmazon.Length + amazon.Length, SpanTypes.ExclusiveExclusive);
+            ssAmazon.SetSpan(new UnderlineSpan(), headerAmazon.Length, headerAmazon.Length + amazon.Length, SpanTypes.ExclusiveExclusive);
+            textviewAmazon.TextFormatted = ssAmazon;
 
 
             //ライセンス
             var licenseTextView = FindViewById<TextView>(Resource.Id.textViewLicense);
-            licenseTextView.Text =
-            "■ ArcLight\n\n"
+            string[] otherlicense = new string[]
+            {
+              "■ ArcLight\n\n"
             + "MIT License\n\n"
             + "Copyright(c) 2018 Kabochan\n\n"
             + "Permission is hereby granted, free of charge, to any person obtaining a copy"
@@ -91,21 +99,70 @@ namespace FlashCardPager
             +"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER"
             +"IABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,"
             +"UT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE"
-            + "SOFTWARE.";
+            + "SOFTWARE.",
 
-            licenseTextView.Text +=
-                "\n\n"
-                +
-                "■ Mastonet\n"
-                + "https://github.com/glacasa/Mastonet/blob/master/LICENSE"
-                + "\n\n"
-                + "■ Newtonsoft.Json\n"
-                + "https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md"
-                + "\n\n"
-                + "■ Xamarin / AndroidSupportComponents\n"
-                + "https://github.com/xamarin/AndroidSupportComponents/blob/master/LICENSE.md"
-                + "";
+            "\n\n■ Mastonet\n",
+            "https://github.com/glacasa/Mastonet/blob/master/LICENSE",
 
+            "\n\n■ Newtonsoft.Json\n",
+            "https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md",
+
+            "\n\n■ Xamarin / AndroidSupportComponents\n",
+            "https://github.com/xamarin/AndroidSupportComponents/blob/master/LICENSE.md",
+
+            };
+
+            string licenses = "";
+            foreach(string s in otherlicense)
+            {
+                licenses += s;
+            }
+            var ss = new SpannableString(licenses);
+            var clickableMastonet = new LicenseClickableSpan(otherlicense[2]);
+            var clickableJson = new LicenseClickableSpan(otherlicense[4]);
+            var clickableXamarin = new LicenseClickableSpan(otherlicense[6]);
+
+            ss.SetSpan(clickableMastonet, otherlicense[0].Length + otherlicense[1].Length
+                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length, 
+                SpanTypes.ExclusiveExclusive);
+            ss.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), otherlicense[0].Length + otherlicense[1].Length
+                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length,
+                SpanTypes.ExclusiveExclusive);
+
+
+            ss.SetSpan(clickableJson, otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length
+                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length,
+                SpanTypes.ExclusiveExclusive);
+            ss.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length
+                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length,
+                SpanTypes.ExclusiveExclusive);
+
+
+            ss.SetSpan(clickableXamarin, otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length
+                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length + otherlicense[6].Length,
+                SpanTypes.ExclusiveExclusive);
+            ss.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length
+                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length + otherlicense[6].Length,
+                SpanTypes.ExclusiveExclusive);
+
+            licenseTextView.TextFormatted = ss;
+            licenseTextView.MovementMethod = LinkMovementMethod.Instance;
+
+        }
+    }
+
+    public class LicenseClickableSpan : ClickableSpan
+    {
+        private string sString;
+
+        public LicenseClickableSpan(string s)
+        {
+            this.sString = s;
+        }
+
+        public override void OnClick(View widget)
+        {
+            UserAction.UrlOpen(sString, widget);
         }
     }
 }

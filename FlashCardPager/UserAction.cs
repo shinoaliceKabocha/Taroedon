@@ -15,6 +15,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using Mastonet.Entities;
+using Android.Content.PM;
 
 namespace FlashCardPager
 {
