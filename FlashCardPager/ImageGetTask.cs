@@ -81,7 +81,7 @@ namespace FlashCardPager
                                 bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, 50, 50, false);//低画質化
 
                                 MemoryStream memoryStream = new MemoryStream();//byte[] stream
-                                bitmap_image.Compress(Bitmap.CompressFormat.Jpeg, 100, memoryStream);//bitmap -> byte[]
+                                bitmap_image.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
 
                                 BinaryManager.WriteBin_To_File(@params[0], memoryStream.ToArray());//1 ，２次キャッシュに書き込み
                             }

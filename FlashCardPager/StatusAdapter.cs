@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Text.RegularExpressions;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -102,9 +104,7 @@ namespace FlashCardPager
             }
 
             //content
-            content.SetTextColor(Color.Black);
             string _content = OtherTool.HTML_removeTag(status.Content);
-            content.Text = _content;
 
             ////画像URL取得 → contentに追加
             List<string> list = OtherTool.DLG_ITEM_getURL(status);
@@ -116,17 +116,37 @@ namespace FlashCardPager
                     {
                         if (!UserAction.bImagePre)
                         {
-                            if (add.Length > 30) content.Text += "\r\nimg:" + add.Substring(0, 30) + "....";
-                            else content.Text += "\r\nimg:" + add;
+                            if (add.Length > 30) _content += "\r\nimg:" + add.Substring(0, 30) + "....";
+                            else _content += "\r\nimg:" + add;
                         }
                     }
                     else
                     {
-                        if (add.Length > 30) content.Text += "\r\n" + add.Substring(0, 30) + "....";
-                        else content.Text += "\r\n" + add;
+                        if (add.Length > 30) _content += "\r\n" + add.Substring(0, 30) + "....";
+                        else _content += "\r\n" + add;
                     }
                 }
             }
+            //emoji content set!!
+            EmojiGetTask emojiGetTask = new EmojiGetTask();
+            var emojiPositions = emojiGetTask.EmojiPostions(_content);
+
+            var spannableString = new SpannableString(_content);
+            foreach(EmojiPosition ep in emojiPositions)
+            {
+                Bitmap b = emojiGetTask.GetBitmap(ep.shortcode);
+                if(b != null)
+                {
+                    var imageSpan = new ImageSpan(view.Context, b);
+                    spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
+                }
+            }
+            spannableString.SetSpan(new ForegroundColorSpan(Color.Black), 0, _content.Length, SpanTypes.ExclusiveExclusive);
+            content.TextFormatted = spannableString;
+            //content.SetTextColor(Color.Black);
+            //content.Text = _content;
+
+
 
             //created at time 
             createdat.SetTextColor(Color.DarkGray);

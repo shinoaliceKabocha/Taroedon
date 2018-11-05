@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -23,8 +24,11 @@ namespace FlashCardPager
     {
         //パラメーター
         static readonly string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal) + "/";//(url).bin で保存 2次キャッシュ
+        static readonly string emojiPath = path + "Emoji/";
+
         static Dictionary<string, byte[]> map = new Dictionary<string, byte[]>();//1次キャッシュ
         static Dictionary<string, byte[]> thumMap = new Dictionary<string, byte[]>();//イメージ用のキャッシュ機構
+        //static Dictionary<string, byte[]> emojiMap = new Dictionary<string, byte[]>();//emojiキャッシュ
         static Log Log;
 
         //ReadBin_To_Byte
@@ -138,6 +142,66 @@ namespace FlashCardPager
             }
         }
 
+        //Emoji =======================================================================
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static byte[] ReadBin_To_Emoji(string shortcode)
+        {
+            byte[] rtn = null;
+            try
+            {
+                rtn = File.ReadAllBytes(emojiPath + shortcode);
+            }
+            catch (IOException ioe)
+            {
+                rtn = null;
+            }
+            ////1次キャッシュ 読み込み
+            //try
+            //{
+            //    rtn = emojiMap[shortcode];
+            //    return rtn;
+            //}
+            ////2次キャッシュに移行
+            //catch(KeyNotFoundException e)
+            //{
+            //    try
+            //    {
+            //        rtn = File.ReadAllBytes(emojiPath + shortcode);
+            //        //if (rtn != null) emojiMap.TryAdd(shortcode, rtn);
+            //    }
+            //    catch (IOException ioe)
+            //    {
+            //        rtn = null;
+            //    }
+            //}
+            return rtn;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void WriteBin_To_Emoji(string shortcode, byte[] emojiData)
+        {
+            //Emoji フォルダがなければ作る
+            if (!Directory.Exists(emojiPath)) Directory.CreateDirectory(emojiPath);
+            //ファイルをつくって書き込む
+            try
+            {
+                //if (!(emojiMap.TryAdd(shortcode, emojiData))) return; 
+                File.WriteAllBytes(emojiPath + shortcode, emojiData);
+            }
+            catch(IOException e)
+            {
+                //すでにあるか，エラー
+                Log.Info("BinaryManager WriteEmoji", e.Message);
+            }
+
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static bool isEmojiCache(string shortcode)
+        {
+            if (File.Exists(emojiPath + shortcode)) return true;
+            else return false;
+        }
 
     }
 }

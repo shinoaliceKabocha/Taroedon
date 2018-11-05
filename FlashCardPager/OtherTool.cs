@@ -34,7 +34,6 @@ namespace FlashCardPager
             //{
             //    //_content = _content.Replace(m.Value, "");
             //}
-
             return _content;
         }
 

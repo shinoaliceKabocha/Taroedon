@@ -40,6 +40,13 @@ namespace FlashCardPager
             var _cl = new UserClient();
             _cl.setClient(instance, clientId, clientSecret, accessToken, redirectUri);
 
+            //emoji load
+            if(UserClient.instance != null && UserClient.instance != "")
+            {
+                EmojiGetTask emojiGetTask = new EmojiGetTask();
+                emojiGetTask.InitEmojiListAsync();
+            }
+
             base.OnCreate(savedInstanceState);
 
             // Set the content view from the "Main" layout resource:

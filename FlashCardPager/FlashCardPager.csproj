@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="BinaryManager.cs" />
     <Compile Include="BrowserActivity.cs" />
+    <Compile Include="EmojiGetTask.cs" />
     <Compile Include="ImageGetTask.cs" />
     <Compile Include="ImageUploadSyncTask.cs" />
     <Compile Include="LicenseActivity.cs" />
