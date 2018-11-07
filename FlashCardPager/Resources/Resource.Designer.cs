@@ -2525,8 +2525,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070020
 			public const int disableHome = 2131165216;
 			
-			// aapt resource value: 0x7f0700b6
-			public const int editTextTweet2 = 2131165366;
+			// aapt resource value: 0x7f0700b7
+			public const int editTextTweet2 = 2131165367;
 			
 			// aapt resource value: 0x7f07007e
 			public const int edit_query = 2131165310;
@@ -2954,8 +2954,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070015
 			public const int textinput_error = 2131165205;
 			
-			// aapt resource value: 0x7f0700b7
-			public const int textview_wordsCount = 2131165367;
+			// aapt resource value: 0x7f0700b6
+			public const int textview_wordsCount = 2131165366;
 			
 			// aapt resource value: 0x7f0700ae
 			public const int time = 2131165358;
