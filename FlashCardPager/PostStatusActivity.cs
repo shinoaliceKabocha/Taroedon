@@ -211,6 +211,7 @@ namespace FlashCardPager
                 {
                     case 0:
                         image = FindViewById<ImageView>(Resource.Id.imageupload);
+
                         image.SetImageURI(uri);
                         uploadAsyncTask.Execute(uri);
                         break;
