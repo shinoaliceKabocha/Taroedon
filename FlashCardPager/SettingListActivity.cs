@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +11,7 @@ using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace FlashCardPager
 {
@@ -72,6 +74,55 @@ namespace FlashCardPager
                 editor.PutBoolean("imageQuality", mImageQuolity.Checked);
                 editor.Commit();
                 UserAction.bImageQuality = mImageQuolity.Checked;
+            };
+
+            //CacheClear
+            //textViewCacheClearh
+            var textViewCacheClearh = FindViewById<TextView>(Resource.Id.textViewCacheClearh);
+            textViewCacheClearh.Click +=(sender, e) =>
+            {
+                var dlg = new AlertDialog.Builder(this);
+                dlg.SetTitle("キャッシュを消しますか？");
+                dlg.SetMessage("動作が不安定なときに安定するかもしれません");
+                dlg.SetPositiveButton(
+                    "OK", (s, a) =>
+                    {
+                        string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                        try
+                        {
+                            if (Directory.Exists(path + "/Emoji"))
+                            {
+                                string[] filePaths = Directory.GetFiles(path + "/Emoji");
+                                foreach (String file in filePaths)
+                                {
+                                    File.SetAttributes(file, FileAttributes.Normal);
+                                    File.Delete(file);
+                                }
+                            }
+                            if (Directory.Exists(path))
+                            {
+                                string[] filePaths = Directory.GetFiles(path);
+                                foreach (String file in filePaths)
+                                {
+                                    File.SetAttributes(file, FileAttributes.Normal);
+                                    File.Delete(file);
+                                }
+                            }
+                            Toast.MakeText(this, "キャッシュデータを削除しました．再起動してください．", ToastLength.Short).Show();
+                        }
+                        catch(IOException ex)
+                        {
+                            Android.Util.Log.Debug("CacheClear", ex.Message);
+                        }
+
+                    });
+                dlg.SetNegativeButton(
+                    "Cancel", (s, a) =>
+                    {
+
+                    });
+                dlg.Create().Show();
+                
             };
 
 

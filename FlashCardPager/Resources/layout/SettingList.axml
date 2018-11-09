@@ -71,6 +71,22 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray" />
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:text="キャッシュクリア"
+			android:textSize="15dp"
+			android:gravity="center_vertical"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:textColor="@android:color/black"
+			android:layout_marginLeft="10dp"
+			android:padding="10dp"
+			android:id="@+id/textViewCacheClearh" />
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@android:color/darker_gray" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="match_parent"

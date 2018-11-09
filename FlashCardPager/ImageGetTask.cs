@@ -162,20 +162,24 @@ namespace FlashCardPager
                             try
                             {
                                 bitmap_image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
-                                int bmpWidth, bmpHeight;
+                                int x = bitmap_image.Width;
+                                int y = bitmap_image.Height;
+                                int MAX = 180;
                                 //縦長  h:w = 48:ww
                                 if (bitmap_image.Height > bitmap_image.Width)
                                 {
-                                    bmpHeight = 70;
-                                    bmpWidth = bitmap_image.Width * bmpHeight / bitmap_image.Height;
+                                    //x:y = x*210/y : 210
+                                    x = x * MAX / y;
+                                    y = MAX;
                                 }
                                 //正方形 or 横長  h:w = hh:48
                                 else
                                 {
-                                    bmpWidth = 70;
-                                    bmpHeight = bitmap_image.Height * bmpWidth / bitmap_image.Width;
+                                    //x:y = 210 : y*210/x
+                                    y = y * MAX / x;
+                                    x = MAX;
                                 }
-                                bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, bmpWidth, bmpHeight, false);//低画質化
+                                bitmap_image = Bitmap.CreateScaledBitmap(bitmap_image, x, y, false);//低画質化
 
                                 MemoryStream memoryStream = new MemoryStream();//byte[] stream
                                 bitmap_image.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
