@@ -19,5 +19,14 @@
     <style name="titlesize" parent="@style/Base.TextAppearance.AppCompat.Title">
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="PostTheme" parent="@android:style/Theme.Material.Light.Dialog.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    
 </resources>
 

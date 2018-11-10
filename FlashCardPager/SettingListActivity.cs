@@ -15,8 +15,8 @@ using AlertDialog = Android.App.AlertDialog;
 
 namespace FlashCardPager
 {
-    [Activity(Label = "Settings", Theme = "@style/AppTheme")]
-    public class SettingListActivity : AppCompatActivity
+    [Activity(Label = "Settings", Theme = "@android:style/Theme.Material.Light.Dialog")]
+    public class SettingListActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -93,7 +93,7 @@ namespace FlashCardPager
                             if (Directory.Exists(path + "/Emoji"))
                             {
                                 string[] filePaths = Directory.GetFiles(path + "/Emoji");
-                                foreach (String file in filePaths)
+                                foreach (string file in filePaths)
                                 {
                                     File.SetAttributes(file, FileAttributes.Normal);
                                     File.Delete(file);
@@ -102,7 +102,7 @@ namespace FlashCardPager
                             if (Directory.Exists(path))
                             {
                                 string[] filePaths = Directory.GetFiles(path);
-                                foreach (String file in filePaths)
+                                foreach (string file in filePaths)
                                 {
                                     File.SetAttributes(file, FileAttributes.Normal);
                                     File.Delete(file);

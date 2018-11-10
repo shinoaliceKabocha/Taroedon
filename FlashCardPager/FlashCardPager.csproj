@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="BinaryManager.cs" />
     <Compile Include="BrowserActivity.cs" />
+    <Compile Include="EmojiDictionaryActivity.cs" />
     <Compile Include="EmojiGetTask.cs" />
     <Compile Include="ImageGetTask.cs" />
     <Compile Include="ImageUploadSyncTask.cs" />
@@ -224,6 +225,19 @@
     <AndroidResource Include="Resources\drawable\None.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\faces_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\EmojiDictionary.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\EmojiDictionaryLine.axml">
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

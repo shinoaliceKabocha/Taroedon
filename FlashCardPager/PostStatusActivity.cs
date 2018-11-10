@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 
 namespace FlashCardPager
 {
-    [Activity(Label = "", Theme = "@android:style/Theme.Material.Light.Dialog", ScreenOrientation = ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateVisible)]
+    [Activity(Label = "", Theme = "@style/PostTheme", ScreenOrientation = ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateVisible)]
     public class PostStatusActivity : Activity, Android.Text.ITextWatcher
     {
         Mastonet.MastodonClient client = new UserClient().getClient();
@@ -37,7 +37,7 @@ namespace FlashCardPager
             Display display = windowManager.DefaultDisplay;
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetRealSize(point);
-            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.65));
+            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.53));
             Window.SetBackgroundDrawable(new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Transparent));
 
             //Edittext にTextwatcherを仕込む
@@ -50,6 +50,14 @@ namespace FlashCardPager
             button_post.Text = "POST";
             //POST button event
             button_post.Click += Button_post_Click;
+
+            //Emoji Dictionary
+            var imageEmojiDictionary = FindViewById<ImageView>(Resource.Id.imageEmojiDictionary);
+            imageEmojiDictionary.Click +=(sender, e) =>
+            {
+                Intent intent = new Intent(this, typeof(EmojiDictionaryActivity));
+                StartActivityForResult(intent, 10);
+            };
 
 
             //Reply時のデータの受取
@@ -114,7 +122,7 @@ namespace FlashCardPager
 
             //SPIN settings
             Spinner spin = FindViewById<Spinner>(Resource.Id.spinnerTootRange);
-            spin.Background = button_post.Background;
+            //spin.Background = button_post.Background;
 
             ArrayAdapter spin_adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerItem);
             List<string> spin_list = new List<string>() { "1. Public", "2. Private", "3. Direct", "4. Unlisted" };
@@ -230,6 +238,30 @@ namespace FlashCardPager
                         image.SetImageURI(uri);
                         uploadAsyncTask.Execute(uri);
                         break;
+                    case 10:
+                        //shortcode emoji
+                        try
+                        {
+                            var shortcode = data.GetStringExtra("shortcode");
+                            var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
+
+                            int insert = edittext.SelectionStart;
+                            string left = edittext.Text.Substring(0, insert);
+                            string right = edittext.Text.Substring(left.Length, edittext.Text.Length - left.Length);
+
+                            edittext.Text = left + " :" + shortcode + ": " + right;
+                            edittext.SetSelection(left.Length + shortcode.Length + 4);
+                        }
+                        catch(System.Exception e)
+                        {
+                            Toast.MakeText(this, e.Message, ToastLength.Short).Show();
+                        }
+                        finally
+                        {
+                            button_post.Enabled = true;
+                        }
+                        break;
+
                     default: break;
                 }
 
