@@ -132,7 +132,7 @@ namespace FlashCardPager
             }
         }
 
-        private static void UrlOpenChrome(string item_url, View view)
+        public static void UrlOpenChrome(string item_url, View view)
         {
             try
             {

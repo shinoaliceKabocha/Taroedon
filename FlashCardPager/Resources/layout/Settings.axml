@@ -39,10 +39,20 @@
                 android:id="@+id/edittextSettings1_Instance"
                 android:layout_marginLeft="0.0dp" />
         </LinearLayout>
+
+		<Button
+			android:text="OAuth  URL Open"
+			android:textSize="15dp"
+			android:layout_width="fill_parent"
+			android:layout_height="50dp"
+			android:id="@+id/buttonOAuth"
+			android:layout_marginBottom="0.0dp"
+			android:layout_marginRight="20.0dp"
+			android:layout_marginLeft="20.0dp"/>
     <!--ログインアドレス-->
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:minWidth="25px"
@@ -52,7 +62,7 @@
             android:id="@+id/linearLayoutSettings1_2">
             <TextView
                 android:textSize="15dp"
-                android:text="User "
+                android:text="Code: "
                 android:layout_width="130dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -60,14 +70,14 @@
             <EditText
                 android:textSize="15dp"
                 android:text=""
-                android:hint="Your Address"
+                android:hint="OAuth Code"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/edittextSettings1_Address"
+                android:layout_height="80dp"
+                android:id="@+id/edittextSettings1_Code"
                 android:layout_marginLeft="0.0dp" />
         </LinearLayout>
     <!--パスワード-->
-        <LinearLayout
+    <!--    <LinearLayout
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
@@ -92,11 +102,9 @@
                 android:layout_height="match_parent"
                 android:id="@+id/edittextSettings1_Pass"
                 android:layout_marginLeft="0.0dp" />
-        </LinearLayout>
-    </LinearLayout>
+        </LinearLayout> -->
     <Button
         android:text="Authentication"
-        android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_width="match_parent"
@@ -110,4 +118,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewSettings1_tips" />
+    </LinearLayout>
 </LinearLayout>

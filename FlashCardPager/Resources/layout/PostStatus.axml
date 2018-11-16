@@ -61,6 +61,7 @@
             android:layout_marginTop="3dp"
             android:layout_gravity="center"
 	        android:background="@color/background_material_light"
+			android:alpha="0.8"
             android:layout_marginBottom="6.0dp"
             android:id="@+id/spinnerTootRange" />
     </LinearLayout>
@@ -82,7 +83,9 @@
         android:gravity="top"
         android:padding="5dp"
         android:textSize="18dp"
+		android:textColor="@android:color/black"
         android:background="@color/background_material_light"
+		android:alpha="0.8"
         android:layout_width="fill_parent"
         android:layout_height="180dp"
         android:layout_marginRight="10dp"
@@ -96,6 +99,7 @@
 		android:id="@+id/buttonPOST"
 		android:textColor="@android:color/white"
 		android:background="@color/colorPrimaryDark"
+		android:alpha="0.8"
 		android:layout_marginRight="10dp"
 		android:layout_marginLeft="10dp"
 		android:layout_marginTop="0dp"
