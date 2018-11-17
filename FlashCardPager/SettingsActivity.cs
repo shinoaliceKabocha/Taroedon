@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Support.V7.App;
 using Mastonet;
 using Mastonet.Entities;
+using Android.Support.CustomTabs;
 
 namespace FlashCardPager
 {
@@ -88,7 +89,14 @@ namespace FlashCardPager
                     authClient2 = new AuthenticationClient(e_instance.Text);
                     appRegistration2 = await authClient2.CreateApp("たろえどんmobile", Scope.Read | Scope.Write | Scope.Follow);
                     var url = authClient2.OAuthUrl();
-                    UserAction.UrlOpenChrome(url, (View)sender);
+                    //UserAction.UrlOpenChrome(url, (View)sender);
+                    UserAction.UrlOpen(url, (View)sender);
+
+                    //var builder = new CustomTabsIntent.Builder();
+                    //builder.SetToolbarColor(Resource.Color.colorPrimaryDark);
+                    //var chromeIntent = builder.Build();
+                    //chromeIntent.LaunchUrl(this.ApplicationContext, Android.Net.Uri.Parse(url));
+                    //StartActivity(chromeIntent.Intent);
 
                     e_code.Enabled = true;
                     regist.Enabled = true;

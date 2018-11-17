@@ -16,6 +16,8 @@ using Android.Webkit;
 using Android.Widget;
 using Mastonet.Entities;
 using Android.Content.PM;
+using Context = Android.Content.Context;
+using Android.Support.CustomTabs;
 
 namespace FlashCardPager
 {
@@ -114,10 +116,11 @@ namespace FlashCardPager
             {
                 if (bBrowser)
                 {
-                    //内部ブラウザ
-                    Intent intentC = new Intent(view.Context, typeof(BrowserActivity));
-                    intentC.PutExtra("url", item_url);
-                    view.Context.StartActivity(intentC);
+                    ////内部ブラウザ
+                    //Intent intentC = new Intent(view.Context, typeof(BrowserActivity));
+                    //intentC.PutExtra("url", item_url);
+                    //view.Context.StartActivity(intentC);
+                    UrlOpenCustomChrome(item_url, view);
                 }
                 else
                 {
@@ -150,6 +153,23 @@ namespace FlashCardPager
             }
         }
 
+        private static void UrlOpenCustomChrome(string url, View view)
+        {
+            try
+            {
+                var builder = new CustomTabsIntent.Builder();
+                builder.SetToolbarColor(Resource.Color.colorPrimaryDark);
+                var chromeIntent = builder.Build();
+                chromeIntent.LaunchUrl(view.Context, Android.Net.Uri.Parse(url));
+                //view.Context.StartActivity(chromeIntent.Intent);
+            }
+            catch (Exception ex)
+            {
+                //Toast.MakeText(view.Context, "URLの取得に失敗しました", ToastLength.Short).Show();
+                Snackbar.Make(view, "URLの取得に失敗しました",
+                       Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            }
+        }
 
         public static void Reply(Status status, View view)
         {
