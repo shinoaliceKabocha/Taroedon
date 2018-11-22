@@ -145,8 +145,8 @@ namespace FlashCardPager
         {
             streaming.Stop();
             statuses.Clear();
-
-            Thread.Sleep(1000);
+            statusAdapter.NotifyDataSetChanged();
+            //Thread.Sleep(1000);
         }
 
         /***************************************************************

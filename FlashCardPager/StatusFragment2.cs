@@ -132,7 +132,9 @@ namespace FlashCardPager
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             notifications.Clear();
-            Thread.Sleep(1000);
+            statusAdapter.NotifyDataSetChanged();
+
+            //Thread.Sleep(1000);
         }
 
         /***************************************************************
