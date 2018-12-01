@@ -45,12 +45,6 @@ namespace FlashCardPager
             return position;
         }
 
-        //public void topAdd(Status status)
-        //{
-        //    statuslist.Insert(0, status);
-        //    NotifyDataSetChanged();
-        //}
-
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             Status status = statuslist[position];
@@ -80,7 +74,6 @@ namespace FlashCardPager
             imageGetTask.Execute(status.Account.StaticAvatarUrl);
             avatar.Click += (sender, e) =>
             {
-                Android.Util.Log.Info("HOGE", status.InReplyToAccountId.ToString());
                 UserAction.Profile(status.Account, view.Context);
             };
 
@@ -125,13 +118,9 @@ namespace FlashCardPager
                             else _content += "\r\nimg:" + add;
                         }
                     }
-                    else
-                    {
-                        if (add.Length > 30) _content += "\r\n" + add.Substring(0, 30) + "....";
-                        else _content += "\r\n" + add;
-                    }
                 }
             }
+
             //emoji content set!!
             EmojiGetTask emojiGetTask = new EmojiGetTask();
             var emojiPositions = emojiGetTask.EmojiPostions(_content);
@@ -148,9 +137,6 @@ namespace FlashCardPager
             }
             spannableString.SetSpan(new ForegroundColorSpan(Color.Black), 0, _content.Length, SpanTypes.ExclusiveExclusive);
             content.TextFormatted = spannableString;
-            //content.SetTextColor(Color.Black);
-            //content.Text = _content;
-
 
 
             //created at time 

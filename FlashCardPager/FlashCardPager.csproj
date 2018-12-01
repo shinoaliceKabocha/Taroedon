@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="BinaryManager.cs" />
     <Compile Include="BrowserActivity.cs" />
+    <Compile Include="ConversationActivity.cs" />
     <Compile Include="EmojiDictionaryActivity.cs" />
     <Compile Include="EmojiGetTask.cs" />
     <Compile Include="ImageGetTask.cs" />
@@ -246,6 +247,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Profile.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Conversation.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

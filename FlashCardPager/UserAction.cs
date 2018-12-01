@@ -29,7 +29,28 @@ namespace FlashCardPager
         public static bool bDisplay =true;
         public static bool bImagePre = true;
         public static bool bImageQuality = false;
-        
+
+
+        /*******************************************************
+         *      トースト 文章
+         * *****************************************************/
+        public readonly static string FAV_SUCCESS = "ふぁぼりました";
+        public readonly static string FAV_FAILED = "ふぁぼに失敗しました";
+        public readonly static string UNFAV = "愛が深すぎる．．．（ふぁぼ済み）";
+
+        public readonly static string BOOST_SUCCESS = "ぶーすとしました";
+        public readonly static string BOOST_FAILED = "ぶーすとに失敗しました";
+        public readonly static string UNBOOT = "愛が深すぎる．．．（ぶーすと済み）";
+
+        public readonly static string URL_FAILED = "URLの取得に失敗しました";
+        public readonly static string UNKNOWN = "何かがおかしいよ";
+
+        public readonly static Color COLOR_FAV = new Color(193, 151, 0);
+        public readonly static Color COLOR_BOOST = new Color(61, 153, 0);
+        public readonly static Color COLOR_FAILED = new Color(160, 160, 160);
+        public readonly static Color COLOR_INFO = new Color(127, 176, 255);
+
+
         /**************************************************************
          *                              設定
          *************************************************************/
@@ -44,73 +65,81 @@ namespace FlashCardPager
 
 
         /***************************************************************
-         *                             操作
+         *                             操作 Fav
          **************************************************************/
-        private static async void FavAsync(long id, View view)
+        private static async void FavAsync(long id, Context context)
         {
             Mastonet.MastodonClient clientfav = new UserClient().getClient();
             try
             {
                 await clientfav.Favourite(id);
-                var snakbar = Snackbar.Make(view, "ふぁぼりました",
-                    Snackbar.LengthLong);
-                snakbar.View.SetBackgroundColor(new Color(193, 151, 0));
-                snakbar.SetAction("ACTION", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(FAV_SUCCESS, context, COLOR_FAV);
             }
             catch (System.Exception ex)
             {
-                //Toast.MakeText(view.Context, "ふぁぼに失敗しました", ToastLength.Short).Show();
-                Snackbar.Make(view, "ふぁぼに失敗しました",
-               Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(FAV_FAILED, context, COLOR_FAILED);
             }
         }
 
         public static void Fav(Status status, View view)
         {
+            Fav(status, view.Context);
+        }
+
+        public static void Fav(Status status, Context context)
+        {
             if (status.Favourited.Equals(true))
             {
-                Snackbar.Make(view, "愛が深すぎる．．．（ふぁぼ済み）",
-                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(UNFAV, context, COLOR_FAILED);
             }
             else
             {
-                UserAction.FavAsync(status.Id, view);
+                UserAction.FavAsync(status.Id, context);
                 status.Favourited = true;
             }
         }
 
-        private static async void BoostAsync(long id, View view)
+
+        /***************************************************************
+        *                             操作 Boost
+        **************************************************************/
+ 
+        private static async void BoostAsync(long id, Context context)
         {
             Mastonet.MastodonClient clientReb = new UserClient().getClient();
             try
             {
                 await clientReb.Reblog(id);
-
-                var snackbar = Snackbar.Make(view, "ぶーすとしました", Snackbar.LengthLong);
-                snackbar.View.SetBackgroundColor(new Color(61, 153, 0));
-                snackbar.SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(BOOST_SUCCESS, context, COLOR_BOOST);
             }
             catch (System.Exception ex)
             {
-                Snackbar.Make(view, "ぶーすとに失敗しました",
-                     Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(BOOST_FAILED, context, COLOR_FAILED);
             }
-
         }
 
         public static void Boost(Status status, View view)
         {
-            if(status.Reblogged.Equals(true) )
+            Boost(status, view.Context);
+        }
+
+        public static void Boost(Status status, Context context)
+        {
+            if (status.Reblogged.Equals(true))
             {
-                Snackbar.Make(view, "愛が深すぎる．．．（ぶーすと済み）",
-                        Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(UNBOOT, context, COLOR_FAILED);
             }
             else
             {
-                BoostAsync(status.Id, view);
+                BoostAsync(status.Id, context);
                 status.Reblogged = true;
             }
         }
+
+
+        /***************************************************************
+        *                             操作 url open
+        **************************************************************/
 
         public static void UrlOpen(string item_url, View view)
         {
@@ -119,9 +148,6 @@ namespace FlashCardPager
                 if (bBrowser)
                 {
                     ////内部ブラウザ
-                    //Intent intentC = new Intent(view.Context, typeof(BrowserActivity));
-                    //intentC.PutExtra("url", item_url);
-                    //view.Context.StartActivity(intentC);
                     UrlOpenCustomChrome(item_url, view);
                 }
                 else
@@ -131,9 +157,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                //Toast.MakeText(view.Context, "URLの取得に失敗しました", ToastLength.Short).Show();
-                Snackbar.Make(view, "URLの取得に失敗しました",
-                       Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
             }
         }
 
@@ -149,9 +173,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                //Toast.MakeText(view.Context, "URLの取得に失敗しました", ToastLength.Short).Show();
-                Snackbar.Make(view, "URLの取得に失敗しました",
-                       Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
             }
         }
 
@@ -167,11 +189,14 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                //Toast.MakeText(view.Context, "URLの取得に失敗しました", ToastLength.Short).Show();
-                Snackbar.Make(view, "URLの取得に失敗しました",
-                       Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
             }
         }
+
+
+        /***************************************************************
+        *                             操作 reply
+        **************************************************************/
 
         public static void Reply(Status status, View view)
         {
@@ -182,8 +207,14 @@ namespace FlashCardPager
             view.Context.StartActivity(intent);
         }
 
+
+        /***************************************************************
+        *                             操作 listitem
+        **************************************************************/
         public static void ListViewItemClick(Status status, View view)
         {
+            string SHOW_THE_CONVERSATION = "会話を表示";
+
             int select;
             try
             {
@@ -197,6 +228,12 @@ namespace FlashCardPager
                 = new List<string>() { "Reply", "Favarite", "Boost", (status.Account.DisplayName + "@" + status.Account.UserName) };
 
             ////追加
+            if(status.InReplyToId != null)
+            {
+                itemlist.Add(SHOW_THE_CONVERSATION);
+            }
+
+            //リプライ先アカウント
             //var replyToAccountId = status.InReplyToAccountId.GetValueOrDefault(-1);
             //Account replyAccount = null;
             //if (replyToAccountId != -1)
@@ -245,23 +282,36 @@ namespace FlashCardPager
                            break;
 
                        default://urls
-                            string urlOrAccountName = items[select];
-                            //try
-                            //{
-                            //    if (urlOrAccountName.Contains(replyAccount.UserName) && urlOrAccountName.Contains(replyAccount.DisplayName))
-                            //    {
-                            //        UserAction.Profile(replyAccount, view.Context);
-                            //    }
-                            //    else
-                            //    {
-                            //        UserAction.UrlOpen(urlOrAccountName, view);
-                            //    }
-                            //}
-                            //catch (NullReferenceException nullexception)
-                            //{
-                            //    UserAction.UrlOpen(urlOrAccountName, view);
-                            //}
-                            UserAction.UrlOpen(urlOrAccountName, view);
+                           string urlOrAccountName = items[select];
+
+                           //会話を表示する
+                           if (urlOrAccountName.Equals(SHOW_THE_CONVERSATION))
+                           {
+                               Intent intent = new Intent(view.Context, typeof(ConversationActivity));
+                               intent.PutExtra("statusId", status.Id);
+                               view.Context.StartActivity(intent);
+                               break;
+                           }
+
+                           //リプライ先アカウント
+                           //try
+                           //{
+                           //    if (urlOrAccountName.Contains(replyAccount.UserName) && urlOrAccountName.Contains(replyAccount.DisplayName))
+                           //    {
+                           //        UserAction.Profile(replyAccount, view.Context);
+                           //    }
+                           //    else
+                           //    {
+                           //        UserAction.UrlOpen(urlOrAccountName, view);
+                           //    }
+                           //}
+                           //catch (NullReferenceException nullexception)
+                           //{
+                           //    UserAction.UrlOpen(urlOrAccountName, view);
+                           //}
+
+                           //urls
+                           UserAction.UrlOpen(urlOrAccountName, view);
                            break;
                    }
 
@@ -270,10 +320,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast.MakeText(view.Context, "なにかがおかしいよ...", ToastLength.Short).Show();
-
-                //Snackbar.Make(view, "なにかがおかしいよ...",
-                //    Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
             }
         }
 
@@ -344,6 +391,30 @@ namespace FlashCardPager
             }
         }
 
+        //Custom Toast
+        public static void Toast_BottomFIllHorizontal_Show(string str, Context context, Color color)
+        {
+            var toast = Toast.MakeText(context, str, ToastLength.Short);
+            toast.SetGravity(GravityFlags.FillHorizontal | GravityFlags.Bottom, 0, 0);
+            toast.View.SetBackgroundColor(color);
+
+            TextView textView = toast.View.FindViewById<TextView>(Android.Resource.Id.Message);
+            textView.SetTypeface(Typeface.DefaultBold, TypefaceStyle.Bold);
+
+            toast.Show();
+        }
+
+        public static void Toast_TopFIllHorizontal_Show(string str, Context context, Color color)
+        {
+            var toast = Toast.MakeText(context, str, ToastLength.Long);
+            toast.SetGravity(GravityFlags.FillHorizontal | GravityFlags.Top, 0, 0);
+            toast.View.SetBackgroundColor(color);
+
+            TextView textView = toast.View.FindViewById<TextView>(Android.Resource.Id.Message);
+            textView.SetTypeface(Typeface.DefaultBold, TypefaceStyle.Bold);
+
+            toast.Show();
+        }
 
     }
 

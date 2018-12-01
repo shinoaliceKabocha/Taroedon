@@ -28,12 +28,6 @@ namespace FlashCardPager
             _content = Regex.Replace(_content, "<a [^>]*?</a>", "");
             _content = Regex.Replace(_content, "<[^>]*?>", "");
 
-            //Regex reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
-            //var matches = reg.Matches(_content);
-            //foreach(Match m in matches)
-            //{
-            //    //_content = _content.Replace(m.Value, "");
-            //}
             return _content;
         }
 
@@ -41,7 +35,7 @@ namespace FlashCardPager
         {
             List<string> additemlist = new List<string>();
             //content内部のURLを取得する
-            Regex reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
+            Regex reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?@%&=]*)?");
             var matches = reg.Matches(status.Content);
             if (matches.Count > 0)
             {

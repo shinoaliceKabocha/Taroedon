@@ -41,29 +41,6 @@ namespace FlashCardPager
             }
         }
 
-            //byte[] imageBytes = null;
-            //imageBytes = BinaryManager.ReadBin_To_Emoji(emojiShortcode);
-            ////キャッシュにある場合
-            //if(imageBytes != null)
-            //{
-            //    try
-            //    {
-            //        return BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Log.Error("Emoji Error: ", e.Message);
-            //        return null;
-            //    }
-            //}
-            ////ない場合
-            //else
-            //{
-            //    return null;
-            //}
-        //}
-
-
         public async void InitEmojiListAsync()
         {
             var client = new HttpClient(new Xamarin.Android.Net.AndroidClientHandler())

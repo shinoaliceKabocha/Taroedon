@@ -27,7 +27,7 @@ namespace FlashCardPager
                 if(versionCode < 10)
                 {
                     UserAction.CacheClear();
-                    Toast.MakeText(this, "アプリ更新したときに，データ構成を変えました\n一時Cacheを削除します", ToastLength.Short).Show();
+                    UserAction.Toast_BottomFIllHorizontal_Show("アプリ更新したときに，データ構成を変えました\n一時Cacheを削除します", this, UserAction.COLOR_INFO);
                 }
 
                 //setting load
@@ -53,7 +53,7 @@ namespace FlashCardPager
             }
             catch(Exception e)
             {
-                Toast.MakeText(this, "ユーザ情報が破損したようです．\nすいませんが再登録してください．．．", ToastLength.Short).Show();
+                UserAction.Toast_BottomFIllHorizontal_Show("ユーザ情報が破損したようです．\nすいませんが再登録してください．．．", this, UserAction.COLOR_INFO);
                 Intent intent1 = new Intent(this, typeof(SettingsActivity));
                 StartActivity(intent1);
                 Finish();
@@ -70,12 +70,12 @@ namespace FlashCardPager
             }
             catch(Java.Net.UnknownHostException e)
             {
-                Toast.MakeText(this, "ネットワークの接続状態が悪いようです\n時間をおいて起動してください", ToastLength.Short).Show();
+                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, UserAction.COLOR_INFO);
                 this.Finish();
             }
             catch(Exception e)
             {
-                Toast.MakeText(this, "ネットワークの接続状態が悪いようです\n時間をおいて起動してください", ToastLength.Short).Show();
+                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, UserAction.COLOR_INFO);
                 Finish();
             }
 

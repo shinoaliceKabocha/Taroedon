@@ -110,7 +110,6 @@ namespace FlashCardPager
         //終了処理
         protected override void OnPostExecute(Attachment result)
         {
-            //Toast.MakeText(activity, "アップロード完了", ToastLength.Short).Show();
             activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = true;
             sVsDoneAttachment[requestcode] = result;
 

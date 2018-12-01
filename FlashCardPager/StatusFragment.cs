@@ -64,7 +64,7 @@ namespace FlashCardPager
                 }
                 catch (Exception ex) { }
 
-                UserAction.Fav( status, view);
+                UserAction.Fav( status, view );
             };
 
             //swipe refersh
@@ -125,6 +125,14 @@ namespace FlashCardPager
                     }
                 }
                 statusAdapter.NotifyDataSetChanged();
+
+                //í ím
+                if(e.Status.Content.Contains("@" + UserClient.currentAccountName) && e.Status.InReplyToAccountId != null)
+                {
+                    string notifyStr = e.Status.Account.DisplayName +"@"+ e.Status.Account.AccountName +"Ç≥ÇÒÇ©ÇÁÇ∆Ç£Å[Ç∆";
+                    UserAction.Toast_TopFIllHorizontal_Show(notifyStr, this.Context, UserAction.COLOR_INFO);
+                }
+
             };
         }
 
@@ -146,7 +154,6 @@ namespace FlashCardPager
             streaming.Stop();
             statuses.Clear();
             statusAdapter.NotifyDataSetChanged();
-            //Thread.Sleep(1000);
         }
 
         /***************************************************************

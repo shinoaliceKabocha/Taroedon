@@ -91,7 +91,7 @@ namespace FlashCardPager
                         try
                         {
                             UserAction.CacheClear();
-                            Toast.MakeText(this, "キャッシュデータを削除しました．\n再起動してください．", ToastLength.Short).Show();
+                            UserAction.Toast_BottomFIllHorizontal_Show("キャッシュデータを削除しました．\n再起動してください", this, UserAction.COLOR_INFO);
                         }
                         catch(IOException ex)
                         {

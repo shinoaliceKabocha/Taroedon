@@ -186,16 +186,12 @@ namespace FlashCardPager
                 }
                 catch (System.Exception ex)
                 {
-                    var ts = Toast.MakeText(this, "なにかがおかしいよ", ToastLength.Short);
-                    ts.SetGravity(GravityFlags.Center, 0, 0);
-                    ts.Show();
+                    UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, UserAction.COLOR_FAILED);
                 }
             }
             else
             {
-                var ts = Toast.MakeText(this, "なにかがおかしいよ", ToastLength.Short);
-                ts.SetGravity(GravityFlags.Center, 0, 0);
-                ts.Show();
+                UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, UserAction.COLOR_FAILED);
             }
         }
 
@@ -205,7 +201,6 @@ namespace FlashCardPager
         {
             if ((resultCode == Result.Ok) && (data != null))
             {
-                //Toast.MakeText(this, "upload now...", ToastLength.Short).Show();
                 var button_post = FindViewById<Button>(Resource.Id.buttonPOST);
                 button_post.Enabled = false;
 
@@ -254,7 +249,7 @@ namespace FlashCardPager
                         }
                         catch(System.Exception e)
                         {
-                            Toast.MakeText(this, e.Message, ToastLength.Short).Show();
+                            UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, UserAction.COLOR_FAILED);
                         }
                         finally
                         {

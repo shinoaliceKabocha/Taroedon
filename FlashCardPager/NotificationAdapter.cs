@@ -172,11 +172,6 @@ namespace FlashCardPager
                             else _content += "\r\nimg:" + add;
                         }
                     }
-                    else
-                    {
-                        if (add.Length > 30) _content += "\r\n" + add.Substring(0, 30) + "....";
-                        else _content += "\r\n" + add;
-                    }
                 }
             }
             //emoji content set!!

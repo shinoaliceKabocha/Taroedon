@@ -32,41 +32,6 @@ namespace FlashCardPager
 
         static Log Log;
 
-        ////ReadBin_To_Byte
-        //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public static byte[] ReadBin_To_Byte(string url)
-        //{
-        //    //string[] name;
-        //    byte[] rtn = null;
-
-        //    string[] name = url.Split('/');//10が名前
-        //    string image_name = name[name.Length - 1];
-        //    //string image_name = accountName;
-
-        //    try
-        //    {
-        //        //1次キャッシュ
-        //        rtn = map[image_name];
-        //        return rtn;
-        //    }
-        //    catch (KeyNotFoundException keynot)
-        //    {
-        //        //2次キャッシュ
-        //        try
-        //        {
-        //            rtn = System.IO.File.ReadAllBytes(path + image_name + ".bin");
-
-        //            if (rtn != null) map.Add(image_name, rtn);//１次キャッシュに入れておく
-        //            return rtn;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Log.Error("BinaryManager Read", ex.Message);
-        //        }
-        //    }
-
-        //    return rtn;
-        //}
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static Bitmap ReadImage_From_File(string url)
@@ -110,33 +75,6 @@ namespace FlashCardPager
 
 
 
-        ////WriteBin_To_File
-        //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public static void WriteBin_To_File(string url, byte[] write_byte)
-        //{
-        //    string[] name;
-
-        //    try
-        //    {
-        //        name = url.Split('/');//10が名前
-        //        string image_name = name[name.Length - 1];
-        //        //string image_name = accountName;
-
-        //        System.IO.File.WriteAllBytes(path + image_name + ".bin", write_byte);
-        //        map.Add(image_name, write_byte);
-
-
-        //    }
-        //    catch (System.IO.IOException ioex)
-        //    {
-        //        Log.Error("BinaryManager Write", ioex.Message);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error("BinaryManager Write", e.Message);
-        //    }
-        //}
-
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void WriteImage_To_File(string url, Bitmap bitmap)
         {
@@ -166,27 +104,6 @@ namespace FlashCardPager
 
         //For サムネイル＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-        ////ReadMap
-        //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public static byte[] ReadMap_to_Byte(string url)
-        //{
-        //    string[] name;
-        //    byte[] rtn = null;
-
-        //    name = url.Split('/');//10が名前
-        //    string image_name = name[name.Length - 1];
-
-        //    try
-        //    {
-        //        //1次キャッシュ
-        //        rtn = thumMap[image_name];
-        //        return rtn;
-        //    }
-        //    catch (KeyNotFoundException keynot)
-        //    {
-        //        return null;
-        //    }
-        //}
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static Bitmap ReadMap_To_Bitmap(string url)
@@ -209,28 +126,6 @@ namespace FlashCardPager
             }
         }
 
-        ////WriteMap
-        //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public static void WriteBin_To_Map(string url, byte[] write_byte)
-        //{
-        //    string[] keys;
-
-        //    try
-        //    {
-        //        keys = url.Split('/');
-        //        string key = keys[keys.Length -1 ];
-
-        //        thumMap.Add(key, write_byte);
-        //    }
-        //    catch (System.IO.IOException ioex)
-        //    {
-        //        //Log.Error("BinaryManager Write", ioex.Message);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        //Log.Error("BinaryManager Write", e.Message);
-        //    }
-        //}
 
         //WriteMap
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -258,21 +153,6 @@ namespace FlashCardPager
 
 
         //Emoji =======================================================================
-        //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public static byte[] ReadBin_To_Emoji(string shortcode)
-        //{
-        //    byte[] rtn = null;
-        //    try
-        //    {
-        //        rtn = File.ReadAllBytes(emojiPath + shortcode);
-        //    }
-        //    catch (IOException ioe)
-        //    {
-        //        rtn = null;
-        //    }
-
-        //    return rtn;
-        //}
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static Bitmap ReadImage_To_Emoji(string shortcode)
@@ -293,24 +173,6 @@ namespace FlashCardPager
             }            
         }
 
-
-        //[MethodImpl(MethodImplOptions.Synchronized)]
-        //public static void WriteBin_To_Emoji(string shortcode, byte[] emojiData)
-        //{
-        //    //Emoji フォルダがなければ作る
-        //    if (!Directory.Exists(emojiPath)) Directory.CreateDirectory(emojiPath);
-        //    //ファイルをつくって書き込む
-        //    try
-        //    {
-        //        //if (!(emojiMap.TryAdd(shortcode, emojiData))) return; 
-        //        File.WriteAllBytes(emojiPath + shortcode, emojiData);
-        //    }
-        //    catch(IOException e)
-        //    {
-        //        //すでにあるか，エラー
-        //        Log.Info("BinaryManager WriteEmoji", e.Message);
-        //    }
-        //}
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void WriteImage_To_Emoji(string shortcode, Bitmap emojiData)

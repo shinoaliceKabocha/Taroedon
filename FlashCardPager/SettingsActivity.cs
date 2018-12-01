@@ -26,16 +26,13 @@ namespace FlashCardPager
 
             var e_instance = FindViewById<EditText>(Resource.Id.edittextSettings1_Instance);
             var e_code = FindViewById<EditText>(Resource.Id.edittextSettings1_Code);
-            //var e_address = FindViewById<EditText>(Resource.Id.edittextSettings1_Address);
-            //var e_pass = FindViewById<EditText>(Resource.Id.edittextSettings1_Pass);
+
             Button urlOpen = FindViewById<Button>(Resource.Id.buttonOAuth);
             Button regist = FindViewById<Button>(Resource.Id.buttonSettings1_Registration);
             
             var pref = GetSharedPreferences("USER", FileCreationMode.Private);
             e_instance.Text = "";
             e_code.Text = "";
-            //e_address.Text = "";
-            //e_pass.Text = "";
 
             e_code.Enabled = false;
             regist.Enabled = false;
@@ -45,39 +42,6 @@ namespace FlashCardPager
             {
                 e_instance.Text = "taroedon.com";
             };
-
-            //regist.LongClick += async (sender, e) =>
-            //{
-            //    if (e_instance.Text == "" || e_address.Text == "" || e_pass.Text == "")
-            //    {
-            //        Toast.MakeText(this, "未記入項目があります", ToastLength.Short).Show();
-            //    }
-            //    else
-            //    {
-            //        try
-            //        {
-            //            var authClient = new AuthenticationClient(e_instance.Text);
-            //            var appRegistration = await authClient.CreateApp("たろえどんmobile", Scope.Read | Scope.Write | Scope.Follow);
-            //            var auth = await authClient.ConnectWithPassword(e_address.Text, e_pass.Text);
-
-            //            var editor = pref.Edit();
-            //            editor.PutString("instance", e_instance.Text);
-            //            editor.PutString("clientId", appRegistration.ClientId);
-            //            editor.PutString("clientSecret", appRegistration.ClientSecret);
-            //            editor.PutString("accessToken", auth.AccessToken);
-            //            editor.PutString("redirectUri", "urn:ietf:wg:oauth:2.0:oob");
-            //            editor.Commit();
-
-            //            Toast.MakeText(this, "認証に成功しました！\nアプリを再起動してください", ToastLength.Short).Show();
-            //            Finish();
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Toast.MakeText(this, "認証に失敗しました．．．\n入力ミスがあるかも", ToastLength.Short).Show();
-            //        }
-
-            //    }
-            //};
 
             AuthenticationClient authClient2 = null;
             AppRegistration appRegistration2 = null;
@@ -89,14 +53,7 @@ namespace FlashCardPager
                     authClient2 = new AuthenticationClient(e_instance.Text);
                     appRegistration2 = await authClient2.CreateApp("たろえどんmobile", Scope.Read | Scope.Write | Scope.Follow);
                     var url = authClient2.OAuthUrl();
-                    //UserAction.UrlOpenChrome(url, (View)sender);
                     UserAction.UrlOpen(url, (View)sender);
-
-                    //var builder = new CustomTabsIntent.Builder();
-                    //builder.SetToolbarColor(Resource.Color.colorPrimaryDark);
-                    //var chromeIntent = builder.Build();
-                    //chromeIntent.LaunchUrl(this.ApplicationContext, Android.Net.Uri.Parse(url));
-                    //StartActivity(chromeIntent.Intent);
 
                     e_code.Enabled = true;
                     regist.Enabled = true;
@@ -104,7 +61,7 @@ namespace FlashCardPager
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(this, "インスタンス名がおかしいか，ネットワークが不安定かも", ToastLength.Short).Show();
+                    UserAction.Toast_BottomFIllHorizontal_Show("インスタンス名がおかしいか，ネットワークが不安定かも", this, UserAction.COLOR_FAILED);
                 }
             };
 
@@ -122,12 +79,14 @@ namespace FlashCardPager
                     editor.PutString("redirectUri", "urn:ietf:wg:oauth:2.0:oob");
                     editor.Commit();
 
-                    Toast.MakeText(this, "認証に成功しました！\nアプリを再起動してください", ToastLength.Short).Show();
+                    UserAction.Toast_BottomFIllHorizontal_Show("認証に成功しました！\nアプリを再起動してください", this, UserAction.COLOR_INFO);
+                    UserAction.CacheClear();
                     Finish();
                 }
                 catch(Exception ex)
                 {
-                    Toast.MakeText(this, "コードが間違っているか，認証に失敗しました", ToastLength.Short).Show();
+                    UserAction.Toast_BottomFIllHorizontal_Show("コードが間違っているか，認証に失敗しました", this, UserAction.COLOR_FAILED);
+
                 }
             };
 
