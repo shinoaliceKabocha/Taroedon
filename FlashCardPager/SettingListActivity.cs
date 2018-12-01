@@ -90,25 +90,8 @@ namespace FlashCardPager
                         string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
                         try
                         {
-                            if (Directory.Exists(path + "/Emoji"))
-                            {
-                                string[] filePaths = Directory.GetFiles(path + "/Emoji");
-                                foreach (string file in filePaths)
-                                {
-                                    File.SetAttributes(file, FileAttributes.Normal);
-                                    File.Delete(file);
-                                }
-                            }
-                            if (Directory.Exists(path))
-                            {
-                                string[] filePaths = Directory.GetFiles(path);
-                                foreach (string file in filePaths)
-                                {
-                                    File.SetAttributes(file, FileAttributes.Normal);
-                                    File.Delete(file);
-                                }
-                            }
-                            Toast.MakeText(this, "キャッシュデータを削除しました．再起動してください．", ToastLength.Short).Show();
+                            UserAction.CacheClear();
+                            Toast.MakeText(this, "キャッシュデータを削除しました．\n再起動してください．", ToastLength.Short).Show();
                         }
                         catch(IOException ex)
                         {

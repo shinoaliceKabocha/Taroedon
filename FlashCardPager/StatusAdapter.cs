@@ -78,6 +78,11 @@ namespace FlashCardPager
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
             imageGetTask.Execute(status.Account.StaticAvatarUrl);
+            avatar.Click += (sender, e) =>
+            {
+                Android.Util.Log.Info("HOGE", status.InReplyToAccountId.ToString());
+                UserAction.Profile(status.Account, view.Context);
+            };
 
             //profile
             profile.SetTextColor(Color.DarkOliveGreen);

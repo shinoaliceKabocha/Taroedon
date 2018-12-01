@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<FrameLayout
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="fill_parent"
+		android:layout_height="200dp"
+		android:id="@+id/frameLayout1">
+		<ImageView
+			android:background="@color/colorPrimaryDark"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"/>
+		<ImageView
+			android:src="@drawable/none"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:id="@+id/imageViewHeader" />
+		<ImageView
+			android:background="#66000000"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"/>
+		<Button
+			android:background="@color/colorPrimary"
+			android:text=" "
+			android:textColor="@android:color/white"
+			android:layout_gravity="right"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/buttonFollow" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:gravity="bottom"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<ImageView
+				android:src="@drawable/none"
+				android:layout_width="75dp"
+				android:layout_height="75dp"
+				android:layout_marginLeft="20dp"
+				android:id="@+id/imageViewAvatar" />
+			<LinearLayout
+				android:orientation="vertical"
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:gravity="bottom"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="5dp"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+				<TextView
+					android:text="Username"
+					android:id="@+id/textView_DisplayName"
+					android:textColor="@android:color/white"
+					android:textSize="20dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="bottom"/>
+				<TextView
+					android:text="Username"
+					android:id="@+id/textView_AccountName"
+					android:textColor="@android:color/white"
+					android:textSize="15dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="bottom"/>
+				<TextView
+					android:text="Follow:XX  Follower:XX"
+					android:id="@+id/textViewFF"
+					android:textColor="@android:color/white"
+					android:textSize="12dp"
+					android:layout_marginTop="3.5dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="bottom"/>
+			</LinearLayout>
+		</LinearLayout>
+	</FrameLayout>
+
+	<ScrollView
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<TextView
+			android:text="Text"
+			android:textSize="15dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:id="@+id/textViewNote" />
+	</ScrollView>
+
+
+
+
+</LinearLayout>

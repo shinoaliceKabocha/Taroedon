@@ -19,33 +19,66 @@ namespace FlashCardPager
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            //setting load
-            var pref = GetSharedPreferences("SETTING", FileCreationMode.Private);
-            UserAction.SettingsLoad(pref);
-
-            pref = GetSharedPreferences("USER", FileCreationMode.Private);//file name + style
-            string instance = pref.GetString("instance", "");
-            string clientId = pref.GetString("clientId", "");
-            string clientSecret = pref.GetString("clientSecret", "");
-            string accessToken = pref.GetString("accessToken", "");
-            string redirectUri = pref.GetString("redirectUri", "");
-            if (instance == "" || clientId == ""
-                || clientSecret == "" || accessToken == "" || redirectUri == "")
+            try
             {
+                //varsionアップ時の対応
+                var pm = this.PackageManager;
+                var versionCode = pm.GetPackageInfo(this.PackageName, 0).VersionCode;
+                if(versionCode < 10)
+                {
+                    UserAction.CacheClear();
+                    Toast.MakeText(this, "アプリ更新したときに，データ構成を変えました\n一時Cacheを削除します", ToastLength.Short).Show();
+                }
+
+                //setting load
+                var pref = GetSharedPreferences("SETTING", FileCreationMode.Private);
+                UserAction.SettingsLoad(pref);
+
+                pref = GetSharedPreferences("USER", FileCreationMode.Private);//file name + style
+                string instance = pref.GetString("instance", "");
+                string clientId = pref.GetString("clientId", "");
+                string clientSecret = pref.GetString("clientSecret", "");
+                string accessToken = pref.GetString("accessToken", "");
+                string redirectUri = pref.GetString("redirectUri", "");
+                if (instance == "" || clientId == ""
+                    || clientSecret == "" || accessToken == "" || redirectUri == "")
+                {
+                    Intent intent1 = new Intent(this, typeof(SettingsActivity));
+                    StartActivity(intent1);
+                    Finish();
+                }
+                //userdata set
+                var _cl = new UserClient();
+                _cl.setClient(instance, clientId, clientSecret, accessToken, redirectUri);
+            }
+            catch(Exception e)
+            {
+                Toast.MakeText(this, "ユーザ情報が破損したようです．\nすいませんが再登録してください．．．", ToastLength.Short).Show();
                 Intent intent1 = new Intent(this, typeof(SettingsActivity));
                 StartActivity(intent1);
                 Finish();
             }
-            //userdata set
-            var _cl = new UserClient();
-            _cl.setClient(instance, clientId, clientSecret, accessToken, redirectUri);
 
-            //emoji load
-            if(UserClient.instance != null && UserClient.instance != "")
+            try
             {
-                EmojiGetTask emojiGetTask = new EmojiGetTask();
-                emojiGetTask.InitEmojiListAsync();
+                //emoji load
+                if (!string.IsNullOrEmpty(UserClient.instance))
+                {
+                    EmojiGetTask emojiGetTask = new EmojiGetTask();
+                    emojiGetTask.InitEmojiListAsync();
+                }
             }
+            catch(Java.Net.UnknownHostException e)
+            {
+                Toast.MakeText(this, "ネットワークの接続状態が悪いようです\n時間をおいて起動してください", ToastLength.Short).Show();
+                this.Finish();
+            }
+            catch(Exception e)
+            {
+                Toast.MakeText(this, "ネットワークの接続状態が悪いようです\n時間をおいて起動してください", ToastLength.Short).Show();
+                Finish();
+            }
+
 
             base.OnCreate(savedInstanceState);
 

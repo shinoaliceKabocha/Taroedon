@@ -35,7 +35,7 @@ namespace FlashCardPager
                 var emojiItem = customListAdapter[e.Position];
 
                 Intent intent = new Intent();
-                intent.PutExtra("shortcode", emojiItem.shortcode);
+                intent.PutExtra("shortcode", emojiItem.Shortcode);
                 SetResult(Result.Ok, intent);
 
                 Finish();
@@ -46,7 +46,7 @@ namespace FlashCardPager
         private List<EmojiItem> GetEmojiItems()
         {
             List<EmojiItem> rtn = new List<EmojiItem>();
-            string emojiPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal) + "/Emoji";
+            string emojiPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "Emoji");
             try
             {
                 if (Directory.Exists(emojiPath))
@@ -58,7 +58,7 @@ namespace FlashCardPager
                         string[] split = filePath.Split('/');
                         string shortcode = split[split.Length - 1];
                         EmojiItem addEmojiItem 
-                            = new EmojiItem(shortcode, BinaryManager.ReadBin_To_Emoji(shortcode));
+                            = new EmojiItem(shortcode, BinaryManager.ReadImage_To_Emoji(shortcode));
                         rtn.Add(addEmojiItem);
                     }
                 }
@@ -101,10 +101,11 @@ namespace FlashCardPager
             var icon = view.FindViewById<ImageView>(Resource.Id.imageViewEmoji);
             var shortCode = view.FindViewById<TextView>(Resource.Id.textViewShortCode);
 
-            Bitmap bitmap = BitmapFactory.DecodeByteArray(emojiItem.emojiByte, 0, emojiItem.emojiByte.Length);
+            //Bitmap bitmap = BitmapFactory.DecodeByteArray(emojiItem.emojiByte, 0, emojiItem.emojiByte.Length);
+            Bitmap bitmap = emojiItem.EmojiBitmap;
 
             icon.SetImageBitmap(bitmap);
-            shortCode.Text = emojiItem.shortcode;
+            shortCode.Text = emojiItem.Shortcode;
 
             return view;
         }
@@ -112,12 +113,12 @@ namespace FlashCardPager
 
     public class EmojiItem
     {
-        public EmojiItem(string shortCode, byte[] emojiByte)
+        public EmojiItem(string shortCode, Bitmap emojiBitmap)
         {
-            this.emojiByte = emojiByte;
-            this.shortcode = shortCode;
+            this.EmojiBitmap = emojiBitmap;
+            this.Shortcode = shortCode;
         }
-        public string shortcode { get; set; }
-        public byte[] emojiByte { get; set; }
+        public string Shortcode { get; set; }
+        public Bitmap EmojiBitmap { get; set; }
     }
 }

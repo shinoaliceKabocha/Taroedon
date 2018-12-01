@@ -55,6 +55,10 @@ namespace FlashCardPager
                     Status st = notify.Status;
                     UserAction.ListViewItemClick(st, view);
                 }
+                else
+                {
+                    UserAction.Profile(notify.Account, this.Context);
+                }
             };
             //ショートカット機能
             listView.ItemLongClick += (sender, e) =>
@@ -72,7 +76,7 @@ namespace FlashCardPager
                         if (re_status != null) status = re_status;
                     }
                     catch (Exception ex) { }
-                    UserAction.FavAsync(status, view);
+                    UserAction.Fav(status, view);
                 }
             };
 

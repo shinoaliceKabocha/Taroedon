@@ -70,7 +70,10 @@ namespace FlashCardPager
             //avatar;
             ImageGetTask imageGetTask = new ImageGetTask(avatar);
             imageGetTask.Execute(notification.Account.StaticAvatarUrl);
-            avatar.Click += (sender, e) => { };
+            avatar.Click += (sender, e) => 
+            {
+                UserAction.Profile(notification.Account, view.Context);
+            };
 
 
             //name

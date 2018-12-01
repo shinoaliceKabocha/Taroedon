@@ -31,28 +31,37 @@ namespace FlashCardPager
         //メインの処理
         public Bitmap GetBitmap(string emojiShortcode)
         {
-            byte[] imageBytes = null;
+            Bitmap bitmap = null;
+            bitmap = BinaryManager.ReadImage_To_Emoji(emojiShortcode);
 
-            imageBytes = BinaryManager.ReadBin_To_Emoji(emojiShortcode);
-            //キャッシュにある場合
-            if(imageBytes != null)
-            {
-                try
-                {
-                    return BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                }
-                catch (Exception e)
-                {
-                    Log.Error("Emoji Error: ", e.Message);
-                    return null;
-                }
-            }
-            //ない場合
+            if (bitmap != null) return bitmap;
             else
             {
                 return null;
             }
         }
+
+            //byte[] imageBytes = null;
+            //imageBytes = BinaryManager.ReadBin_To_Emoji(emojiShortcode);
+            ////キャッシュにある場合
+            //if(imageBytes != null)
+            //{
+            //    try
+            //    {
+            //        return BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Log.Error("Emoji Error: ", e.Message);
+            //        return null;
+            //    }
+            //}
+            ////ない場合
+            //else
+            //{
+            //    return null;
+            //}
+        //}
 
 
         public async void InitEmojiListAsync()
@@ -79,14 +88,12 @@ namespace FlashCardPager
                     byte[] imageBytes = null;
                     using(var webClient = new WebClient())
                     {
-                        imageBytes = webClient.DownloadData(e.static_url);
+                        imageBytes = await webClient.DownloadDataTaskAsync(new Uri(e.static_url));
                         if(imageBytes != null)
                         {
-                            Bitmap b = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
-                            b = Bitmap.CreateScaledBitmap(b, 60, 60, false);
-                            MemoryStream memoryStream = new MemoryStream();//byte[] stream
-                            b.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);//bitmap -> byte[]
-                            BinaryManager.WriteBin_To_Emoji(e.shortcode, memoryStream.ToArray());
+                            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
+                            bitmap = Bitmap.CreateScaledBitmap(bitmap, 60, 60, false);
+                            BinaryManager.WriteImage_To_Emoji(e.shortcode, bitmap);
                         }
                     }
                 }

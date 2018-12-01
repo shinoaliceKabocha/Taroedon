@@ -49,7 +49,10 @@ namespace FlashCardPager
                 {
                     if (match.Value != "" && match.Length > 8)
                     {
-                        additemlist.Add(match.Value);
+                        if (!additemlist.Contains(match.Value))
+                        {
+                            additemlist.Add(match.Value);
+                        }
                     }
                 }
             }

@@ -16,8 +16,10 @@ using Android.Webkit;
 using Android.Widget;
 using Mastonet.Entities;
 using Android.Content.PM;
+using Android.Util;
 using Context = Android.Content.Context;
 using Android.Support.CustomTabs;
+using System.IO;
 
 namespace FlashCardPager
 {
@@ -63,7 +65,7 @@ namespace FlashCardPager
             }
         }
 
-        public static void FavAsync(Status status, View view)
+        public static void Fav(Status status, View view)
         {
             if (status.Favourited.Equals(true))
             {
@@ -96,7 +98,7 @@ namespace FlashCardPager
 
         }
 
-        public static void BoostAsync(Status status, View view)
+        public static void Boost(Status status, View view)
         {
             if(status.Reblogged.Equals(true) )
             {
@@ -180,7 +182,7 @@ namespace FlashCardPager
             view.Context.StartActivity(intent);
         }
 
-        public static void ListViewItemClick(Status status , View view)
+        public static void ListViewItemClick(Status status, View view)
         {
             int select;
             try
@@ -191,7 +193,22 @@ namespace FlashCardPager
             catch (Exception ex) { }
 
             //URL をitemlistに一時登録
-            List<string> itemlist = new List<string>() { "Reply", "Favarite", "Boost", "Close" };
+            List<string> itemlist
+                = new List<string>() { "Reply", "Favarite", "Boost", (status.Account.DisplayName + "@" + status.Account.UserName) };
+
+            ////追加
+            //var replyToAccountId = status.InReplyToAccountId.GetValueOrDefault(-1);
+            //Account replyAccount = null;
+            //if (replyToAccountId != -1)
+            //{
+            //    replyAccount = await GetAccountAsync(replyToAccountId);
+            //    if (replyAccount != null)
+            //    {
+            //        itemlist.Add(replyAccount.DisplayName + "@" + replyAccount.UserName);
+            //    }
+            //}
+
+
             //URL，画像の取得
             foreach (string add in OtherTool.DLG_ITEM_getURL(status))
             {
@@ -205,33 +222,50 @@ namespace FlashCardPager
                 var dlg = new Android.App.AlertDialog.Builder(view.Context);
 
                 dlg.SetTitle(status.Account.DisplayName + "@" + status.Account.UserName
-                    + "さん\r\n" + OtherTool.HTML_removeTag(status.Content) );
-                dlg.SetItems(items,  (s, ee) =>
-                {
-                    select = ee.Which;
-                    switch (select)
-                    {
-                        case 0://reply
-                            UserAction.Reply(status,view);
-                            break;
+                    + "さん\r\n" + OtherTool.HTML_removeTag(status.Content));
+                dlg.SetItems(items, (s, ee) =>
+               {
+                   select = ee.Which;
+                   switch (select)
+                   {
+                       case 0://reply
+                            UserAction.Reply(status, view);
+                           break;
 
-                        case 1://fav
-                            UserAction.FavAsync(status, view);
-                            break;
+                       case 1://fav
+                            UserAction.Fav(status, view);
+                           break;
 
-                        case 2://boost
-                            UserAction.BoostAsync(status, view);
-                            break;
+                       case 2://boost
+                            UserAction.Boost(status, view);
+                           break;
 
-                        case 3://close
-                            break;
+                       case 3://USER
+                            Profile(status.Account, view.Context);
+                           break;
 
-                        default://urls
-                            UserAction.UrlOpen(items[select],view );
-                            break;
-                    }
+                       default://urls
+                            string urlOrAccountName = items[select];
+                            //try
+                            //{
+                            //    if (urlOrAccountName.Contains(replyAccount.UserName) && urlOrAccountName.Contains(replyAccount.DisplayName))
+                            //    {
+                            //        UserAction.Profile(replyAccount, view.Context);
+                            //    }
+                            //    else
+                            //    {
+                            //        UserAction.UrlOpen(urlOrAccountName, view);
+                            //    }
+                            //}
+                            //catch (NullReferenceException nullexception)
+                            //{
+                            //    UserAction.UrlOpen(urlOrAccountName, view);
+                            //}
+                            UserAction.UrlOpen(urlOrAccountName, view);
+                           break;
+                   }
 
-                });
+               });
                 dlg.Create().Show();
             }
             catch (Exception ex)
@@ -242,6 +276,75 @@ namespace FlashCardPager
                 //    Snackbar.LengthLong).SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
             }
         }
+
+        /*
+        * profile open
+        * @param Account
+        * @param view
+        */
+        public static void Profile(Mastonet.Entities.Account account, Context context)
+        {
+            Intent intent = new Intent(context, typeof(ProfileActivity));
+            intent.PutExtra("header", account.StaticHeaderUrl);
+            intent.PutExtra("avatar", account.StaticAvatarUrl);
+            intent.PutExtra("display_name", account.DisplayName);
+            intent.PutExtra("account_name", account.AccountName);
+            intent.PutExtra("note", account.Note);
+            intent.PutExtra("follow", account.FollowingCount.ToString());
+            intent.PutExtra("follower", account.FollowersCount.ToString());
+            intent.PutExtra("id", account.Id);
+            context.StartActivity(intent);
+        }
+
+
+        /*
+        *get replay account
+        */
+        //private static async Task<Account> GetAccountAsync(long accountId)
+        //{
+        //    var client = new UserClient().getClient();
+        //    try
+        //    {
+        //        var account = await client.GetAccount(accountId);
+        //        return account;
+        //    }
+        //    catch(Exception e)
+        //    {
+        //        return null;
+        //    }
+        //}
+
+
+        //Cacheクリア
+        public static void CacheClear()
+        {
+            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+
+            if (Directory.Exists(System.IO.Path.Combine(path, "Emoji")))
+            {
+                string[] filePaths = Directory.GetFiles(System.IO.Path.Combine(path, "Emoji"));
+                foreach (string file in filePaths)
+                {
+                    File.SetAttributes(file, FileAttributes.Normal);
+                    File.Delete(file);
+                }
+            }
+            if (Directory.Exists(System.IO.Path.Combine(path, "Emoji")))
+            {
+                Directory.Delete(System.IO.Path.Combine(path, "Emoji"), false);
+            }
+            if (Directory.Exists(path))
+            {
+                string[] filePaths = Directory.GetFiles(path);
+                foreach (string file in filePaths)
+                {
+                    File.SetAttributes(file, FileAttributes.Normal);
+                    File.Delete(file);
+                }
+            }
+        }
+
+
     }
 
     public class MstWebViewClient : WebViewClient
