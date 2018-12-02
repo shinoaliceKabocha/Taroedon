@@ -68,8 +68,8 @@ namespace FlashCardPager
 
 
             //avatar;
-            ImageGetTask imageGetTask = new ImageGetTask(avatar);
-            imageGetTask.Execute(notification.Account.StaticAvatarUrl);
+            ImageProvider imageProvider = new ImageProvider();
+            imageProvider.ImageIconSetAsync(notification.Account.AvatarUrl, avatar);
             avatar.Click += (sender, e) => 
             {
                 UserAction.Profile(notification.Account, view.Context);
@@ -205,8 +205,11 @@ namespace FlashCardPager
                 imageUrls = OtherTool.ImageUrlPreviewfromStatus(notification.Status);
                 for (i = 0; i < imageUrls.Count; i++)
                 {
-                    ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
-                    imageGetTask2.Execute(imageUrls[i]);
+                    ImageProvider imageProvider2 = new ImageProvider();
+                    imageProvider2.ImageThumnailSetAsync(imageUrls[i], imageViews[i]);
+
+                    //ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
+                    //imageGetTask2.Execute(imageUrls[i]);
                 }
                 for (int j = i; j < 4; j++)
                 {

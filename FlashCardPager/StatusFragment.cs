@@ -130,7 +130,7 @@ namespace FlashCardPager
                 if(e.Status.Content.Contains("@" + UserClient.currentAccountName) && e.Status.InReplyToAccountId != null)
                 {
                     string notifyStr = e.Status.Account.DisplayName +"@"+ e.Status.Account.AccountName +"Ç≥ÇÒÇ©ÇÁÇ∆Ç£Å[Ç∆";
-                    UserAction.Toast_TopFIllHorizontal_Show(notifyStr, this.Context, UserAction.COLOR_INFO);
+                    UserAction.Toast_TopFIllHorizontal_Show(notifyStr, this.Context, new Android.Graphics.Color(255, 131, 109));
                 }
 
             };

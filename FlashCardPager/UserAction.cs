@@ -48,7 +48,7 @@ namespace FlashCardPager
         public readonly static Color COLOR_FAV = new Color(193, 151, 0);
         public readonly static Color COLOR_BOOST = new Color(61, 153, 0);
         public readonly static Color COLOR_FAILED = new Color(160, 160, 160);
-        public readonly static Color COLOR_INFO = new Color(127, 176, 255);
+        public readonly static Color COLOR_INFO = new Color(27, 49, 71);
 
 
         /**************************************************************
@@ -340,6 +340,7 @@ namespace FlashCardPager
             intent.PutExtra("follow", account.FollowingCount.ToString());
             intent.PutExtra("follower", account.FollowersCount.ToString());
             intent.PutExtra("id", account.Id);
+            intent.PutExtra("lock", account.Locked);
             context.StartActivity(intent);
         }
 
@@ -399,6 +400,10 @@ namespace FlashCardPager
             toast.View.SetBackgroundColor(color);
 
             TextView textView = toast.View.FindViewById<TextView>(Android.Resource.Id.Message);
+            if (color.Equals(UserAction.COLOR_INFO))
+            {
+                textView.SetTextColor(Color.White);
+            }
             textView.SetTypeface(Typeface.DefaultBold, TypefaceStyle.Bold);
 
             toast.Show();

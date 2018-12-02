@@ -22,7 +22,7 @@ namespace FlashCardPager
     {
         List<Status> statuslist;
         LayoutInflater inflater;
-        List<string> imageurls;
+        List<string> imageUrls;
 
         public StatusAdapter(LayoutInflater inflater, List<Status> statuslist)
         {
@@ -70,8 +70,8 @@ namespace FlashCardPager
             imageViews[3] = view.FindViewById<ImageView>(Resource.Id.imageViewImage3);
 
             //avatar;
-            ImageGetTask imageGetTask = new ImageGetTask(avatar);
-            imageGetTask.Execute(status.Account.StaticAvatarUrl);
+            ImageProvider imageProvider = new ImageProvider();
+            imageProvider.ImageIconSetAsync(status.Account.AvatarUrl, avatar);
             avatar.Click += (sender, e) =>
             {
                 UserAction.Profile(status.Account, view.Context);
@@ -149,26 +149,28 @@ namespace FlashCardPager
 
 
             //プレビューを使う
-            imageurls = new List<string>();
+            imageUrls = new List<string>();
             if (UserAction.bImagePre)
             {
                 //サムネイルの表示
                 int i = 0;
-                imageurls = OtherTool.ImageUrlPreviewfromStatus(status);
-                for (i = 0; i < imageurls.Count; i++)
+                imageUrls = OtherTool.ImageUrlPreviewfromStatus(status);
+                for (i = 0; i < imageUrls.Count; i++)
                 {
-                    ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
-                    imageGetTask2.Execute(imageurls[i]);
+                    ImageProvider imageProvider2 = new ImageProvider();
+                    imageProvider2.ImageThumnailSetAsync(imageUrls[i], imageViews[i]);
+                    //ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
+                    //imageGetTask2.Execute(imageurls[i]);
                 }
                 for (int j = i; j < 4; j++)
                 {
                     imageViews[j].Visibility = ViewStates.Gone;
                 }
 
-                if (imageurls.Count <= 2)
+                if (imageUrls.Count <= 2)
                 {
                     view.FindViewById<LinearLayout>(Resource.Id.Linearlayoutimagedown).Visibility = ViewStates.Gone;
-                    if (imageurls.Count == 0)
+                    if (imageUrls.Count == 0)
                     {
                         view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
                     }

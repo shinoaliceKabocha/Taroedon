@@ -33,7 +33,7 @@ namespace FlashCardPager
         static Log Log;
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static Bitmap ReadImage_From_File(string url)
         {
             Bitmap bitmap = null;
@@ -75,7 +75,7 @@ namespace FlashCardPager
 
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static void WriteImage_To_File(string url, Bitmap bitmap)
         {
             string[] name;
@@ -105,7 +105,7 @@ namespace FlashCardPager
         //For サムネイル＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static Bitmap ReadMap_To_Bitmap(string url)
         {
             string[] name;
@@ -128,7 +128,7 @@ namespace FlashCardPager
 
 
         //WriteMap
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static void WriteBitmap_To_Map(string url, Bitmap bitmap)
         {
             string[] keys;
@@ -154,7 +154,7 @@ namespace FlashCardPager
 
         //Emoji =======================================================================
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static Bitmap ReadImage_To_Emoji(string shortcode)
         {
             string emojipath2 = System.IO.Path.Combine(emojiPath, shortcode);
@@ -174,7 +174,7 @@ namespace FlashCardPager
         }
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static void WriteImage_To_Emoji(string shortcode, Bitmap emojiData)
         {
             string emojipath2 = System.IO.Path.Combine(emojiPath, shortcode);
@@ -197,7 +197,7 @@ namespace FlashCardPager
         }
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         public static bool isEmojiCache(string shortcode)
         {
             if (File.Exists(System.IO.Path.Combine(emojiPath, shortcode)))

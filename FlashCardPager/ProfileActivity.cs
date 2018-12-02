@@ -23,9 +23,15 @@ namespace FlashCardPager
         readonly string UNFOLLOW = "unfollow";
         readonly string CANCEL = "cancel";
         readonly string FOLLOW_SUCCESS = "フォローしました";
+        readonly string FOLLOW_REQUEST = "フォローリクエストしました";
         readonly string FOLLOW_FAIL = "フォローに失敗しました";
         readonly string UNFOLLOW_SUCCESS = "アンフォローしました";
         readonly string UNFOLLOW_FAIL = "アンフォローに失敗しました";
+        readonly Color COLOR_FOLLOW_SUCCESS = new Color(127, 176, 255);//Blue
+        readonly Color COLOR_FOLLOW_REQUEST = new Color(127, 176, 255);
+        readonly Color COLOR_FOLLOW_FAILED = UserAction.COLOR_FAILED;
+        readonly Color COLOR_UNFOLLOW_SUCCESS = new Color(127, 176, 255);
+        readonly Color COLOR_UNFOLLOW_FAILED = UserAction.COLOR_FAILED;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -45,7 +51,11 @@ namespace FlashCardPager
             setImageViewAsync(this.Intent.GetStringExtra("header"), imageViewHeader);
 
             string accountName = this.Intent.GetStringExtra("account_name");
-            FindViewById<TextView>(Resource.Id.textView_AccountName).Text = accountName;
+            bool locked = this.Intent.GetBooleanExtra("lock", true);
+            string _accountName;
+            if (locked) _accountName = "🔒  " + accountName;
+            else _accountName = accountName;
+            FindViewById<TextView>(Resource.Id.textView_AccountName).Text = _accountName;
 
             string displayName = this.Intent.GetStringExtra("display_name");
             FindViewById<TextView>(Resource.Id.textView_DisplayName).Text = displayName;
@@ -62,6 +72,11 @@ namespace FlashCardPager
             Button buttonFF = FindViewById<Button>(Resource.Id.buttonFollow);
             ContentSet_From_RelationshipsAsync(accountName, id, buttonFF, textViewFF);
 
+            buttonFF.LongClick += (sender, e) =>
+            {
+                Android.Util.Log.Debug("hoge", this.Intent.GetStringExtra("avatar"));
+            };
+
             buttonFF.Click += (sender, e) =>
             {
                 //client
@@ -75,22 +90,30 @@ namespace FlashCardPager
                     dlg.SetPositiveButton(
                         FOLLOW, async (s, a) =>
                         {
-                            var result = await client.Follow(id);
-                            //フォローできた
-                            if (result.Following)
+                            try
                             {
-                                buttonFF.Text = UNFOLLOW;
-                                Toast.MakeText(this, FOLLOW_SUCCESS, ToastLength.Short).Show();
+                                var result = await client.Follow(id);
+                                //フォローできた
+                                if (result.Following)
+                                {
+                                    buttonFF.Text = UNFOLLOW;
+                                    UserAction.Toast_BottomFIllHorizontal_Show(FOLLOW_SUCCESS, this, COLOR_FOLLOW_SUCCESS);
+                                }
+                                //フォローリクエスト
+                                else
+                                {
+                                    UserAction.Toast_BottomFIllHorizontal_Show(FOLLOW_REQUEST, this, COLOR_FOLLOW_REQUEST);
+                                }
                             }
-                            //フォロー失敗
-                            else
+                            catch (Exception exception)
                             {
-                                Toast.MakeText(this, FOLLOW_FAIL, ToastLength.Short).Show();
+                                UserAction.Toast_BottomFIllHorizontal_Show(FOLLOW_FAIL, this, COLOR_FOLLOW_FAILED);
                             }
                         });
                     dlg.SetNegativeButton(
                         CANCEL,(s, a) =>
                         {
+                            //do nothing.
                         });
 
                     dlg.Create().Show();
@@ -103,22 +126,32 @@ namespace FlashCardPager
                     dlg.SetPositiveButton(
                         UNFOLLOW, async (s, a) =>
                         {
-                            var result = await client.Unfollow(id);
-                            //アンフォローできた
-                            if (!result.Following)
+                            try
                             {
-                                buttonFF.Text = FOLLOW;
-                                Toast.MakeText(this, UNFOLLOW_SUCCESS, ToastLength.Short).Show();
+                                var result = await client.Unfollow(id);
+                                //アンフォローできた
+                                if (!result.Following)
+                                {
+                                    buttonFF.Text = FOLLOW;
+                                    UserAction.Toast_BottomFIllHorizontal_Show(UNFOLLOW_SUCCESS, this, COLOR_UNFOLLOW_SUCCESS);
+                                }
+                                //アンフォロー失敗
+                                else
+                                {
+                                    UserAction.Toast_BottomFIllHorizontal_Show(UNFOLLOW_FAIL, this, COLOR_UNFOLLOW_FAILED);
+                                }
                             }
                             //アンフォロー失敗
-                            else
+                            catch (Exception exception)
                             {
-                                Toast.MakeText(this, UNFOLLOW_FAIL, ToastLength.Short).Show();
+                                UserAction.Toast_BottomFIllHorizontal_Show(UNFOLLOW_FAIL, this, COLOR_UNFOLLOW_FAILED);
                             }
+
                         });
                     dlg.SetNegativeButton(
                         CANCEL, (s, a) =>
                         {
+                            //do nothing.
                         });
 
                     dlg.Create().Show();

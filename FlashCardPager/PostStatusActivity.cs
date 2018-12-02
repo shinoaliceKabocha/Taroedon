@@ -59,7 +59,6 @@ namespace FlashCardPager
                 StartActivityForResult(intent, 10);
             };
 
-
             //Reply時のデータの受取
             try
             {
