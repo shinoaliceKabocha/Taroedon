@@ -2414,8 +2414,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07005c
 			public const int action_mode_close_button = 2131165276;
 			
-			// aapt resource value: 0x7f0700ed
-			public const int action_settings = 2131165421;
+			// aapt resource value: 0x7f0700ef
+			public const int action_settings = 2131165423;
 			
 			// aapt resource value: 0x7f0700a9
 			public const int action_text = 2131165353;
@@ -2633,6 +2633,9 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700e6
 			public const int imageViewImage3 = 2131165414;
 			
+			// aapt resource value: 0x7f0700ea
+			public const int imageViewToast = 2131165418;
+			
 			// aapt resource value: 0x7f0700bb
 			public const int imageupload = 2131165371;
 			
@@ -2705,14 +2708,14 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070061
 			public const int list_item = 2131165281;
 			
-			// aapt resource value: 0x7f0700ec
-			public const int masked = 2131165420;
+			// aapt resource value: 0x7f0700ee
+			public const int masked = 2131165422;
 			
 			// aapt resource value: 0x7f0700ad
 			public const int media_actions = 2131165357;
 			
-			// aapt resource value: 0x7f0700ea
-			public const int message = 2131165418;
+			// aapt resource value: 0x7f0700ec
+			public const int message = 2131165420;
 			
 			// aapt resource value: 0x7f070031
 			public const int middle = 2131165233;
@@ -2975,6 +2978,9 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07009d
 			public const int textViewShortCode = 2131165341;
 			
+			// aapt resource value: 0x7f0700eb
+			public const int textViewToast = 2131165419;
+			
 			// aapt resource value: 0x7f0700ca
 			public const int textView_AccountName = 2131165386;
 			
@@ -3044,8 +3050,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070016
 			public const int view_offset_helper = 2131165206;
 			
-			// aapt resource value: 0x7f0700eb
-			public const int visible = 2131165419;
+			// aapt resource value: 0x7f0700ed
+			public const int visible = 2131165421;
 			
 			// aapt resource value: 0x7f07008b
 			public const int webView = 2131165323;
@@ -3326,7 +3332,10 @@ namespace FlashCardPager
 			public const int support_simple_spinner_dropdown_item = 2130903110;
 			
 			// aapt resource value: 0x7f030047
-			public const int tooltip = 2130903111;
+			public const int toastlayout = 2130903111;
+			
+			// aapt resource value: 0x7f030048
+			public const int tooltip = 2130903112;
 			
 			static Layout()
 			{

@@ -128,6 +128,7 @@ namespace FlashCardPager
                 var intent = new Intent(this, typeof(PostStatusActivity));
                 this.StartActivity(intent);
             };
+
         }
 
 

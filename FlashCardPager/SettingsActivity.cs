@@ -61,7 +61,7 @@ namespace FlashCardPager
                 }
                 catch (Exception ex)
                 {
-                    UserAction.Toast_BottomFIllHorizontal_Show("インスタンス名がおかしいか，ネットワークが不安定かも", this, UserAction.COLOR_FAILED);
+                    UserAction.Toast_BottomFIllHorizontal_Show("インスタンス名がおかしいか\nネットワークが不安定かも", this, UserAction.COLOR_FAILED);
                 }
             };
 
@@ -85,7 +85,7 @@ namespace FlashCardPager
                 }
                 catch(Exception ex)
                 {
-                    UserAction.Toast_BottomFIllHorizontal_Show("コードが間違っているか，認証に失敗しました", this, UserAction.COLOR_FAILED);
+                    UserAction.Toast_BottomFIllHorizontal_Show("コードが間違っているか\n認証に失敗しました", this, UserAction.COLOR_FAILED);
 
                 }
             };

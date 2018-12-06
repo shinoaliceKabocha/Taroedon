@@ -49,20 +49,24 @@ namespace FlashCardPager
             //イベント
             listView.ItemClick += (sender, e) =>
             {
+                View view2 = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
+
                 var notify = notifications[e.Position];
                 if (notify.Status != null)
                 {
                     Status st = notify.Status;
-                    UserAction.ListViewItemClick(st, view);
+                    UserAction.ListViewItemClick(st, view2);
                 }
                 else
                 {
-                    UserAction.Profile(notify.Account, this.Context);
+                    UserAction.Profile(notify.Account, view2.Context);
                 }
             };
             //ショートカット機能
             listView.ItemLongClick += (sender, e) =>
             {
+                View view2 = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
+
                 int select = e.Position;
                 var notification  = notifications[select];
                 if (notification.Status != null)
@@ -76,7 +80,7 @@ namespace FlashCardPager
                         if (re_status != null) status = re_status;
                     }
                     catch (Exception ex) { }
-                    UserAction.Fav(status, view);
+                    UserAction.Fav(status, view2);
                 }
             };
 

@@ -45,6 +45,8 @@ namespace FlashCardPager
             Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.60));
 
             var imageViewAvatar = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
+            ImageProvider imageProvider = new ImageProvider();
+            //imageProvider.ImageIconSetAsync(this.Intent.GetStringExtra("avatar"), imageViewAvatar);//Cache
             setImageViewAsync(this.Intent.GetStringExtra("avatar"), imageViewAvatar);
 
             var imageViewHeader = FindViewById<ImageView>(Resource.Id.imageViewHeader);

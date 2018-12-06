@@ -48,12 +48,16 @@ namespace FlashCardPager
             //イベント
             listView.ItemClick += (sender, e) =>
             {
+                View view2 = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
+
                 Status st = statuses[e.Position];
-                UserAction.ListViewItemClick(st, view);
+                UserAction.ListViewItemClick(st, view2);
             };
             //ショートカット ふぁぼ
             listView.ItemLongClick += (sender, e) =>
             {
+                View view2 = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
+
                 int select = e.Position;
                 var status = statuses[select];
                 try
@@ -64,7 +68,7 @@ namespace FlashCardPager
                 }
                 catch (Exception ex) { }
 
-                UserAction.Fav(status, view);
+                UserAction.Fav(status, view2);
             };
 
             //swipe refersh

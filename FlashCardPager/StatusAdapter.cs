@@ -159,8 +159,6 @@ namespace FlashCardPager
                 {
                     ImageProvider imageProvider2 = new ImageProvider();
                     imageProvider2.ImageThumnailSetAsync(imageUrls[i], imageViews[i]);
-                    //ImageGetTask2 imageGetTask2 = new ImageGetTask2(imageViews[i]);
-                    //imageGetTask2.Execute(imageurls[i]);
                 }
                 for (int j = i; j < 4; j++)
                 {

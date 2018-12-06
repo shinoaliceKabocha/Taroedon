@@ -67,73 +67,68 @@ namespace FlashCardPager
         /***************************************************************
          *                             操作 Fav
          **************************************************************/
-        private static async void FavAsync(long id, Context context)
+        private static async void FavAsync(Status status, View view)
         {
             Mastonet.MastodonClient clientfav = new UserClient().getClient();
             try
             {
-                await clientfav.Favourite(id);
-                Toast_BottomFIllHorizontal_Show(FAV_SUCCESS, context, COLOR_FAV);
+                await clientfav.Favourite(status.Id);
+                status.Favourited = true;
+
+                string s = OtherTool.HTML_removeTag(status.Content);
+                ToastWithIcon_BottomFIllHorizontal_Show(FAV_SUCCESS+"\n"+s, status.Account.AvatarUrl, view, COLOR_FAV);
             }
             catch (System.Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(FAV_FAILED, context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(FAV_FAILED, view.Context, COLOR_FAILED);
             }
         }
 
         public static void Fav(Status status, View view)
         {
-            Fav(status, view.Context);
-        }
-
-        public static void Fav(Status status, Context context)
-        {
             if (status.Favourited.Equals(true))
             {
-                Toast_BottomFIllHorizontal_Show(UNFAV, context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(UNFAV, view.Context, COLOR_FAILED);
             }
             else
             {
-                UserAction.FavAsync(status.Id, context);
-                status.Favourited = true;
+                UserAction.FavAsync(status, view);
             }
         }
-
 
         /***************************************************************
         *                             操作 Boost
         **************************************************************/
  
-        private static async void BoostAsync(long id, Context context)
+        private static async void BoostAsync(Status status, View view)
         {
             Mastonet.MastodonClient clientReb = new UserClient().getClient();
             try
             {
-                await clientReb.Reblog(id);
-                Toast_BottomFIllHorizontal_Show(BOOST_SUCCESS, context, COLOR_BOOST);
+                await clientReb.Reblog(status.Id);
+                status.Reblogged = true;
+
+                string s = OtherTool.HTML_removeTag(status.Content);
+                ToastWithIcon_BottomFIllHorizontal_Show(BOOST_SUCCESS + "\n" +s, status.Account.AvatarUrl,
+                    view, COLOR_BOOST);
             }
             catch (System.Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(BOOST_FAILED, context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(BOOST_FAILED, view.Context, COLOR_FAILED);
             }
         }
 
         public static void Boost(Status status, View view)
         {
-            Boost(status, view.Context);
-        }
-
-        public static void Boost(Status status, Context context)
-        {
             if (status.Reblogged.Equals(true))
             {
-                Toast_BottomFIllHorizontal_Show(UNBOOT, context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(UNBOOT, view.Context, COLOR_FAILED);
             }
             else
             {
-                BoostAsync(status.Id, context);
-                status.Reblogged = true;
+                BoostAsync(status, view);
             }
+
         }
 
 
@@ -333,7 +328,7 @@ namespace FlashCardPager
         {
             Intent intent = new Intent(context, typeof(ProfileActivity));
             intent.PutExtra("header", account.StaticHeaderUrl);
-            intent.PutExtra("avatar", account.StaticAvatarUrl);
+            intent.PutExtra("avatar", account.AvatarUrl);
             intent.PutExtra("display_name", account.DisplayName);
             intent.PutExtra("account_name", account.AccountName);
             intent.PutExtra("note", account.Note);
@@ -420,6 +415,55 @@ namespace FlashCardPager
 
             toast.Show();
         }
+
+        //with image
+        public static void ToastWithIcon_BottomFIllHorizontal_Show(string str, string imageUrl, View view, Color color)
+        {
+            LayoutInflater layoutinflater = (LayoutInflater)view.Context.GetSystemService(Context.LayoutInflaterService);
+            View layout = layoutinflater.Inflate(Resource.Layout.toastlayout, (ViewGroup)view.FindViewById(Resource.Layout.toastlayout), true);
+
+            layout.SetBackgroundColor(color);
+            var textView = layout.FindViewById<TextView>(Resource.Id.textViewToast);
+            textView.Text = str;
+            if (color.Equals(UserAction.COLOR_INFO))
+            {
+                textView.SetTextColor(Color.White);
+            }
+            textView.SetTypeface(Typeface.DefaultBold, TypefaceStyle.Bold);
+            var image = layout.FindViewById<ImageView>(Resource.Id.imageViewToast);
+            new ImageProvider().ImageIconSetAsync(imageUrl, image);
+
+            var toast = Toast.MakeText(view.Context, str, ToastLength.Long);
+            toast.View = layout;
+            toast.SetGravity(GravityFlags.FillHorizontal | GravityFlags.Bottom, 0, 0);
+
+            toast.Show();
+        }
+
+        public static void ToastWithIcon_TopFIllHorizontal_Show(string str, string imageUrl, View view, Color color)
+        {
+            LayoutInflater layoutinflater = (LayoutInflater)view.Context.GetSystemService(Context.LayoutInflaterService);
+            View layout = layoutinflater.Inflate(Resource.Layout.toastlayout, (ViewGroup)view.FindViewById(Resource.Layout.toastlayout), true);
+
+            layout.SetBackgroundColor(color);
+            var textView = layout.FindViewById<TextView>(Resource.Id.textViewToast);
+            textView.Text = str;
+            if (color.Equals(UserAction.COLOR_INFO))
+            {
+                textView.SetTextColor(Color.White);
+            }
+            textView.SetTypeface(Typeface.DefaultBold, TypefaceStyle.Bold);
+            var image = layout.FindViewById<ImageView>(Resource.Id.imageViewToast);
+            new ImageProvider().ImageIconSetAsync(imageUrl, image);
+
+            var toast = Toast.MakeText(view.Context, str, ToastLength.Long);
+            toast.View = layout;
+            toast.SetGravity(GravityFlags.FillHorizontal | GravityFlags.Top, 0, 0);
+
+            toast.Show();
+        }
+
+
 
     }
 

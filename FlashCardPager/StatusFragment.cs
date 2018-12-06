@@ -48,8 +48,9 @@ namespace FlashCardPager
             //イベント
             listView.ItemClick += (sender, e) =>
             {
+                View view2 = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
                 Status st = statuses[e.Position];
-                UserAction.ListViewItemClick(st, view);
+                UserAction.ListViewItemClick(st, view2);
             };
             //ショートカット
             listView.ItemLongClick += (sender, e) =>
@@ -64,7 +65,8 @@ namespace FlashCardPager
                 }
                 catch (Exception ex) { }
 
-                UserAction.Fav( status, view );
+                View view2 = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
+                UserAction.Fav(status, view2);
             };
 
             //swipe refersh
@@ -130,7 +132,11 @@ namespace FlashCardPager
                 if(e.Status.Content.Contains("@" + UserClient.currentAccountName) && e.Status.InReplyToAccountId != null)
                 {
                     string notifyStr = e.Status.Account.DisplayName +"@"+ e.Status.Account.AccountName +"さんからとぅーと";
-                    UserAction.Toast_TopFIllHorizontal_Show(notifyStr, this.Context, new Android.Graphics.Color(255, 131, 109));
+                    string s = OtherTool.HTML_removeTag(e.Status.Content);
+                    notifyStr += "\n" + s;
+                    //UserAction.Toast_TopFIllHorizontal_Show(notifyStr, this.Context, new Android.Graphics.Color(255, 131, 109));
+                    View view = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
+                    UserAction.ToastWithIcon_TopFIllHorizontal_Show(notifyStr, e.Status.Account.AvatarUrl, view, new Android.Graphics.Color(255, 131, 109));
                 }
 
             };
