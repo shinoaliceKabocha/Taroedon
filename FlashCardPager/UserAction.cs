@@ -109,7 +109,7 @@ namespace FlashCardPager
                 status.Reblogged = true;
 
                 string s = OtherTool.HTML_removeTag(status.Content);
-                ToastWithIcon_BottomFIllHorizontal_Show(BOOST_SUCCESS + "\n" +s, status.Account.AvatarUrl,
+                ToastWithIcon_BottomFIllHorizontal_Show(BOOST_SUCCESS + "\n" +s, status.Account.StaticAvatarUrl,
                     view, COLOR_BOOST);
             }
             catch (System.Exception ex)

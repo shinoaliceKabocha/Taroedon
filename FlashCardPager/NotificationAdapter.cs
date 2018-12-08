@@ -69,7 +69,7 @@ namespace FlashCardPager
 
             //avatar;
             ImageProvider imageProvider = new ImageProvider();
-            imageProvider.ImageIconSetAsync(notification.Account.AvatarUrl, avatar);
+            imageProvider.ImageIconSetAsync(notification.Account.StaticAvatarUrl, avatar);
             avatar.Click += (sender, e) => 
             {
                 UserAction.Profile(notification.Account, view.Context);
@@ -155,8 +155,20 @@ namespace FlashCardPager
             }
 
 
-            //普通の文章を追加
-            string _content = OtherTool.HTML_removeTag(notification.Status.Content);
+            //content
+            string _content;
+            content.SetText(Html.FromHtml(notification.Status.Content), TextView.BufferType.Spannable);
+            _content = content.Text;
+            try
+            {
+                _content = _content.Substring(0, _content.Length - 2);
+            }
+            catch (Exception e)
+            {
+                //_content = OtherTool.HTML_removeTag(notification.Status.Content);
+            }
+
+
 
             ////画像URL取得 → contentに追加
             List<string> list = OtherTool.DLG_ITEM_getURL(notification.Status);
@@ -166,7 +178,7 @@ namespace FlashCardPager
                 {
                     if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg"))
                     {
-                        if (!UserAction.bImagePre)
+                        if (!UserAction.bImagePre && !_content.Contains(add))
                         {
                             if (add.Length > 30) _content += "\r\nimg:" + add.Substring(0, 30) + "....";
                             else _content += "\r\nimg:" + add;

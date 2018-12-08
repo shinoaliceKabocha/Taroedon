@@ -37,6 +37,9 @@
             <TextView
                 android:text="content content content content content"
                 android:textSize="45px"
+				android:autoLink="web"
+				android:linksClickable="false"
+				android:textColorLink="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewContent" />

@@ -71,7 +71,7 @@ namespace FlashCardPager
 
             //avatar;
             ImageProvider imageProvider = new ImageProvider();
-            imageProvider.ImageIconSetAsync(status.Account.AvatarUrl, avatar);
+            imageProvider.ImageIconSetAsync(status.Account.StaticAvatarUrl, avatar);
             avatar.Click += (sender, e) =>
             {
                 UserAction.Profile(status.Account, view.Context);
@@ -102,7 +102,20 @@ namespace FlashCardPager
             }
 
             //content
-            string _content = OtherTool.HTML_removeTag(status.Content);
+            string _content;
+            content.SetText(Html.FromHtml(status.Content), TextView.BufferType.Spannable);
+            _content = content.Text;
+
+            try
+            {
+                _content = _content.Substring(0, _content.Length - 2);
+            }
+            catch (Exception e)
+            {
+                //_content = OtherTool.HTML_removeTag(status.Content);
+            }
+
+
 
             ////画像URL取得 → contentに追加
             List<string> list = OtherTool.DLG_ITEM_getURL(status);
@@ -110,9 +123,9 @@ namespace FlashCardPager
             {
                 if (!_content.Contains("@") && add != UserClient.instance)
                 {
-                    if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg"))
+                    if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg") )
                     {
-                        if (!UserAction.bImagePre)
+                        if (!UserAction.bImagePre && !_content.Contains(add))
                         {
                             if (add.Length > 30) _content += "\r\nimg:" + add.Substring(0, 30) + "....";
                             else _content += "\r\nimg:" + add;
@@ -137,6 +150,7 @@ namespace FlashCardPager
             }
             spannableString.SetSpan(new ForegroundColorSpan(Color.Black), 0, _content.Length, SpanTypes.ExclusiveExclusive);
             content.TextFormatted = spannableString;
+
 
 
             //created at time 
