@@ -146,6 +146,7 @@
     <Compile Include="StatusFragment.cs" />
     <Compile Include="StatusFragment2.cs" />
     <Compile Include="StatusFragment3.cs" />
+    <Compile Include="TLAction.cs" />
     <Compile Include="UserAction.cs" />
     <Compile Include="UserClient.cs" />
   </ItemGroup>

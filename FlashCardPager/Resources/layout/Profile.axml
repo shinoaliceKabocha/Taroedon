@@ -8,7 +8,7 @@
 		android:minWidth="25px"
 		android:minHeight="25px"
 		android:layout_width="fill_parent"
-		android:layout_height="200dp"
+		android:layout_height="180dp"
 		android:id="@+id/frameLayout1">
 		<ImageView
 			android:background="@color/colorPrimaryDark"
@@ -84,25 +84,12 @@
 		</LinearLayout>
 	</FrameLayout>
 
-	<ScrollView
-		android:minWidth="25px"
-		android:minHeight="25px"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-		<TextView
-			android:text="Text"
-			android:textSize="15dp"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:id="@+id/textViewNote" />
-	</ScrollView>
-
-
-
+	<ListView
+	android:minWidth="25px"
+	android:minHeight="25px"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:drawSelectorOnTop="true"
+	android:id="@+id/listViewStatusforAccount" />
 
 </LinearLayout>

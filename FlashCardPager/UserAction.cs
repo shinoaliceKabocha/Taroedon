@@ -50,7 +50,7 @@ namespace FlashCardPager
         public readonly static Color COLOR_FAILED = new Color(160, 160, 160);
         public readonly static Color COLOR_INFO = new Color(27, 49, 71);
 
-
+        public readonly static Color COLOR_TEXT = new Color(21, 21, 21);
         /**************************************************************
          *                              設定
          *************************************************************/
@@ -74,6 +74,7 @@ namespace FlashCardPager
             {
                 await clientfav.Favourite(status.Id);
                 status.Favourited = true;
+                status.FavouritesCount++;
 
                 string s = OtherTool.HTML_removeTag(status.Content);
                 ToastWithIcon_BottomFIllHorizontal_Show(FAV_SUCCESS+"\n"+s, status.Account.AvatarUrl, view, COLOR_FAV);
@@ -107,6 +108,7 @@ namespace FlashCardPager
             {
                 await clientReb.Reblog(status.Id);
                 status.Reblogged = true;
+                status.ReblogCount++;
 
                 string s = OtherTool.HTML_removeTag(status.Content);
                 ToastWithIcon_BottomFIllHorizontal_Show(BOOST_SUCCESS + "\n" +s, status.Account.StaticAvatarUrl,

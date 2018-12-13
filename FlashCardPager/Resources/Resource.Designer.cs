@@ -2705,6 +2705,9 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700e9
 			public const int listViewStatus = 2131165417;
 			
+			// aapt resource value: 0x7f0700cc
+			public const int listViewStatusforAccount = 2131165388;
+			
 			// aapt resource value: 0x7f070061
 			public const int list_item = 2131165281;
 			
@@ -2959,9 +2962,6 @@ namespace FlashCardPager
 			
 			// aapt resource value: 0x7f0700a0
 			public const int textViewMessage = 2131165344;
-			
-			// aapt resource value: 0x7f0700cc
-			public const int textViewNote = 2131165388;
 			
 			// aapt resource value: 0x7f0700df
 			public const int textViewProfile = 2131165407;

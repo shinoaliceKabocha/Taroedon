@@ -120,7 +120,7 @@ namespace FlashCardPager
                 SupportActionBar.Title = state_title + "   " + TOOLBAR_TITLE;
             };
             Setting_ToolbarTitle();
-
+            
             //FAB
             var fabButton = FindViewById<Android.Support.Design.Widget.FloatingActionButton>(Resource.Id.fab);
             fabButton.Click+=(sender, e) =>

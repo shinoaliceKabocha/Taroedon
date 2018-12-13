@@ -32,7 +32,7 @@ namespace FlashCardPager
             Display display = windowManager.DefaultDisplay;
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetRealSize(point);
-            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.75));
+            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.85));
 
             //パラメーター
             long statusId = this.Intent.GetLongExtra("statusId", -1);

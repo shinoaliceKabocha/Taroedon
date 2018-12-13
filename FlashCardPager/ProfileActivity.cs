@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -15,6 +15,7 @@ using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using Mastonet.Entities;
 
 namespace FlashCardPager
 {
@@ -35,6 +36,10 @@ namespace FlashCardPager
         readonly Color COLOR_UNFOLLOW_SUCCESS = new Color(127, 176, 255);
         readonly Color COLOR_UNFOLLOW_FAILED = UserAction.COLOR_FAILED;
 
+        List<Mastonet.Entities.Status> statuses = new List<Mastonet.Entities.Status>();
+        private ListView mListView;
+        private StatusAdapter mStatusAdapter;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -44,13 +49,17 @@ namespace FlashCardPager
             Display display = windowManager.DefaultDisplay;
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetRealSize(point);
-            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.60));
-
+            Window.SetLayout((int)(point.X * 0.98), (int)(point.Y * 0.85));
 
             var imageViewAvatar = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
             ImageProvider imageProvider = new ImageProvider();
             //imageProvider.ImageIconSetAsync(this.Intent.GetStringExtra("avatar"), imageViewAvatar);//Cache
-            setImageViewAsync(this.Intent.GetStringExtra("avatar"), imageViewAvatar);
+            string avatar_url = this.Intent.GetStringExtra("avatar");
+            setImageViewAsync(avatar_url, imageViewAvatar);
+            imageViewAvatar.Click += (sender, e) =>
+            {
+                UserAction.UrlOpen(avatar_url, imageViewAvatar);
+            };
 
             var imageViewHeader = FindViewById<ImageView>(Resource.Id.imageViewHeader);
             setImageViewAsync(this.Intent.GetStringExtra("header"), imageViewHeader);
@@ -66,13 +75,6 @@ namespace FlashCardPager
             string displayName = this.Intent.GetStringExtra("display_name");
             FindViewById<TextView>(Resource.Id.textView_DisplayName).Text = displayName;
 
-
-            string note = this.Intent.GetStringExtra("note");
-            var noteText = FindViewById<TextView>(Resource.Id.textViewNote);
-            noteText.SetText(Html.FromHtml(note), TextView.BufferType.Spannable);
-            noteText.MovementMethod = new LocalLinkMovementMethod();
-
-
             string ff = "Follow:"+this.Intent.GetStringExtra("follow") + "  Follower:" + this.Intent.GetStringExtra("follower");
             TextView textViewFF = FindViewById<TextView>(Resource.Id.textViewFF);
             textViewFF.Text = ff;
@@ -81,10 +83,6 @@ namespace FlashCardPager
             long id = this.Intent.GetLongExtra("id", 0);
             Button buttonFF = FindViewById<Button>(Resource.Id.buttonFollow);
             ContentSet_From_RelationshipsAsync(accountName, id, buttonFF, textViewFF);
-
-            buttonFF.LongClick += (sender, e) =>
-            {
-            };
 
             buttonFF.Click += (sender, e) =>
             {
@@ -167,6 +165,63 @@ namespace FlashCardPager
                 }
             };
 
+            //tweet list
+            mListView = FindViewById<ListView>(Resource.Id.listViewStatusforAccount);
+
+            string note = this.Intent.GetStringExtra("note");
+            TextView noteText = new TextView(this);
+            noteText.SetPadding(25, 10, 25, 0);
+            noteText.SetText(Html.FromHtml(note), TextView.BufferType.Spannable);
+            noteText.SetLinkTextColor(GetColorStateList(Resource.Color.colorAccent));
+            noteText.MovementMethod = new LocalLinkMovementMethod();
+            mListView.AddHeaderView(noteText);
+
+            //tweet list set
+            LayoutInflater layoutInflater = LayoutInflater.From(this);
+            SetAccountStatusesAsync(id, mListView, mStatusAdapter, layoutInflater);
+
+            //イベント
+            mListView.ItemClick += (sender, e) =>
+            {
+                Status st = statuses[e.Position -1];//注意！！
+                View view = this.FindViewById(Android.Resource.Id.Content);
+                UserAction.ListViewItemClick(st, view);
+            };
+            //ショートカット
+            mListView.ItemLongClick += (sender, e) =>
+            {
+                try
+                {
+                    int select = e.Position - 1;//注意！！
+                    var status = statuses[select];
+                    try
+                    {
+                        //投稿がリツイートサれたものである場合は，もとの取得先を手に入れる
+                        var re_status = status.Reblog;
+                        if (re_status != null) status = re_status;
+                    }
+                    catch (Exception ex) { }
+
+                    UserAction.Fav(status, this.FindViewById(Android.Resource.Id.Content));
+                }
+                catch(Exception ex) { /*nothing*/}
+
+            };
+            //swipe down
+            mListView.ScrollStateChanged += Listview_ScrollStateChanged;
+        }
+
+        private async void SetAccountStatusesAsync(long id, ListView listview, StatusAdapter adapter, LayoutInflater layoutInflater)
+        {
+            Mastonet.MastodonClient client = new UserClient().getClient();
+            statuses = await client.GetAccountStatuses(id);
+            mStatusAdapter = new StatusAdapter(layoutInflater, statuses);
+
+            mListView.Adapter = mStatusAdapter;
+            
+            mStatusAdapter.NotifyDataSetChanged();
+
+            
         }
 
         private async void setImageViewAsync(string url, ImageView imageView)
@@ -222,7 +277,42 @@ namespace FlashCardPager
             }
 
         }
+
+        /***************************************************************
+         *                   スクロール
+         **************************************************************/
+        private void Listview_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
+        {
+            if (mListView.LastVisiblePosition == (mListView.Count - 1))
+            {
+                mListView.ScrollStateChanged -= Listview_ScrollStateChanged;
+
+                Status s = statuses[statuses.Count - 1];
+                GetTLdown(s);
+            }
+
+        }
+        private async Task GetTLdown(Status status)
+        {
+            var mstdnlist = await new UserClient().getClient().GetAccountStatuses(status.Account.Id, status.Id);
+            if (mstdnlist == null)
+            {
+                UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this.ApplicationContext, UserAction.COLOR_FAILED);
+            }
+            foreach (Status s in mstdnlist)
+            {
+                if (!statuses.Contains(s)) statuses.Add(s);
+            }
+
+            mStatusAdapter.NotifyDataSetChanged();
+            mListView.ScrollStateChanged += Listview_ScrollStateChanged;
+        }
+
     }
+
+
+
+
 
     public class LocalLinkMovementMethod : Android.Text.Method.LinkMovementMethod
     {

@@ -148,18 +148,22 @@ namespace FlashCardPager
                     spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
                 }
             }
-            spannableString.SetSpan(new ForegroundColorSpan(Color.Black), 0, _content.Length, SpanTypes.ExclusiveExclusive);
+            spannableString.SetSpan(new ForegroundColorSpan(UserAction.COLOR_TEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
             content.TextFormatted = spannableString;
 
 
 
             //created at time 
             createdat.SetTextColor(Color.DarkGray);
+            createdat.Text = "";
+            if (accountname != status.Account.AccountName)
+            {
+                createdat.Text
+                    += "Boosted by " + displayname + "@" + accountname + "\r\n";
+            }
 
-            if (accountname != status.Account.AccountName) createdat.Text
-                    = "Boosted by " + displayname + "@" + accountname + "\r\n" + status.CreatedAt.ToLocalTime();
-            else
-                createdat.Text = status.CreatedAt.ToLocalTime() + "";
+            createdat.Text += "Fav:" + status.FavouritesCount + "  Boost:" + status.ReblogCount + "  "
+                + status.CreatedAt.ToLocalTime() + "";
 
 
             //プレビューを使う

@@ -200,15 +200,14 @@ namespace FlashCardPager
                     spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
                 }
             }
-            spannableString.SetSpan(new ForegroundColorSpan(Color.Black), 0, _content.Length, SpanTypes.ExclusiveExclusive);
+            spannableString.SetSpan(new ForegroundColorSpan(UserAction.COLOR_TEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
             content.TextFormatted = spannableString;
 
 
-            //content.SetTextColor(Color.Black);
-            //content.Text = _content;
-
             createdat.SetTextColor(Color.DarkGray);
-            createdat.Text = notification.Status.CreatedAt.ToLocalTime().ToString();
+            createdat.Text = "Fav:" + notification.Status.FavouritesCount + "  Boost:" + notification.Status.ReblogCount + "  "
+                + notification.Status.CreatedAt.ToLocalTime() + "";
+
 
             if(notification.Status != null && UserAction.bImagePre==true)
             {
