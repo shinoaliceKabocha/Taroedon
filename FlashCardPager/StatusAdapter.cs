@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Android.App;
@@ -55,7 +56,7 @@ namespace FlashCardPager
 
             var view = convertView;
             view = inflater.Inflate(Resource.Layout.Status, parent, false);
-            view.SetBackgroundColor(Color.AliceBlue);
+            view.SetBackgroundColor(ColorDatabase.TL_BACK);
 
             //表示内容の設定
             ImageView avatar = view.FindViewById<ImageView>(Resource.Id.imageViewAvatar);
@@ -78,12 +79,12 @@ namespace FlashCardPager
             };
 
             //profile
-            profile.SetTextColor(Color.DarkOliveGreen);
+            profile.SetTextColor(ColorDatabase.PROFILE);
             ////ブーストされてるか判断する
             if (accountname != status.Account.AccountName)
             {
-                profile.SetTextColor(new Color(45, 45, 45));
-                view.SetBackgroundColor(new Color(211, 244, 203));
+                //profile.SetTextColor(ColorDatabase.TLTEXT);
+                view.SetBackgroundColor(ColorDatabase.BOOST_BACK);
             }
             if(status.Visibility == Visibility.Private)
             {
@@ -98,7 +99,7 @@ namespace FlashCardPager
             //replyを確認する
             if(status.Content.Contains("@"+UserClient.currentAccountName))
             {
-                view.SetBackgroundColor(new Color(255, 226, 216));
+                view.SetBackgroundColor(ColorDatabase.REPLY_BACK);
             }
 
             //content
@@ -112,7 +113,6 @@ namespace FlashCardPager
             }
             catch (Exception e)
             {
-                //_content = OtherTool.HTML_removeTag(status.Content);
             }
 
 
@@ -148,13 +148,13 @@ namespace FlashCardPager
                     spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
                 }
             }
-            spannableString.SetSpan(new ForegroundColorSpan(UserAction.COLOR_TEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
+            spannableString.SetSpan(new ForegroundColorSpan(ColorDatabase.TLTEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
             content.TextFormatted = spannableString;
 
 
 
             //created at time 
-            createdat.SetTextColor(Color.DarkGray);
+            createdat.SetTextColor(ColorDatabase.TIME);
             createdat.Text = "";
             if (accountname != status.Account.AccountName)
             {

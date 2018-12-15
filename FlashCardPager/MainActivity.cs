@@ -19,19 +19,25 @@ namespace FlashCardPager
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.Main);
+
             try
             {
-                //varsionアップ時の対応
-                var pm = this.PackageManager;
-                var versionCode = pm.GetPackageInfo(this.PackageName, 0).VersionCode;
-                if(versionCode < 10)
-                {
-                    UserAction.CacheClear();
-                    UserAction.Toast_BottomFIllHorizontal_Show("アプリ更新したときに，データ構成を変えました\n一時Cacheを削除します", this, UserAction.COLOR_INFO);
-                }
+                ////varsionアップ時の対応
+                //var pm = this.PackageManager;
+                //var versionCode = pm.GetPackageInfo(this.PackageName, 0).VersionCode;
+                //if(versionCode < 10)
+                //{
+                //    UserAction.CacheClear();
+                //    UserAction.Toast_BottomFIllHorizontal_Show("アプリ更新したときに，データ構成を変えました\n一時Cacheを削除します", this, UserAction.COLOR_INFO);
+                //}
 
                 //setting load
                 var pref = GetSharedPreferences("SETTING", FileCreationMode.Private);
+                ColorDatabase.mode = pref.GetBoolean("theme", false);
+                //Colorセットがロードされるタイミングに注意
+
                 UserAction.SettingsLoad(pref);
 
                 pref = GetSharedPreferences("USER", FileCreationMode.Private);//file name + style
@@ -53,7 +59,7 @@ namespace FlashCardPager
             }
             catch(Exception e)
             {
-                UserAction.Toast_BottomFIllHorizontal_Show("ユーザ情報が破損したようです．\nすいませんが再登録してください．．．", this, UserAction.COLOR_INFO);
+                UserAction.Toast_BottomFIllHorizontal_Show("ユーザ情報が破損したようです．\nすいませんが再登録してください．．．", this, ColorDatabase.INFO);
                 Intent intent1 = new Intent(this, typeof(SettingsActivity));
                 StartActivity(intent1);
                 Finish();
@@ -70,24 +76,23 @@ namespace FlashCardPager
             }
             catch(Java.Net.UnknownHostException e)
             {
-                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, UserAction.COLOR_INFO);
+                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, ColorDatabase.INFO);
                 this.Finish();
             }
             catch(Exception e)
             {
-                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, UserAction.COLOR_INFO);
+                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, ColorDatabase.INFO);
                 Finish();
             }
 
 
-            base.OnCreate(savedInstanceState);
 
-            // Set the content view from the "Main" layout resource:
-            SetContentView(Resource.Layout.Main);
+
             //fragment make -> push
             StatusDeck statusDeck = new StatusDeck();
             StatusDeckAdapter adapter = new StatusDeckAdapter(SupportFragmentManager, statusDeck);
             ViewPager pager = (ViewPager)FindViewById(Resource.Id.pager);
+            pager.SetBackgroundColor(ColorDatabase.TL_BACK);
             pager.Adapter = adapter;
 
             //バグ対策？

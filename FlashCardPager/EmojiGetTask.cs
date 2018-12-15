@@ -63,16 +63,24 @@ namespace FlashCardPager
                 if( !BinaryManager.isEmojiCache(e.shortcode))
                 {
                     byte[] imageBytes = null;
-                    using(var webClient = new WebClient())
+                    try
                     {
-                        imageBytes = await webClient.DownloadDataTaskAsync(new Uri(e.static_url));
-                        if(imageBytes != null)
+                        using (var webClient = new WebClient())
                         {
-                            Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
-                            bitmap = Bitmap.CreateScaledBitmap(bitmap, 60, 60, false);
-                            BinaryManager.WriteImage_To_Emoji(e.shortcode, bitmap);
+                            imageBytes = await webClient.DownloadDataTaskAsync(new Uri(e.static_url));
+                            if (imageBytes != null)
+                            {
+                                Bitmap bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);//byte -> bitmpap
+                                bitmap = Bitmap.CreateScaledBitmap(bitmap, 60, 60, false);
+                                BinaryManager.WriteImage_To_Emoji(e.shortcode, bitmap);
+                            }
                         }
                     }
+                    catch(Exception ex1)
+                    {
+                        /* error */
+                    }
+
                 }
             }
 

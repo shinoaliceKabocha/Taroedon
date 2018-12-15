@@ -94,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:id="@+id/textViewCreatedAt" />
+			
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

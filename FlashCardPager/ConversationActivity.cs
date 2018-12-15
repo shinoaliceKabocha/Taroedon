@@ -40,6 +40,7 @@ namespace FlashCardPager
 
             ////regist
             mListView = this.FindViewById<ListView>(Resource.Id.listViewConversation);
+            mListView.SetBackgroundColor(ColorDatabase.TL_BACK);
             LayoutInflater layoutInflater = LayoutInflater.From(this);
             mStatusAdapter = new StatusAdapter(layoutInflater, statuses);
             mListView.Adapter = mStatusAdapter;

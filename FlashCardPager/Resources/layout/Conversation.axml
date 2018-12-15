@@ -15,5 +15,7 @@
 		android:minHeight="25px"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:fastScrollEnabled="true"
+		android:divider="@android:color/transparent"
 		android:id="@+id/listViewConversation" />
 </android.support.design.widget.CoordinatorLayout>

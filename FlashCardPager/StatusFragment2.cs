@@ -32,8 +32,6 @@ namespace FlashCardPager
         public static StatusFragment2 newInstance()
         {
             StatusFragment2 fragment = new StatusFragment2();
-            //customStatuses = ls;
-
             return fragment;
         }
 

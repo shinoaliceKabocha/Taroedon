@@ -134,9 +134,8 @@ namespace FlashCardPager
                     string notifyStr = e.Status.Account.DisplayName +"@"+ e.Status.Account.AccountName +"Ç≥ÇÒÇ©ÇÁÇ∆Ç£Å[Ç∆";
                     string s = OtherTool.HTML_removeTag(e.Status.Content);
                     notifyStr += "\n" + s;
-                    //UserAction.Toast_TopFIllHorizontal_Show(notifyStr, this.Context, new Android.Graphics.Color(255, 131, 109));
                     View view = View.Inflate(this.Context, Resource.Layout.StatusListView_Fragment, null);
-                    UserAction.ToastWithIcon_TopFIllHorizontal_Show(notifyStr, e.Status.Account.AvatarUrl, view, new Android.Graphics.Color(255, 131, 109));
+                    UserAction.ToastWithIcon_TopFIllHorizontal_Show(notifyStr, e.Status.Account.AvatarUrl, view, ColorDatabase.REPLY);
                 }
 
             };

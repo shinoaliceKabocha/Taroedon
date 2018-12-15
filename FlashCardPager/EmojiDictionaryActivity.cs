@@ -26,6 +26,7 @@ namespace FlashCardPager
             List<EmojiItem> emojiItems = GetEmojiItems();
 
             var listView = FindViewById<ListView>(Resource.Id.listViewEmojiDictionary);
+            listView.SetBackgroundColor(ColorDatabase.TL_BACK);
             CustomListAdapter customListAdapter = new CustomListAdapter(this, emojiItems);
             listView.Adapter = customListAdapter;
             customListAdapter.NotifyDataSetChanged();
@@ -106,6 +107,8 @@ namespace FlashCardPager
 
             icon.SetImageBitmap(bitmap);
             shortCode.Text = emojiItem.Shortcode;
+
+            shortCode.SetTextColor(ColorDatabase.TLTEXT);
 
             return view;
         }

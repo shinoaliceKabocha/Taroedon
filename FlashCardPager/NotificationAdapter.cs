@@ -79,7 +79,7 @@ namespace FlashCardPager
             //name
             string accountname = notification.Account.AccountName;
             string displayname = notification.Account.DisplayName;
-            profile.SetTextColor(new Color(45,45,45));
+            profile.SetTextColor(ColorDatabase.PROFILE);
 
 
             //対応
@@ -88,15 +88,15 @@ namespace FlashCardPager
             //follow
             if (type.Equals("follow"))
             {
-                //profile.SetTextColor(Color.DarkBlue);
-                view.SetBackgroundColor(new Color(191, 216, 255));
+                profile.SetTextColor(ColorDatabase.TLTEXT);
+                view.SetBackgroundColor(ColorDatabase.FF_BACK);
                 profile.Text = displayname + accountname + "さんからフォロー";
 
-                content.SetTextColor(Color.Black);
+                content.SetTextColor(ColorDatabase.TLTEXT);
                 content.Text = displayname + "さんのプロフィール\n";
                 content.Text += OtherTool.HTML_removeTag(notification.Account.Note);
 
-                createdat.SetTextColor(Color.DarkGray);
+                createdat.SetTextColor(ColorDatabase.TIME);
                 createdat.Text = notification.CreatedAt.ToLocalTime().ToString();
 
                 for (int k = 0; k < 4; k++)
@@ -126,23 +126,20 @@ namespace FlashCardPager
                 //fav
                 if (type.Equals("favourite"))
                 {
-                    //profile.SetTextColor(Color.DarkOrange);
-                    view.SetBackgroundColor(new Color(255, 249, 216));
+                    view.SetBackgroundColor(ColorDatabase.FAV_BACK);
                     profile.Text += displayname + accountname + "さんからふぁぼられた";
 
                 }
                 //rebolog
                 else if (type.Equals("reblog"))
                 {
-                    //profile.SetTextColor(Color.DarkGreen);
-                    view.SetBackgroundColor(new Color(211,244,203));
+                    view.SetBackgroundColor(ColorDatabase.BOOST_BACK);
                     profile.Text += displayname + accountname + "さんからぶーすとされた";
                 }
                 //mention
                 else if (type.Equals("mention"))
                 {
-                    //profile.SetTextColor(Color.DarkMagenta);
-                    view.SetBackgroundColor(new Color(255, 226, 216));
+                    view.SetBackgroundColor(ColorDatabase.REPLY_BACK);
                     profile.Text += displayname + accountname + "さんからとぅーと!";
                 }
                 else
@@ -200,11 +197,11 @@ namespace FlashCardPager
                     spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
                 }
             }
-            spannableString.SetSpan(new ForegroundColorSpan(UserAction.COLOR_TEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
+            spannableString.SetSpan(new ForegroundColorSpan(ColorDatabase.TLTEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
             content.TextFormatted = spannableString;
 
 
-            createdat.SetTextColor(Color.DarkGray);
+            createdat.SetTextColor(ColorDatabase.TIME);
             createdat.Text = "Fav:" + notification.Status.FavouritesCount + "  Boost:" + notification.Status.ReblogCount + "  "
                 + notification.Status.CreatedAt.ToLocalTime() + "";
 

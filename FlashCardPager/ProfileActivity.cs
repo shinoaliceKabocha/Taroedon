@@ -30,11 +30,11 @@ namespace FlashCardPager
         readonly string FOLLOW_FAIL = "フォローに失敗しました";
         readonly string UNFOLLOW_SUCCESS = "アンフォローしました";
         readonly string UNFOLLOW_FAIL = "アンフォローに失敗しました";
-        readonly Color COLOR_FOLLOW_SUCCESS = new Color(127, 176, 255);//Blue
-        readonly Color COLOR_FOLLOW_REQUEST = new Color(127, 176, 255);
-        readonly Color COLOR_FOLLOW_FAILED = UserAction.COLOR_FAILED;
-        readonly Color COLOR_UNFOLLOW_SUCCESS = new Color(127, 176, 255);
-        readonly Color COLOR_UNFOLLOW_FAILED = UserAction.COLOR_FAILED;
+        readonly Color COLOR_FOLLOW_SUCCESS = ColorDatabase.FOLLOW;
+        readonly Color COLOR_FOLLOW_REQUEST = ColorDatabase.FOLLOW;
+        readonly Color COLOR_FOLLOW_FAILED = ColorDatabase.FAILED;
+        readonly Color COLOR_UNFOLLOW_SUCCESS = ColorDatabase.FOLLOW;
+        readonly Color COLOR_UNFOLLOW_FAILED = ColorDatabase.FAILED;
 
         List<Mastonet.Entities.Status> statuses = new List<Mastonet.Entities.Status>();
         private ListView mListView;
@@ -53,9 +53,9 @@ namespace FlashCardPager
 
             var imageViewAvatar = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
             ImageProvider imageProvider = new ImageProvider();
-            //imageProvider.ImageIconSetAsync(this.Intent.GetStringExtra("avatar"), imageViewAvatar);//Cache
             string avatar_url = this.Intent.GetStringExtra("avatar");
-            setImageViewAsync(avatar_url, imageViewAvatar);
+            imageProvider.ImageIconSetAsync(avatar_url, imageViewAvatar);//Cache
+
             imageViewAvatar.Click += (sender, e) =>
             {
                 UserAction.UrlOpen(avatar_url, imageViewAvatar);
@@ -167,18 +167,24 @@ namespace FlashCardPager
 
             //tweet list
             mListView = FindViewById<ListView>(Resource.Id.listViewStatusforAccount);
+            mListView.SetBackgroundColor(ColorDatabase.TL_BACK);
 
             string note = this.Intent.GetStringExtra("note");
             TextView noteText = new TextView(this);
+            noteText.SetTextColor(ColorDatabase.TLTEXT);
             noteText.SetPadding(25, 10, 25, 0);
             noteText.SetText(Html.FromHtml(note), TextView.BufferType.Spannable);
-            noteText.SetLinkTextColor(GetColorStateList(Resource.Color.colorAccent));
+            noteText.SetLinkTextColor(GetColorStateList(ColorDatabase.TLLINK));
             noteText.MovementMethod = new LocalLinkMovementMethod();
             mListView.AddHeaderView(noteText);
 
             //tweet list set
             LayoutInflater layoutInflater = LayoutInflater.From(this);
             SetAccountStatusesAsync(id, mListView, mStatusAdapter, layoutInflater);
+
+            //profile icon get あとでとれるように それまではCache
+            setImageViewAsync(avatar_url, imageViewAvatar);
+
 
             //イベント
             mListView.ItemClick += (sender, e) =>
@@ -297,7 +303,7 @@ namespace FlashCardPager
             var mstdnlist = await new UserClient().getClient().GetAccountStatuses(status.Account.Id, status.Id);
             if (mstdnlist == null)
             {
-                UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this.ApplicationContext, UserAction.COLOR_FAILED);
+                UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this.ApplicationContext, ColorDatabase.FAILED);
             }
             foreach (Status s in mstdnlist)
             {

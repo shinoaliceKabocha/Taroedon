@@ -127,7 +127,6 @@
     <Compile Include="ConversationActivity.cs" />
     <Compile Include="EmojiDictionaryActivity.cs" />
     <Compile Include="EmojiGetTask.cs" />
-    <Compile Include="ImageGetTask.cs" />
     <Compile Include="ImageProvider.cs" />
     <Compile Include="ImageUploadSyncTask.cs" />
     <Compile Include="LicenseActivity.cs" />
@@ -146,7 +145,7 @@
     <Compile Include="StatusFragment.cs" />
     <Compile Include="StatusFragment2.cs" />
     <Compile Include="StatusFragment3.cs" />
-    <Compile Include="TLAction.cs" />
+    <Compile Include="ColorDatabase.cs" />
     <Compile Include="UserAction.cs" />
     <Compile Include="UserClient.cs" />
   </ItemGroup>

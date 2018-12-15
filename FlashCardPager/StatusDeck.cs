@@ -13,21 +13,6 @@ using Mastonet.Entities;
 
 namespace FlashCardPager
 {
-    //public class CustomStatus 
-    //{
-    //    public string username, content, createdAt;
-    //    public string UserName { get { return username; } }
-    //    public string Content { get { return content; } }
-    //    public string CreatedAt { get { return createdAt; } }
-
-    //    public CustomStatus(string u, string con, string cre)
-    //    {
-    //        this.username = u;
-    //        this.content = con;
-    //        this.createdAt = cre;
-    //    }
-    //}
-
     public class StatusDeck
     {
         static List<Status>[] statuses_vs = new List<Status>[]

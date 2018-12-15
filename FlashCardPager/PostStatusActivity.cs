@@ -42,6 +42,8 @@ namespace FlashCardPager
 
             //Edittext にTextwatcherを仕込む
             var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
+            edittext.SetTextColor(ColorDatabase.TLTEXT);
+            edittext.SetBackgroundColor(ColorDatabase.TL_BACK);
             edittext.AddTextChangedListener(this);
 
 
@@ -121,7 +123,6 @@ namespace FlashCardPager
 
             //SPIN settings
             Spinner spin = FindViewById<Spinner>(Resource.Id.spinnerTootRange);
-            //spin.Background = button_post.Background;
 
             ArrayAdapter spin_adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerItem);
             List<string> spin_list = new List<string>() { "1. Public", "2. Private", "3. Direct", "4. Unlisted" };
@@ -185,12 +186,12 @@ namespace FlashCardPager
                 }
                 catch (System.Exception ex)
                 {
-                    UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, UserAction.COLOR_FAILED);
+                    UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, ColorDatabase.FAILED);
                 }
             }
             else
             {
-                UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, UserAction.COLOR_FAILED);
+                UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, ColorDatabase.FAILED);
             }
         }
 
@@ -248,7 +249,7 @@ namespace FlashCardPager
                         }
                         catch(System.Exception e)
                         {
-                            UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, UserAction.COLOR_FAILED);
+                            UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, ColorDatabase.FAILED);
                         }
                         finally
                         {

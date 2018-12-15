@@ -61,7 +61,7 @@ namespace FlashCardPager
                 }
                 catch (Exception ex)
                 {
-                    UserAction.Toast_BottomFIllHorizontal_Show("インスタンス名がおかしいか\nネットワークが不安定かも", this, UserAction.COLOR_FAILED);
+                    UserAction.Toast_BottomFIllHorizontal_Show("インスタンス名がおかしいか\nネットワークが不安定かも", this, ColorDatabase.FAILED);
                 }
             };
 
@@ -79,13 +79,13 @@ namespace FlashCardPager
                     editor.PutString("redirectUri", "urn:ietf:wg:oauth:2.0:oob");
                     editor.Commit();
 
-                    UserAction.Toast_BottomFIllHorizontal_Show("認証に成功しました！\nアプリを再起動してください", this, UserAction.COLOR_INFO);
+                    UserAction.Toast_BottomFIllHorizontal_Show("認証に成功しました！\nアプリを再起動してください", this, ColorDatabase.FAILED);
                     UserAction.CacheClear();
-                    Finish();
+                    FinishAndRemoveTask();
                 }
                 catch(Exception ex)
                 {
-                    UserAction.Toast_BottomFIllHorizontal_Show("コードが間違っているか\n認証に失敗しました", this, UserAction.COLOR_FAILED);
+                    UserAction.Toast_BottomFIllHorizontal_Show("コードが間違っているか\n認証に失敗しました", this, ColorDatabase.FAILED);
 
                 }
             };

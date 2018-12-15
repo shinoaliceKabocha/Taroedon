@@ -76,6 +76,18 @@ namespace FlashCardPager
                 UserAction.bImageQuality = mImageQuolity.Checked;
             };
 
+            //テーマ
+            var mTheme = FindViewById<Switch>(Resource.Id.switchTheme);
+            mTheme.Checked = ColorDatabase.mode;
+            mTheme.CheckedChange += (sender, e) =>
+            {
+                editor.PutBoolean("theme", mTheme.Checked);
+                editor.Commit();
+                ColorDatabase.mode = mTheme.Checked;
+                UserAction.Toast_BottomFIllHorizontal_Show("次回起動時に反映されます", this, ColorDatabase.INFO);
+            };
+
+
             //CacheClear
             //textViewCacheClearh
             var textViewCacheClearh = FindViewById<TextView>(Resource.Id.textViewCacheClearh);
@@ -91,7 +103,7 @@ namespace FlashCardPager
                         try
                         {
                             UserAction.CacheClear();
-                            UserAction.Toast_BottomFIllHorizontal_Show("キャッシュデータを削除しました．\n再起動してください", this, UserAction.COLOR_INFO);
+                            UserAction.Toast_BottomFIllHorizontal_Show("キャッシュデータを削除しました．\n再起動してください", this, ColorDatabase.INFO);
                         }
                         catch(IOException ex)
                         {

@@ -65,6 +65,16 @@ namespace FlashCardPager
                     Log.Error(TAG, e.Message);
                     image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery
                 }
+                catch (WebException e)
+                {
+                    Log.Error(TAG, e.Message);
+                    image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery
+                }
+                catch (ArgumentException e)
+                {
+                    Log.Error(TAG, e.Message);
+                    image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery
+                }
             }
         }
 
@@ -119,6 +129,16 @@ namespace FlashCardPager
                     image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery
                 }
                 catch (System.IO.IOException e)
+                {
+                    Log.Error(TAG, e.Message);
+                    image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery
+                }
+                catch (WebException e)
+                {
+                    Log.Error(TAG, e.Message);
+                    image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery
+                }
+                catch (ArgumentException e)
                 {
                     Log.Error(TAG, e.Message);
                     image.SetImageResource(Android.Resource.Drawable.IcMenuGallery); //ic_menu_gallery

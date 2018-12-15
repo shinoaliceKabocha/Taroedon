@@ -29,6 +29,7 @@ namespace FlashCardPager
         public static bool bDisplay =true;
         public static bool bImagePre = true;
         public static bool bImageQuality = false;
+        //public static bool bTheme = false;
 
 
         /*******************************************************
@@ -45,12 +46,12 @@ namespace FlashCardPager
         public readonly static string URL_FAILED = "URLの取得に失敗しました";
         public readonly static string UNKNOWN = "何かがおかしいよ";
 
-        public readonly static Color COLOR_FAV = new Color(193, 151, 0);
-        public readonly static Color COLOR_BOOST = new Color(61, 153, 0);
-        public readonly static Color COLOR_FAILED = new Color(160, 160, 160);
-        public readonly static Color COLOR_INFO = new Color(27, 49, 71);
+        //readonly static Color COLOR_FAV = ColorDatabase.FAV;
+        //readonly static Color COLOR_BOOST = ColorDatabase.BOOST;
+        //readonly static Color COLOR_FAILED = ColorDatabase.FAILED;
+        //readonly static Color COLOR_INFO = ColorDatabase.INFO;
 
-        public readonly static Color COLOR_TEXT = new Color(21, 21, 21);
+        //readonly static Color COLOR_TEXT = ColorDatabase.TLTEXT;
         /**************************************************************
          *                              設定
          *************************************************************/
@@ -61,6 +62,7 @@ namespace FlashCardPager
             bDisplay = pref.GetBoolean("display", true);
             bImagePre = pref.GetBoolean("imagePre", true);
             bImageQuality = pref.GetBoolean("imageQuality", false);
+            //bTheme = pref.GetBoolean("theme", false);//外出ししないとだめ
         }
 
 
@@ -77,11 +79,11 @@ namespace FlashCardPager
                 status.FavouritesCount++;
 
                 string s = OtherTool.HTML_removeTag(status.Content);
-                ToastWithIcon_BottomFIllHorizontal_Show(FAV_SUCCESS+"\n"+s, status.Account.AvatarUrl, view, COLOR_FAV);
+                ToastWithIcon_BottomFIllHorizontal_Show(FAV_SUCCESS+"\n"+s, status.Account.AvatarUrl, view, ColorDatabase.FAV);
             }
             catch (System.Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(FAV_FAILED, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(FAV_FAILED, view.Context, ColorDatabase.FAILED);
             }
         }
 
@@ -89,7 +91,7 @@ namespace FlashCardPager
         {
             if (status.Favourited.Equals(true))
             {
-                Toast_BottomFIllHorizontal_Show(UNFAV, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(UNFAV, view.Context, ColorDatabase.FAILED);
             }
             else
             {
@@ -112,11 +114,11 @@ namespace FlashCardPager
 
                 string s = OtherTool.HTML_removeTag(status.Content);
                 ToastWithIcon_BottomFIllHorizontal_Show(BOOST_SUCCESS + "\n" +s, status.Account.StaticAvatarUrl,
-                    view, COLOR_BOOST);
+                    view, ColorDatabase.BOOST);
             }
             catch (System.Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(BOOST_FAILED, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(BOOST_FAILED, view.Context, ColorDatabase.FAILED);
             }
         }
 
@@ -124,7 +126,7 @@ namespace FlashCardPager
         {
             if (status.Reblogged.Equals(true))
             {
-                Toast_BottomFIllHorizontal_Show(UNBOOT, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(UNBOOT, view.Context, ColorDatabase.FAILED);
             }
             else
             {
@@ -154,7 +156,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
             }
         }
 
@@ -170,7 +172,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
             }
         }
 
@@ -186,7 +188,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
             }
         }
 
@@ -230,18 +232,6 @@ namespace FlashCardPager
                 itemlist.Add(SHOW_THE_CONVERSATION);
             }
 
-            //リプライ先アカウント
-            //var replyToAccountId = status.InReplyToAccountId.GetValueOrDefault(-1);
-            //Account replyAccount = null;
-            //if (replyToAccountId != -1)
-            //{
-            //    replyAccount = await GetAccountAsync(replyToAccountId);
-            //    if (replyAccount != null)
-            //    {
-            //        itemlist.Add(replyAccount.DisplayName + "@" + replyAccount.UserName);
-            //    }
-            //}
-
 
             //URL，画像の取得
             foreach (string add in OtherTool.DLG_ITEM_getURL(status))
@@ -254,7 +244,6 @@ namespace FlashCardPager
             try
             {
                 var dlg = new Android.App.AlertDialog.Builder(view.Context);
-
                 dlg.SetTitle(status.Account.DisplayName + "@" + status.Account.UserName
                     + "さん\r\n" + OtherTool.HTML_removeTag(status.Content));
                 dlg.SetItems(items, (s, ee) =>
@@ -290,23 +279,6 @@ namespace FlashCardPager
                                break;
                            }
 
-                           //リプライ先アカウント
-                           //try
-                           //{
-                           //    if (urlOrAccountName.Contains(replyAccount.UserName) && urlOrAccountName.Contains(replyAccount.DisplayName))
-                           //    {
-                           //        UserAction.Profile(replyAccount, view.Context);
-                           //    }
-                           //    else
-                           //    {
-                           //        UserAction.UrlOpen(urlOrAccountName, view);
-                           //    }
-                           //}
-                           //catch (NullReferenceException nullexception)
-                           //{
-                           //    UserAction.UrlOpen(urlOrAccountName, view);
-                           //}
-
                            //urls
                            UserAction.UrlOpen(urlOrAccountName, view);
                            break;
@@ -317,7 +289,7 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, COLOR_FAILED);
+                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
             }
         }
 
@@ -341,23 +313,6 @@ namespace FlashCardPager
             context.StartActivity(intent);
         }
 
-
-        /*
-        *get replay account
-        */
-        //private static async Task<Account> GetAccountAsync(long accountId)
-        //{
-        //    var client = new UserClient().getClient();
-        //    try
-        //    {
-        //        var account = await client.GetAccount(accountId);
-        //        return account;
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        return null;
-        //    }
-        //}
 
 
         //Cacheクリア
@@ -397,7 +352,7 @@ namespace FlashCardPager
             toast.View.SetBackgroundColor(color);
 
             TextView textView = toast.View.FindViewById<TextView>(Android.Resource.Id.Message);
-            if (color.Equals(UserAction.COLOR_INFO))
+            if (color.Equals(ColorDatabase.INFO))
             {
                 textView.SetTextColor(Color.White);
             }
@@ -427,7 +382,7 @@ namespace FlashCardPager
             layout.SetBackgroundColor(color);
             var textView = layout.FindViewById<TextView>(Resource.Id.textViewToast);
             textView.Text = str;
-            if (color.Equals(UserAction.COLOR_INFO))
+            if (color.Equals(ColorDatabase.INFO))
             {
                 textView.SetTextColor(Color.White);
             }
@@ -450,7 +405,7 @@ namespace FlashCardPager
             layout.SetBackgroundColor(color);
             var textView = layout.FindViewById<TextView>(Resource.Id.textViewToast);
             textView.Text = str;
-            if (color.Equals(UserAction.COLOR_INFO))
+            if (color.Equals(ColorDatabase.INFO))
             {
                 textView.SetTextColor(Color.White);
             }
@@ -469,6 +424,7 @@ namespace FlashCardPager
 
     }
 
+    /*non-use class*/
     public class MstWebViewClient : WebViewClient
     {
         // For API level 24 and later
