@@ -57,7 +57,7 @@ namespace FlashCardPager
                 var urls = status.MediaAttachments;
                 foreach (var url in urls)
                 {
-                    if (url.PreviewUrl != "" && url.PreviewUrl.Length > 8)
+                    if (!string.IsNullOrWhiteSpace(url.PreviewUrl) && url.PreviewUrl.Length > 8)
                     {
                         if (UserAction.bImageQuality && url.RemoteUrl != null)
                         {

@@ -20,6 +20,7 @@ using Android.Util;
 using Context = Android.Content.Context;
 using Android.Support.CustomTabs;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace FlashCardPager
 {
@@ -29,8 +30,6 @@ namespace FlashCardPager
         public static bool bDisplay =true;
         public static bool bImagePre = true;
         public static bool bImageQuality = false;
-        //public static bool bTheme = false;
-
 
         /*******************************************************
          *      トースト 文章
@@ -46,12 +45,8 @@ namespace FlashCardPager
         public readonly static string URL_FAILED = "URLの取得に失敗しました";
         public readonly static string UNKNOWN = "何かがおかしいよ";
 
-        //readonly static Color COLOR_FAV = ColorDatabase.FAV;
-        //readonly static Color COLOR_BOOST = ColorDatabase.BOOST;
-        //readonly static Color COLOR_FAILED = ColorDatabase.FAILED;
-        //readonly static Color COLOR_INFO = ColorDatabase.INFO;
+        public readonly static string KEY_COMMAND = "commands";
 
-        //readonly static Color COLOR_TEXT = ColorDatabase.TLTEXT;
         /**************************************************************
          *                              設定
          *************************************************************/
@@ -79,7 +74,7 @@ namespace FlashCardPager
                 status.FavouritesCount++;
 
                 string s = OtherTool.HTML_removeTag(status.Content);
-                ToastWithIcon_BottomFIllHorizontal_Show(FAV_SUCCESS+"\n"+s, status.Account.AvatarUrl, view, ColorDatabase.FAV);
+                ToastWithIcon_BottomFIllHorizontal_Show(FAV_SUCCESS+"\n"+s, status.Account.StaticAvatarUrl, view, ColorDatabase.FAV);
             }
             catch (System.Exception ex)
             {
@@ -211,6 +206,44 @@ namespace FlashCardPager
         *                             操作 listitem
         **************************************************************/
         public static void ListViewItemClick(Status status, View view)
+        {
+            Intent intent = new Intent(view.Context, typeof(DialogActivity));
+            Status _status = status;
+
+            //コマンドセットのPush
+            string SHOW_THE_CONVERSATION = "会話を表示";
+            try
+            {
+                var re_status = status.Reblog;
+                if (re_status != null) _status = re_status;
+            }
+            catch (Exception ex) { }
+            //URL をitemlistに一時登録
+            List<string> itemlist
+                = new List<string>() { "Reply", "Favarite", "Boost", (_status.Account.DisplayName + "@" + _status.Account.UserName) };
+            ////追加
+            if (status.InReplyToId != null)
+            {
+                itemlist.Add(SHOW_THE_CONVERSATION);
+            }
+            //URL，画像の取得
+            foreach (string add in OtherTool.DLG_ITEM_getURL(_status))
+            {
+                itemlist.Add(add);
+            }
+            var commands = itemlist.ToArray();
+            intent.PutStringArrayListExtra(KEY_COMMAND, commands);
+
+
+
+            var json_status = IntentExtensionStatus.PutExtra<Status>(intent, "status", _status);
+
+            view.Context.StartActivity(intent);
+        }
+
+
+        /* old method */
+        public static void ListViewItemClick2(Status status, View view)
         {
             string SHOW_THE_CONVERSATION = "会話を表示";
 
@@ -423,6 +456,30 @@ namespace FlashCardPager
 
 
     }
+
+
+    //Json変換
+    public static class IntentExtensionStatus
+    {
+        public static Intent PutExtra<Status>(Intent intent, string key, Status status)
+        {
+            var json = JsonConvert.SerializeObject(status);
+            intent.PutExtra(key, json);
+            return intent;
+        }
+
+        public static Status GetExtra<Status>(Intent intent, string key)
+        {
+            var json = intent.GetStringExtra(key);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                return default(Status);
+            }
+            return JsonConvert.DeserializeObject<Status>(json);
+        }
+    }
+
+
 
     /*non-use class*/
     public class MstWebViewClient : WebViewClient

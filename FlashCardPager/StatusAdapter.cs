@@ -152,7 +152,6 @@ namespace FlashCardPager
             content.TextFormatted = spannableString;
 
 
-
             //created at time 
             createdat.SetTextColor(ColorDatabase.TIME);
             createdat.Text = "";

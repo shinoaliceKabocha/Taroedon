@@ -73,14 +73,7 @@ namespace FlashCardPager
             swipelayout = view.FindViewById<Android.Support.V4.Widget.SwipeRefreshLayout>(Resource.Id.swipelayout);
             swipelayout.SetColorSchemeColors(Android.Graphics.Color.Red, Android.Graphics.Color.Blue,
                 Android.Graphics.Color.Green, Android.Graphics.Color.Yellow, Android.Graphics.Color.Orange);
-            swipelayout.Refresh += (sender, e) =>
-            {
-                BackgroundWorker worker = new BackgroundWorker();
-                worker.DoWork += Worker_DoWork;
-                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-                worker.RunWorkerAsync();
-            };
-            //swipe down
+            swipelayout.Refresh += swipelayoutPull;
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
 
             //Auth
@@ -144,6 +137,19 @@ namespace FlashCardPager
         /***************************************************************
          *                              update
          **************************************************************/
+        private void swipelayoutPull(object sender, EventArgs e)
+        {
+            swipelayout.Refresh -= swipelayoutPull;
+
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+            worker.RunWorkerAsync();
+
+            swipelayout.Refresh += swipelayoutPull;
+        }
+
+
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ////ƒNƒŠƒA‚ð”½‰f‚·‚é

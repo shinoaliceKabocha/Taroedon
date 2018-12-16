@@ -74,7 +74,7 @@
         <Switch
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:text="暗めのテーマを使う(要再起動)"
+            android:text="β : 暗めのテーマを使う(要再起動)"
             android:textSize="15dp"
             android:gravity="center_vertical"
             android:layout_marginTop="10dp"

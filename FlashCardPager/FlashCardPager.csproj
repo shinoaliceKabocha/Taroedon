@@ -125,11 +125,13 @@
     <Compile Include="BinaryManager.cs" />
     <Compile Include="BrowserActivity.cs" />
     <Compile Include="ConversationActivity.cs" />
+    <Compile Include="DialogActivity.cs" />
     <Compile Include="EmojiDictionaryActivity.cs" />
     <Compile Include="EmojiGetTask.cs" />
     <Compile Include="ImageProvider.cs" />
     <Compile Include="ImageUploadSyncTask.cs" />
     <Compile Include="LicenseActivity.cs" />
+    <Compile Include="LocalLinkMovemetMethod.cs" />
     <Compile Include="NotificationAdapter.cs" />
     <Compile Include="OtherTool.cs" />
     <Compile Include="PostStatusActivity.cs" />
@@ -259,6 +261,41 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\toastlayout.axml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Dialog.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\boost.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\fav.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\link.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\person.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\reply.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\comment.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>

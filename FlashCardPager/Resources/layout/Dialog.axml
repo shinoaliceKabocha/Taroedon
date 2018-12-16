@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<FrameLayout
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="fill_parent"
+		android:layout_height="100dp"
+		android:id="@+id/frameLayout1">
+		<ImageView
+			android:background="@color/colorPrimaryDark"
+			android:id="@+id/dlg_tootbackColor"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"/>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:gravity="top"
+			android:layout_marginTop="5dp"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<ImageView
+				android:src="@drawable/none"
+				android:layout_width="50dp"
+				android:layout_height="50dp"
+				android:layout_marginBottom="5dp"
+				android:layout_marginLeft="10dp"
+				android:layout_gravity="top"
+				android:id="@+id/dlg_imageViewAvatar" />
+			<LinearLayout
+				android:orientation="vertical"
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:gravity="top"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="5dp"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+				<TextView
+					android:text="Username"
+					android:id="@+id/dlg_textView_DisplayName"
+					android:textColor="@android:color/white"
+					android:textSize="12dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="top"/>
+				<TextView
+					android:text="content"
+					android:id="@+id/dlg_textView_content"
+					android:textColor="@android:color/white"
+					android:textSize="12dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical"/>
+
+			</LinearLayout>
+		</LinearLayout>
+	</FrameLayout>
+
+	<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@android:color/darker_gray" />
+
+	<ListView
+	android:minWidth="25px"
+	android:minHeight="25px"
+	android:divider="@android:color/transparent"
+	android:fastScrollEnabled="true"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:drawSelectorOnTop="true"
+	android:id="@+id/dlg_listView_command" />
+
+</LinearLayout>

@@ -135,7 +135,7 @@ namespace FlashCardPager
         //Fav 背景 黄色
         public readonly static Color FAV = new Color(193, 151, 0);
         //Boost 背景 緑
-        public readonly static Color BOOST = new Color(61, 153, 0);
+        public readonly static Color BOOST = new Color(46, 117, 0);
         //Follow リクエスト 成功 青
         public readonly static Color FOLLOW = new Color(127, 176, 255);
         //reply 赤色

@@ -79,7 +79,7 @@ namespace FlashCardPager
                     editor.PutString("redirectUri", "urn:ietf:wg:oauth:2.0:oob");
                     editor.Commit();
 
-                    UserAction.Toast_BottomFIllHorizontal_Show("認証に成功しました！\nアプリを再起動してください", this, ColorDatabase.FAILED);
+                    UserAction.Toast_BottomFIllHorizontal_Show("認証に成功しました！\nアプリを再起動してください", this, ColorDatabase.INFO);
                     UserAction.CacheClear();
                     FinishAndRemoveTask();
                 }
