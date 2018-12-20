@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -26,12 +27,29 @@ namespace FlashCardPager
         Mastonet.MastodonClient client = new UserClient().getClient();
         long status_id;
         List<long> media_id_list;
-        static int spin_position = 0;
+        static int spin_position = -1;//初期値
+        private string KEY_RANGE = "range";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PostStatus);
+            //spin_position init
+            if(spin_position == -1)
+            {
+                try
+                {
+                    var pref = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private);
+                    var p = pref.GetInt(KEY_RANGE, 0);
+                    spin_position = p;
+                }
+                catch (IOException ioerror)
+                {
+                    Android.Util.Log.Error(this.ToString(), ioerror.Message);
+                    spin_position = 0;
+                }
+            }
+
             //いい感じの大きさにする
             IWindowManager windowManager = (IWindowManager)this.GetSystemService(Android.Content.Context.WindowService).JavaCast<IWindowManager>();
             Display display = windowManager.DefaultDisplay;
@@ -182,6 +200,9 @@ namespace FlashCardPager
                         client.PostStatus(edittext.Text, option, null, media_id_list);
                     }
                     edittext.Text = "";
+                    var editor = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private).Edit();
+                    editor.PutInt(KEY_RANGE, spin_position);
+                    editor.Commit();
                     Finish();
                 }
                 catch (System.Exception ex)

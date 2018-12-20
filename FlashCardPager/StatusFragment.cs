@@ -26,6 +26,7 @@ namespace FlashCardPager
         private static StatusAdapter statusAdapter;
         private static SwipeRefreshLayout swipelayout;
         private static ListView listView;
+        private BackgroundWorker mWorker = null;
 
         public StatusFragment() { }
 
@@ -73,7 +74,7 @@ namespace FlashCardPager
             swipelayout = view.FindViewById<Android.Support.V4.Widget.SwipeRefreshLayout>(Resource.Id.swipelayout);
             swipelayout.SetColorSchemeColors(Android.Graphics.Color.Red, Android.Graphics.Color.Blue,
                 Android.Graphics.Color.Green, Android.Graphics.Color.Yellow, Android.Graphics.Color.Orange);
-            swipelayout.Refresh += swipelayoutPull;
+            swipelayout.Refresh += SwipelayoutPull;
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
 
             //Auth
@@ -90,7 +91,7 @@ namespace FlashCardPager
         /***************************************************************
         *                   Time line Žæ“¾ŠÖŒW
         / **************************************************************/
-        private async Task GetHomeTl()
+        private async void GetHomeTl()
         {
             ////home get
             MastodonList<Status> mstdnlist = await client.GetHomeTimeline();
@@ -104,7 +105,7 @@ namespace FlashCardPager
             statusAdapter.NotifyDataSetChanged();
         }
 
-        private async Task UserStreamRun()
+        private async void UserStreamRun()
         {
             if(streaming==null) streaming = client.GetUserStreaming();
             streaming.Start();
@@ -137,16 +138,19 @@ namespace FlashCardPager
         /***************************************************************
          *                              update
          **************************************************************/
-        private void swipelayoutPull(object sender, EventArgs e)
+        private void SwipelayoutPull(object sender, EventArgs e)
         {
-            swipelayout.Refresh -= swipelayoutPull;
-
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
-
-            swipelayout.Refresh += swipelayoutPull;
+            if(mWorker != null)
+            {
+                swipelayout.Refreshing = false;
+            }
+            else
+            {
+                mWorker = new BackgroundWorker();
+                mWorker.DoWork += Worker_DoWork;
+                mWorker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                mWorker.RunWorkerAsync();
+            }
         }
 
 
@@ -158,6 +162,7 @@ namespace FlashCardPager
             streaming.Start();
             GetHomeTl();
             swipelayout.Refreshing = false;
+            mWorker = null;
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -172,16 +177,23 @@ namespace FlashCardPager
          **************************************************************/
         private void Listview_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
         {
-            if (listView.LastVisiblePosition == (statuses.Count - 1))
+            try
             {
-                listView.ScrollStateChanged -= Listview_ScrollStateChanged;
+                if (listView.LastVisiblePosition == (statuses.Count - 1))
+                {
+                    listView.ScrollStateChanged -= Listview_ScrollStateChanged;
 
-                long id = statuses[statuses.Count - 1].Id;
-                GetTLdown(id);
+                    long id = statuses[statuses.Count - 1].Id;
+                    GetTLdown(id);
+                }
             }
-
+            catch(Exception error)
+            {
+                /* do nothing */
+                return;
+            }
         }
-        private async Task GetTLdown(long under)
+        private async void GetTLdown(long under)
         {
             MastodonList<Status> mstdnlist = await client.GetHomeTimeline(under);
             foreach (Status s in mstdnlist)

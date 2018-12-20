@@ -25,6 +25,7 @@ namespace FlashCardPager
         private static ListView listView;
         private NotificationAdapter statusAdapter;
         private static SwipeRefreshLayout swipelayout;
+        private BackgroundWorker mWorker = null;
 
 
         public StatusFragment2() { }
@@ -86,7 +87,7 @@ namespace FlashCardPager
             swipelayout = view.FindViewById<Android.Support.V4.Widget.SwipeRefreshLayout>(Resource.Id.swipelayout);
             swipelayout.SetColorSchemeColors(Android.Graphics.Color.Red, Android.Graphics.Color.Blue,
                 Android.Graphics.Color.Green, Android.Graphics.Color.Yellow, Android.Graphics.Color.Orange);
-            swipelayout.Refresh += swipelayoutPull;
+            swipelayout.Refresh += SwipelayoutPull;
             //swipe down
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
 
@@ -100,7 +101,7 @@ namespace FlashCardPager
         /***************************************************************
         *                   Time line 取得関係
         / **************************************************************/
-        private async Task GetHNotifyTl()
+        private async void GetHNotifyTl()
         {
             ////home get
             var mstdnlist = await client.GetNotifications();
@@ -120,16 +121,19 @@ namespace FlashCardPager
         /***************************************************************
          *                              update
          **************************************************************/
-        private void swipelayoutPull(object sender, EventArgs e)
+        private void SwipelayoutPull(object sender, EventArgs e)
         {
-            swipelayout.Refresh -= swipelayoutPull;
-
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
-
-            swipelayout.Refresh += swipelayoutPull;
+            if (mWorker != null)
+            {
+                swipelayout.Refreshing = false;
+            }
+            else
+            {
+                mWorker = new BackgroundWorker();
+                mWorker.DoWork += Worker_DoWork;
+                mWorker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                mWorker.RunWorkerAsync();
+            }
         }
 
 
@@ -140,6 +144,7 @@ namespace FlashCardPager
 
             GetHNotifyTl();
             swipelayout.Refreshing = false;
+            mWorker = null;
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -147,7 +152,6 @@ namespace FlashCardPager
             notifications.Clear();
             statusAdapter.NotifyDataSetChanged();
 
-            //Thread.Sleep(1000);
         }
 
         /***************************************************************
@@ -155,16 +159,23 @@ namespace FlashCardPager
          **************************************************************/
         private void Listview_ScrollStateChanged(object sender, AbsListView.ScrollStateChangedEventArgs e)
         {
-            if (listView.LastVisiblePosition == (notifications.Count - 1))
+            try
             {
-                listView.ScrollStateChanged -= Listview_ScrollStateChanged;
+                if (listView.LastVisiblePosition == (notifications.Count - 1))
+                {
+                    listView.ScrollStateChanged -= Listview_ScrollStateChanged;
 
-                long id = notifications[notifications.Count - 1].Id;
-                GetTLdown(id);
+                    long id = notifications[notifications.Count - 1].Id;
+                    GetTLdown(id);
+                }
             }
-
+            catch (Exception error)
+            {
+                /* do nothing */
+                return;
+            }
         }
-        private async Task GetTLdown(long under)
+        private async void GetTLdown(long under)
         {
             MastodonList<Mastonet.Entities.Notification> mstdnlist = await client.GetNotifications(under);
             foreach (var n in mstdnlist)

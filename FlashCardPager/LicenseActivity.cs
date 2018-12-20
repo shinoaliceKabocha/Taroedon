@@ -113,7 +113,7 @@ namespace FlashCardPager
             "https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md",
 
             "\n\n■ Xamarin / AndroidSupportComponents\n",
-            "https://github.com/xamarin/AndroidSupportComponents/blob/master/LICENSE.md",
+            "https://github.com/xamarin/xamarin-android/blob/master/LICENSE",
 
             };
 
