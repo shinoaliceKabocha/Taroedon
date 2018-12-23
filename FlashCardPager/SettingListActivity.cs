@@ -154,6 +154,11 @@ namespace FlashCardPager
                 intent = new Intent(this, typeof(LicenseActivity));
                 StartActivity(intent);
             };
+
+            //アプリ ver
+            var textview_ver = FindViewById<TextView>(Resource.Id.textViewVersion);
+            var info = this.PackageManager.GetPackageInfo(this.PackageName, 0);
+            textview_ver.Text = "Version." + info.VersionName;
         }
     }
 }

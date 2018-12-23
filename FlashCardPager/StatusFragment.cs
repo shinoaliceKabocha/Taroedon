@@ -179,11 +179,11 @@ namespace FlashCardPager
         {
             try
             {
-                if (listView.LastVisiblePosition == (statuses.Count - 1))
+                if (listView.LastVisiblePosition == (listView.Count - 1))
                 {
                     listView.ScrollStateChanged -= Listview_ScrollStateChanged;
 
-                    long id = statuses[statuses.Count - 1].Id;
+                    long id = statuses[listView.Count - 1].Id;
                     GetTLdown(id);
                 }
             }

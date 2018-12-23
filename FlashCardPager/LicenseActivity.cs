@@ -41,6 +41,7 @@ namespace FlashCardPager
                 + "・タイムラインを下に引っ張ると更新します\n"
                 + "・下に遡ると過去のトゥートを表示できます\n"
                 + "・v1.0.6 : カスタム絵文字表示に対応しました．\n"
+                + "・v1.1.6 : Twitterへのクロスポストを実装しました \n"
                 + "\n"
                 + "画面右上の設定から．．．\n"
                 + "    ・ブラウザの設定（標準かアプリ内のブラウザ）\n"
@@ -59,14 +60,15 @@ namespace FlashCardPager
                 + "    ・今後boostへの変更など機能追加予定\n"
                 + "\n"
                 + "v1.1.0からはプロフィール画面を実装しました(β版)\n"
-                + "    ・フォロー・アンフォローできます\n"
-                + "    ・情報が少ないのでそのうち増やします";
+                + "    ・フォロー・アンフォローできます\n";
 
 
             //欲しいものリスト
             string amazon = "https://www.amazon.co.jp/registry/wishlist/1RU8JEI9QE27B/ref=cm_sw_r_tw";
             string headerAmazon = "Amazon干芋リスト\n(タップするとブラウザが開きます)\n";
             var textviewAmazon = FindViewById<TextView>(Resource.Id.textViewAMAZON);
+            textviewAmazon.SetText(headerAmazon + amazon, TextView.BufferType.Normal);
+            textviewAmazon.SetLinkTextColor(GetColorStateList(ColorDatabase.TLLINK));
             textviewAmazon.Click += (sender, e) =>
             {
                 Android.Net.Uri uri;
@@ -74,12 +76,6 @@ namespace FlashCardPager
                 Intent intentB = new Android.Content.Intent(Intent.ActionView, uri);
                 this.StartActivity(intentB);
             };
-            //textviewAmazon.Text = "Amazon干芋リスト\n(タップするとブラウザが開きます)\n" + amazon ;
-            var ssAmazon = new SpannableString(headerAmazon + amazon);
-            ssAmazon.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), headerAmazon.Length, headerAmazon.Length + amazon.Length, SpanTypes.ExclusiveExclusive);
-            ssAmazon.SetSpan(new UnderlineSpan(), headerAmazon.Length, headerAmazon.Length + amazon.Length, SpanTypes.ExclusiveExclusive);
-            textviewAmazon.TextFormatted = ssAmazon;
-
 
             //ライセンス
             var licenseTextView = FindViewById<TextView>(Resource.Id.textViewLicense);
@@ -115,6 +111,8 @@ namespace FlashCardPager
             "\n\n■ Xamarin / AndroidSupportComponents\n",
             "https://github.com/xamarin/xamarin-android/blob/master/LICENSE",
 
+            "\n\n■ CoreTweet\n",
+            "https://opensource.org/licenses/mit-license.php",
             };
 
             string licenses = "";
@@ -122,36 +120,9 @@ namespace FlashCardPager
             {
                 licenses += s;
             }
-            var ss = new SpannableString(licenses);
-            var clickableMastonet = new LicenseClickableSpan(otherlicense[2]);
-            var clickableJson = new LicenseClickableSpan(otherlicense[4]);
-            var clickableXamarin = new LicenseClickableSpan(otherlicense[6]);
-
-            ss.SetSpan(clickableMastonet, otherlicense[0].Length + otherlicense[1].Length
-                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length, 
-                SpanTypes.ExclusiveExclusive);
-            ss.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), otherlicense[0].Length + otherlicense[1].Length
-                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length,
-                SpanTypes.ExclusiveExclusive);
-
-
-            ss.SetSpan(clickableJson, otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length
-                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length,
-                SpanTypes.ExclusiveExclusive);
-            ss.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length
-                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length,
-                SpanTypes.ExclusiveExclusive);
-
-
-            ss.SetSpan(clickableXamarin, otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length
-                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length + otherlicense[6].Length,
-                SpanTypes.ExclusiveExclusive);
-            ss.SetSpan(new ForegroundColorSpan(Android.Graphics.Color.SlateBlue), otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length
-                , otherlicense[0].Length + otherlicense[1].Length + otherlicense[2].Length + otherlicense[3].Length + otherlicense[4].Length + otherlicense[5].Length + otherlicense[6].Length,
-                SpanTypes.ExclusiveExclusive);
-
-            licenseTextView.TextFormatted = ss;
-            licenseTextView.MovementMethod = LinkMovementMethod.Instance;
+            licenseTextView.SetText(licenses, TextView.BufferType.Normal);
+            licenseTextView.SetLinkTextColor(GetColorStateList(ColorDatabase.TLLINK));
+            licenseTextView.MovementMethod = new LocalLinkMovementMethod();
 
         }
     }
