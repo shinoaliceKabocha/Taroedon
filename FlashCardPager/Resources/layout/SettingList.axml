@@ -74,7 +74,7 @@
         <Switch
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:text="β : 暗めのテーマを使う(要再起動)"
+            android:text="暗めのテーマを使う(要再起動)"
             android:textSize="15dp"
             android:gravity="center_vertical"
             android:layout_marginTop="10dp"
@@ -105,7 +105,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:text="認証する"
+            android:text="Mastodon認証"
             android:textSize="15dp"
             android:gravity="center_vertical"
             android:layout_marginTop="10dp"
@@ -115,6 +115,38 @@
             android:padding="10dp"
             android:id="@+id/textViewAuth" />
         <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <Switch
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:text="β:Twitterへのクロス投稿を使う"
+            android:textSize="15dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:id="@+id/switchTwitter" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:text="β:Twitter認証"
+			android:textSize="15dp"
+			android:gravity="center_vertical"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:textColor="@android:color/black"
+			android:layout_marginLeft="10dp"
+			android:padding="10dp"
+			android:id="@+id/textViewTwitterAuth" />
+		<View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray" />

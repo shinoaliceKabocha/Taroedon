@@ -128,6 +128,25 @@ namespace FlashCardPager
                 intent = new Intent(this, typeof(SettingsActivity));
                 StartActivity(intent);
             };
+
+
+            //Twitter認証機能
+            var mTwitter_OnOff = FindViewById<Switch>(Resource.Id.switchTwitter);
+            mTwitter_OnOff.Checked = UserAction.bTwitterOnOff;
+            mTwitter_OnOff.CheckedChange += (sender, e) =>
+            {
+                editor.PutBoolean("twitterOnOff", mTwitter_OnOff.Checked);
+                editor.Commit();
+                UserAction.bTwitterOnOff = mTwitter_OnOff.Checked;
+            };
+
+            var twitter_Auth = FindViewById<TextView>(Resource.Id.textViewTwitterAuth);
+            twitter_Auth.Click += (sender, e) =>
+            {
+                intent = new Intent(this, typeof(TwitterAuthActivity));
+                StartActivity(intent);
+            };
+
             //アプリについて への移行
             var textViewLicense = FindViewById<TextView>(Resource.Id.textViewLicense);
             textViewLicense.Click+=(sender, e) =>

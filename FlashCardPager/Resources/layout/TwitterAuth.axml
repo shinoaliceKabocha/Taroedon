@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+	<Button
+		android:text="Twitter Auth Open"
+		android:textSize="15dp"
+		android:layout_width="fill_parent"
+		android:layout_height="50dp"
+		android:id="@+id/buttonTwitterOAuth"
+		android:layout_marginBottom="0.0dp"
+		android:layout_marginRight="20.0dp"
+		android:layout_marginLeft="20.0dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="15dp"
+                android:text="PinCode: "
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"/>
+            <EditText
+                android:textSize="15dp"
+                android:text=""
+				android:inputType="number"
+                android:hint="Please input PinCode..."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edittextTwitterCode"
+                android:layout_marginLeft="0.0dp" />
+        </LinearLayout>
+
+    <Button
+        android:text="Authentication"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonTwitter_Registration" />
+    <TextView
+        android:text="Tips\n\n1.認証後は再起動で反映します\n\n2.本機能によりTwitterにも同時に投稿ができます\n\n3.Twitter社の文字数制限を超えた投稿はできません\n\n4.Replyの場合はTwitterには投稿しません\n\n5.画像はLinkとして投稿されます\n\n6.ログイン情報は一つまで管理しています"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

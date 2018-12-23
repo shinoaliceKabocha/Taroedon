@@ -30,6 +30,8 @@ namespace FlashCardPager
         public static bool bDisplay =true;
         public static bool bImagePre = true;
         public static bool bImageQuality = false;
+        //twitter
+        public static bool bTwitterOnOff = false;
 
         /*******************************************************
          *      トースト 文章
@@ -58,6 +60,7 @@ namespace FlashCardPager
             bImagePre = pref.GetBoolean("imagePre", true);
             bImageQuality = pref.GetBoolean("imageQuality", false);
             //bTheme = pref.GetBoolean("theme", false);//外出ししないとだめ
+            bTwitterOnOff = pref.GetBoolean("twitterOnOff", false);
         }
 
 
@@ -453,7 +456,30 @@ namespace FlashCardPager
             toast.Show();
         }
 
+        /* twitter tokens get */
+        public static CoreTweet.Tokens GetTokens(ISharedPreferences pref)
+        {
+            var twiConsumerKey = pref.GetString("twiConsumerKey", "");
+            var twiConsumerSecret = pref.GetString("twiConsumerSecret", "");
+            var twiAccessToken = pref.GetString("twiAccessToken", "");
+            var twiAccessTokenSecret = pref.GetString("twiAccessTokenSecret", "");
 
+            if (string.IsNullOrWhiteSpace(twiConsumerKey)) return null;
+            if (string.IsNullOrWhiteSpace(twiConsumerSecret)) return null;
+            if (string.IsNullOrWhiteSpace(twiAccessToken)) return null;
+            if (string.IsNullOrWhiteSpace(twiAccessTokenSecret)) return null;
+
+            try
+            {
+                var tokens = CoreTweet.Tokens.Create(twiConsumerKey, twiConsumerSecret, twiAccessToken, twiAccessTokenSecret);
+                return tokens;
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
 
     }
 

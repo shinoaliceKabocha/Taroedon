@@ -18,6 +18,7 @@ using Android.Widget;
 using Java.Lang;
 using Mastonet.Entities;
 using Newtonsoft.Json;
+using CoreTweet;
 
 namespace FlashCardPager
 {
@@ -29,6 +30,8 @@ namespace FlashCardPager
         List<long> media_id_list;
         static int spin_position = -1;//初期値
         private string KEY_RANGE = "range";
+        //twitter
+        private static CoreTweet.Tokens sTwiiter_tokens;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -69,7 +72,7 @@ namespace FlashCardPager
             var button_post = FindViewById<Button>(Resource.Id.buttonPOST);
             button_post.Text = "POST";
             //POST button event
-            button_post.Click += Button_post_Click;
+            button_post.Click += Button_post_ClickAsync;
 
             //Emoji Dictionary
             var imageEmojiDictionary = FindViewById<ImageView>(Resource.Id.imageEmojiDictionary);
@@ -97,6 +100,17 @@ namespace FlashCardPager
             finally
             {
                 edittext.SetSelection(edittext.Text.Length);
+            }
+
+            //twitter setting
+            if (UserAction.bTwitterOnOff && sTwiiter_tokens == null)
+            {
+                var pref = GetSharedPreferences("TWITTER", FileCreationMode.Private);
+                sTwiiter_tokens = UserAction.GetTokens(pref);
+            }
+            if (UserAction.bTwitterOnOff && sTwiiter_tokens != null && !button_post.Text.Contains("Reply"))
+            {
+                button_post.Text = "POST with Mastodon & Twitter";
             }
 
             //FindViewById<ImageView>(Resource.Id.imageupload).Visibility = ViewStates.Gone;
@@ -160,7 +174,7 @@ namespace FlashCardPager
         /******************************
         *       post event
         *******************************/
-        private void Button_post_Click(object sender, EventArgs e)
+        private async void Button_post_ClickAsync(object sender, EventArgs e)
         {
             Intent intent = new Intent();
             var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
@@ -184,6 +198,11 @@ namespace FlashCardPager
             //投稿
             if (edittext.Text.Length > 0)
             {
+                var this_button = (Button)sender;
+                var progressBar = FindViewById<ProgressBar>(Resource.Id.progressBarMediaUpload);
+                this_button.Enabled = false;
+                progressBar.Visibility = ViewStates.Visible;
+
                 try
                 {
                     //リプライする時
@@ -197,7 +216,30 @@ namespace FlashCardPager
                     else if (status_id == 0)
                     {
                         //post
-                        client.PostStatus(edittext.Text, option, null, media_id_list);
+                        var send_status  = await client.PostStatus(edittext.Text, option, null, media_id_list);
+                        //twitter
+                        if (UserAction.bTwitterOnOff)
+                        {
+                            if(sTwiiter_tokens != null)
+                            {
+                                string sendText = edittext.Text;
+                                var mediaList = send_status.MediaAttachments;
+                                foreach(var m in mediaList)
+                                {
+                                    sendText += "\n" + m.PreviewUrl;
+                                }
+                                if (sendText.Length <= 140)
+                                {
+                                    await sTwiiter_tokens.Statuses.UpdateAsync(status => sendText);
+                                }
+                                else
+                                {
+                                    UserAction.Toast_BottomFIllHorizontal_Show(
+                                        "Twitterへの投稿失敗(文字数)" + sendText.Length + "/" + "140",
+                                        this, ColorDatabase.FAILED);
+                                }
+                            }
+                        }
                     }
                     edittext.Text = "";
                     var editor = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private).Edit();
@@ -208,6 +250,11 @@ namespace FlashCardPager
                 catch (System.Exception ex)
                 {
                     UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, ColorDatabase.FAILED);
+                }
+                finally
+                {
+                    this_button.Enabled = true;
+                    progressBar.Visibility = ViewStates.Gone;
                 }
             }
             else
@@ -294,9 +341,13 @@ namespace FlashCardPager
             if (count > 500)
             {
                 this.FindViewById<Button>(Resource.Id.buttonPOST).Clickable = false;
+                this.FindViewById<EditText>(Resource.Id.editTextTweet2).SetTextColor(Android.Graphics.Color.Red);
             }
-            else this.FindViewById<Button>(Resource.Id.buttonPOST).Clickable = true;
-
+            else
+            {
+                this.FindViewById<Button>(Resource.Id.buttonPOST).Clickable = true;
+                this.FindViewById<EditText>(Resource.Id.editTextTweet2).SetTextColor(ColorDatabase.TLTEXT);
+            }
         }
         public void BeforeTextChanged(ICharSequence s, int start, int count, int after) { }
         public void OnTextChanged(ICharSequence s, int start, int before, int count) { }

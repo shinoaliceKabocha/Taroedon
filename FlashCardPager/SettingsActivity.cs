@@ -12,11 +12,10 @@ using Android.Widget;
 using Android.Support.V7.App;
 using Mastonet;
 using Mastonet.Entities;
-using Android.Support.CustomTabs;
 
 namespace FlashCardPager
 {
-    [Activity(Label = "Authentication", Theme = "@style/AppTheme")]
+    [Activity(Label = "Mastodon Authentication", Theme = "@style/AppTheme")]
     public class SettingsActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

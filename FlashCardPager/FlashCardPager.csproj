@@ -56,6 +56,9 @@
     <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CoreTweet, Version=1.0.0.483, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CoreTweet.1.0.0.483\lib\netstandard2.0\CoreTweet.dll</HintPath>
+    </Reference>
     <Reference Include="Mastonet, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mastonet.1.3.1\lib\netstandard2.0\Mastonet.dll</HintPath>
     </Reference>
@@ -148,10 +151,12 @@
     <Compile Include="StatusFragment2.cs" />
     <Compile Include="StatusFragment3.cs" />
     <Compile Include="ColorDatabase.cs" />
+    <Compile Include="TwitterAuthActivity.cs" />
     <Compile Include="UserAction.cs" />
     <Compile Include="UserClient.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -297,6 +302,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\comment.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TwitterAuth.axml">
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
