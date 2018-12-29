@@ -19,6 +19,7 @@ using Java.Lang;
 using Mastonet.Entities;
 using Newtonsoft.Json;
 using CoreTweet;
+using Android.Graphics;
 
 namespace FlashCardPager
 {
@@ -30,16 +31,24 @@ namespace FlashCardPager
         List<long> media_id_list;
         static int spin_position = -1;//初期値
         private string KEY_RANGE = "range";
+
         //twitter
+        private string SETTINGS = "SETTING";
+        private string TWEET_RANGE = "twitterOnOff";
         private static CoreTweet.Tokens sTwiiter_tokens;
+        private static bool tweet_range;
+
+        //dialog
+        delegate void YesNoDlg(string title, Android.Content.Context context, Attachment[] attachments, ImageView imageView, int i);
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PostStatus);
-            //spin_position init
+            //Range init
             if(spin_position == -1)
             {
+                //Toot range
                 try
                 {
                     var pref = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private);
@@ -50,6 +59,16 @@ namespace FlashCardPager
                 {
                     Android.Util.Log.Error(this.ToString(), ioerror.Message);
                     spin_position = 0;
+                }
+                //tweet range
+                try
+                {
+                    tweet_range = UserAction.bTwitterOnOff;
+                }
+                catch (IOException ioerror)
+                {
+                    Android.Util.Log.Error(this.ToString(), ioerror.Message);
+                    tweet_range = false;
                 }
             }
 
@@ -92,7 +111,7 @@ namespace FlashCardPager
                 if (_status_id != 0)
                 {
                     edittext.Text = "@" + status_AccountName + " ";
-                    button_post.Text = "Reply POST";
+                    button_post.Text = "Reply";
                 }
 
             }
@@ -103,64 +122,129 @@ namespace FlashCardPager
             }
 
             //twitter setting
-            if (UserAction.bTwitterOnOff && sTwiiter_tokens == null)
-            {
-                var pref = GetSharedPreferences("TWITTER", FileCreationMode.Private);
-                sTwiiter_tokens = UserAction.GetTokens(pref);
-            }
-            if (UserAction.bTwitterOnOff && sTwiiter_tokens != null && !button_post.Text.Contains("Reply"))
-            {
-                button_post.Text = "POST with Mastodon & Twitter";
-            }
+            //token set
+            var pref_twitter = GetSharedPreferences("TWITTER", FileCreationMode.Private);
 
-            //FindViewById<ImageView>(Resource.Id.imageupload).Visibility = ViewStates.Gone;
+            if (tweet_range && sTwiiter_tokens == null)
+            {
+                sTwiiter_tokens = UserAction.GetTokens(pref_twitter);
+            }
+            //button
+            var tweetRange = FindViewById<ImageView>(Resource.Id.TweetRange);
+            //resouce set
+            if(tweet_range && sTwiiter_tokens != null)
+            {
+                tweetRange.SetImageResource(Resource.Drawable.twitter_yes);
+            }
+            else
+            {
+                tweet_range = false;
+                tweetRange.SetImageResource(Resource.Drawable.twitter_no);
+            }
+            //event
+
+            tweetRange.Click += (sender, e) =>
+            {
+                //Onのとき
+                if (tweet_range)
+                {
+                    tweetRange.SetImageResource(Resource.Drawable.twitter_no);
+                    tweet_range = false;
+                }
+                //Noのとき
+                else
+                {
+                    if(sTwiiter_tokens == null)
+                    {
+                        sTwiiter_tokens = UserAction.GetTokens(pref_twitter);
+                    }
+                    if(sTwiiter_tokens != null)
+                    {
+                        tweetRange.SetImageResource(Resource.Drawable.twitter_yes);
+                        tweet_range = true;
+                    }
+                    //Twitter認証へ遷移
+                    else
+                    {
+                        Intent intent = new Intent(this, typeof(TwitterAuthActivity));
+                        StartActivity(intent);
+                    }
+
+                }
+            };
+
             /****************************************************/
             //image uploader
             UploadAsyncTask.sVsDoneAttachment = new Attachment[4] { null, null, null, null };
 
-            media_id_list = new List<long>();
-            var image_uploade = FindViewById<ImageView>(Resource.Id.imageupload);
-            image_uploade.Click += (sender, e) =>
+
+            var image_upload_add = FindViewById<ImageView>(Resource.Id.imageuploadAdd);
+            image_upload_add.Click += (sender, r) =>
             {
+                //最も若い空き番号を取得する
+                int i = 0;
+                for(i=0; i<UploadAsyncTask.sVsDoneAttachment.Length; i++)
+                {
+                    var s = UploadAsyncTask.sVsDoneAttachment[i];
+                    if (s == null) break;
+                    else if (s != null && i == UploadAsyncTask.sVsDoneAttachment.Length -1 )
+                    {
+                        return;
+                    }
+                }
+                //iが空き番号になる
                 Intent intent = new Intent();
                 intent.SetType("image/*");
                 intent.SetAction(Intent.ActionGetContent);
-                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 0);
+                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), i);
+            };
+
+            YesNoDlg yesNoDlg = new YesNoDlg(yesNoDialog);
+
+            var image_uploade = FindViewById<ImageView>(Resource.Id.imageupload);
+            image_uploade.LongClick += (sender, e) =>
+            {
+                yesNoDlg("画像を消しますか", this, UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 0);
+                //UploadImageReset(UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 0);
             };
             var image_uploade1 = FindViewById<ImageView>(Resource.Id.imageupload1);
-            image_uploade1.Click += (sender, e) =>
+            image_uploade1.LongClick += (sender, e) =>
             {
-                Intent intent = new Intent();
-                intent.SetType("image/*");
-                intent.SetAction(Intent.ActionGetContent);
-                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 1);
+                yesNoDlg("画像を消しますか", this, UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 1);
+
+                //UploadImageReset(UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 1);
             };
             var image_uploade2 = FindViewById<ImageView>(Resource.Id.imageupload2);
-            image_uploade2.Click += (sender, e) =>
+            image_uploade2.LongClick += (sender, e) =>
             {
-                Intent intent = new Intent();
-                intent.SetType("image/*");
-                intent.SetAction(Intent.ActionGetContent);
-                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 2);
+                yesNoDlg("画像を消しますか", this, UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 2);
+
+                //UploadImageReset(UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 2);
             };
             var image_uploade3 = FindViewById<ImageView>(Resource.Id.imageupload3);
-            image_uploade3.Click += (sender, e) =>
+            image_uploade3.LongClick += (sender, e) =>
             {
-                Intent intent = new Intent();
-                intent.SetType("image/*");
-                intent.SetAction(Intent.ActionGetContent);
-                StartActivityForResult(Intent.CreateChooser(intent, "select picture"), 3);
+                yesNoDlg("画像を消しますか", this, UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 3);
+
+                //UploadImageReset(UploadAsyncTask.sVsDoneAttachment, (ImageView)sender, 3);
             };
             //****************************************************/
 
-            //SPIN settings
-            Spinner spin = FindViewById<Spinner>(Resource.Id.spinnerTootRange);
 
-            ArrayAdapter spin_adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerItem);
-            List<string> spin_list = new List<string>() { "1. Public", "2. Private", "3. Direct", "4. Unlisted" };
-            spin_adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleDropDownItem1Line);
-            spin_adapter.AddAll(spin_list);
-            spin.Adapter = spin_adapter;
+
+            //SPIN settings
+            Spinner spin = FindViewById<Spinner>(Resource.Id.spinnerTootRange2);
+            Bitmap public_icon = BitmapFactory.DecodeResource(this.Resources, Resource.Drawable.public_icon);
+            Bitmap private_icon = BitmapFactory.DecodeResource(this.Resources, Resource.Drawable.private_icon);
+            Bitmap direct_icon = BitmapFactory.DecodeResource(this.Resources, Resource.Drawable.direct);
+            var spin_list2 = new List<EmojiItem>()
+            {
+                new EmojiItem("", public_icon),
+                new EmojiItem("", private_icon),
+                new EmojiItem("", direct_icon),
+            };
+            var spin_adapter2 = new CustomListAdapter(this, spin_list2);
+            spin.Adapter = spin_adapter2;
             spin.SetSelection(spin_position);
             //前回の位置を保存する
             spin.ItemSelected += (sender, e) =>
@@ -178,17 +262,18 @@ namespace FlashCardPager
         {
             Intent intent = new Intent();
             var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
-            int option_num = FindViewById<Spinner>(Resource.Id.spinnerTootRange).SelectedItemPosition;//0:Public, 1:Private , 2:Direct, 3:Unlisted
+            int option_num = FindViewById<Spinner>(Resource.Id.spinnerTootRange2).SelectedItemPosition;//0:Public, 1:Private , 2:Direct,
             var option = Mastonet.Visibility.Public;
             switch (option_num)
             {
                 case 0: option = Mastonet.Visibility.Public; break;     //public
                 case 1: option = Mastonet.Visibility.Private; ; break;  //private
                 case 2: option = Mastonet.Visibility.Direct; ; break;  //direct
-                case 3: option = Mastonet.Visibility.Unlisted; break;  //Unlisted
+                //case 3: option = Mastonet.Visibility.Unlisted; break;  //Unlisted
             }
 
             //media check
+            media_id_list = new List<long>();
             media_id_list.Clear();
             foreach(Attachment at in UploadAsyncTask.sVsDoneAttachment)
             {
@@ -218,7 +303,7 @@ namespace FlashCardPager
                         //post
                         var send_status  = await client.PostStatus(edittext.Text, option, null, media_id_list);
                         //twitter
-                        if (UserAction.bTwitterOnOff)
+                        if (tweet_range)
                         {
                             if(sTwiiter_tokens != null)
                             {
@@ -242,9 +327,16 @@ namespace FlashCardPager
                         }
                     }
                     edittext.Text = "";
-                    var editor = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private).Edit();
-                    editor.PutInt(KEY_RANGE, spin_position);
-                    editor.Commit();
+                    //toot range
+                    var editor_toot = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private).Edit();
+                    editor_toot.PutInt(KEY_RANGE, spin_position);
+                    editor_toot.Commit();
+
+                    //tweet range
+                    var editor_tweet = GetSharedPreferences(SETTINGS, FileCreationMode.Private).Edit();
+                    editor_tweet.PutBoolean(TWEET_RANGE, tweet_range);
+                    editor_tweet.Commit();
+
                     Finish();
                 }
                 catch (System.Exception ex)
@@ -282,7 +374,6 @@ namespace FlashCardPager
                 {
                     case 0:
                         image = FindViewById<ImageView>(Resource.Id.imageupload);
-
                         image.SetImageURI(uri);
                         uploadAsyncTask.Execute(uri);
                         break;
@@ -329,6 +420,30 @@ namespace FlashCardPager
                 }
 
             }
+        }
+
+        //image reset
+        private void UploadImageReset(Attachment[] attachments, ImageView imageView, int i)
+        {
+            attachments[i] = null;
+            imageView.Visibility = ViewStates.Gone;
+        }
+
+        //image dialog
+        private void yesNoDialog(string title, Android.Content.Context context, Attachment[] attachments, ImageView imageView, int i)
+        {
+            ContextThemeWrapper contextThemeWrapper;
+            if (ColorDatabase.mode) contextThemeWrapper = new ContextThemeWrapper(this, Resource.Style.DarkDialogTheme);
+            else contextThemeWrapper = new ContextThemeWrapper(this, Android.Resource.Style.ThemeMaterialLightDialog);
+
+            var dlg = new AlertDialog.Builder(contextThemeWrapper);
+            dlg.SetTitle(title);
+            dlg.SetPositiveButton("Yes", (sender, e) =>
+            {
+                UploadImageReset(attachments, imageView, i);
+            });
+            dlg.SetNegativeButton("Cancel", (sender, e) => {});
+            dlg.Create().Show();
         }
 
 

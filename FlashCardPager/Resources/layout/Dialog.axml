@@ -15,6 +15,10 @@
 			android:id="@+id/dlg_tootbackColor"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"/>
+		<ImageView
+			android:background="#66000000"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"/>
 
 		<LinearLayout
 			android:orientation="horizontal"
@@ -63,10 +67,12 @@
 		</LinearLayout>
 	</FrameLayout>
 
+	<!--
 	<View
     android:layout_width="match_parent"
     android:layout_height="1dp"
     android:background="@android:color/darker_gray" />
+	-->
 
 	<ListView
 	android:minWidth="25px"

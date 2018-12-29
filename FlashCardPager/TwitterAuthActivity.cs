@@ -27,12 +27,6 @@ namespace FlashCardPager
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.TwitterAuth);
 
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-
             var buttonTwiAuth = FindViewById<Button>(Resource.Id.buttonTwitterOAuth);
             var e_Pincode = FindViewById<EditText>(Resource.Id.edittextTwitterCode);
             var buttonPincode = FindViewById<Button>(Resource.Id.buttonTwitter_Registration);
@@ -74,7 +68,7 @@ namespace FlashCardPager
 
                 }
             };
-
         }
+
     }
 }

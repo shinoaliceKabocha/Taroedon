@@ -112,16 +112,18 @@ namespace FlashCardPager
         {
             activity.FindViewById<Button>(Resource.Id.buttonPOST).Enabled = true;
             sVsDoneAttachment[requestcode] = result;
-
             switch (requestcode)
             {
                 case 0:
-                    activity.FindViewById<ImageView>(Resource.Id.imageupload1).Visibility = ViewStates.Visible;
+                    activity.FindViewById<ImageView>(Resource.Id.imageupload).Visibility = ViewStates.Visible;
                     break;
                 case 1:
-                    activity.FindViewById<ImageView>(Resource.Id.imageupload2).Visibility = ViewStates.Visible;
+                    activity.FindViewById<ImageView>(Resource.Id.imageupload1).Visibility = ViewStates.Visible;
                     break;
                 case 2:
+                    activity.FindViewById<ImageView>(Resource.Id.imageupload2).Visibility = ViewStates.Visible;
+                    break;
+                case 3:
                     activity.FindViewById<ImageView>(Resource.Id.imageupload3).Visibility = ViewStates.Visible;
                     break;
             }

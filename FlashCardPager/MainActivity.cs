@@ -24,15 +24,6 @@ namespace FlashCardPager
 
             try
             {
-                ////varsionアップ時の対応
-                //var pm = this.PackageManager;
-                //var versionCode = pm.GetPackageInfo(this.PackageName, 0).VersionCode;
-                //if(versionCode < 10)
-                //{
-                //    UserAction.CacheClear();
-                //    UserAction.Toast_BottomFIllHorizontal_Show("アプリ更新したときに，データ構成を変えました\n一時Cacheを削除します", this, UserAction.COLOR_INFO);
-                //}
-
                 //setting load
                 var pref = GetSharedPreferences("SETTING", FileCreationMode.Private);
                 ColorDatabase.mode = pref.GetBoolean("theme", false);

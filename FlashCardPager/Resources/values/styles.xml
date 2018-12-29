@@ -27,6 +27,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="DarkDialogTheme" parent="@android:style/Theme.Material.Dialog">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@android:color/white</item>
+
+    </style>
+    
     
 </resources>
 

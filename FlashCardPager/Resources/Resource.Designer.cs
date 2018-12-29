@@ -2230,26 +2230,26 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
-			// aapt resource value: 0x7f020076
-			public const int avd_hide_password_1 = 2130837622;
+			// aapt resource value: 0x7f02007d
+			public const int avd_hide_password_1 = 2130837629;
 			
-			// aapt resource value: 0x7f020077
-			public const int avd_hide_password_2 = 2130837623;
+			// aapt resource value: 0x7f02007e
+			public const int avd_hide_password_2 = 2130837630;
 			
-			// aapt resource value: 0x7f020078
-			public const int avd_hide_password_3 = 2130837624;
+			// aapt resource value: 0x7f02007f
+			public const int avd_hide_password_3 = 2130837631;
 			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
 			
-			// aapt resource value: 0x7f020079
-			public const int avd_show_password_1 = 2130837625;
+			// aapt resource value: 0x7f020080
+			public const int avd_show_password_1 = 2130837632;
 			
-			// aapt resource value: 0x7f02007a
-			public const int avd_show_password_2 = 2130837626;
+			// aapt resource value: 0x7f020081
+			public const int avd_show_password_2 = 2130837633;
 			
-			// aapt resource value: 0x7f02007b
-			public const int avd_show_password_3 = 2130837627;
+			// aapt resource value: 0x7f020082
+			public const int avd_show_password_3 = 2130837634;
 			
 			// aapt resource value: 0x7f020056
 			public const int baseline_settings_white_18dp = 2130837590;
@@ -2279,73 +2279,94 @@ namespace FlashCardPager
 			public const int design_snackbar_background = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int faces_white_18dp = 2130837599;
+			public const int direct = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int fav = 2130837600;
+			public const int faces_white_18dp = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int Icon = 2130837601;
+			public const int fav = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int link = 2130837602;
+			public const int Icon = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int navigation_empty_icon = 2130837603;
+			public const int imageAdd = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int None = 2130837604;
+			public const int link = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int notification_action_background = 2130837605;
+			public const int navigation_empty_icon = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int notification_bg = 2130837606;
+			public const int None = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int notification_bg_low = 2130837607;
+			public const int notification_action_background = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int notification_bg_low_normal = 2130837608;
+			public const int notification_bg = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int notification_bg_low_pressed = 2130837609;
+			public const int notification_bg_low = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int notification_bg_normal = 2130837610;
+			public const int notification_bg_low_normal = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int notification_bg_normal_pressed = 2130837611;
+			public const int notification_bg_low_pressed = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int notification_icon_background = 2130837612;
-			
-			// aapt resource value: 0x7f020074
-			public const int notification_template_icon_bg = 2130837620;
-			
-			// aapt resource value: 0x7f020075
-			public const int notification_template_icon_low_bg = 2130837621;
+			public const int notification_bg_normal = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int notification_tile_bg = 2130837613;
+			public const int notification_bg_normal_pressed = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int notify_panel_notification_icon_bg = 2130837614;
+			public const int notification_icon_background = 2130837614;
+			
+			// aapt resource value: 0x7f02007b
+			public const int notification_template_icon_bg = 2130837627;
+			
+			// aapt resource value: 0x7f02007c
+			public const int notification_template_icon_low_bg = 2130837628;
 			
 			// aapt resource value: 0x7f02006f
-			public const int person = 2130837615;
+			public const int notification_tile_bg = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int reply = 2130837616;
+			public const int notify_panel_notification_icon_bg = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int Ta_Notification = 2130837617;
+			public const int person = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int tooltip_frame_dark = 2130837618;
+			public const int private_icon = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int tooltip_frame_light = 2130837619;
+			public const int public_icon = 2130837619;
+			
+			// aapt resource value: 0x7f020074
+			public const int reply = 2130837620;
+			
+			// aapt resource value: 0x7f020075
+			public const int shape_rounded_corners_5dp = 2130837621;
+			
+			// aapt resource value: 0x7f020076
+			public const int Ta_Notification = 2130837622;
+			
+			// aapt resource value: 0x7f020077
+			public const int tooltip_frame_dark = 2130837623;
+			
+			// aapt resource value: 0x7f020078
+			public const int tooltip_frame_light = 2130837624;
+			
+			// aapt resource value: 0x7f020079
+			public const int twitter_no = 2130837625;
+			
+			// aapt resource value: 0x7f02007a
+			public const int twitter_yes = 2130837626;
 			
 			static Drawable()
 			{
@@ -2380,6 +2401,9 @@ namespace FlashCardPager
 			
 			// aapt resource value: 0x7f070037
 			public const int SYM = 2131165239;
+			
+			// aapt resource value: 0x7f0700c2
+			public const int TweetRange = 2131165378;
 			
 			// aapt resource value: 0x7f0700b0
 			public const int action0 = 2131165360;
@@ -2471,14 +2495,14 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07003d
 			public const int bottom = 2131165245;
 			
-			// aapt resource value: 0x7f0700cc
-			public const int buttonFollow = 2131165388;
+			// aapt resource value: 0x7f0700cd
+			public const int buttonFollow = 2131165389;
 			
 			// aapt resource value: 0x7f0700e0
 			public const int buttonOAuth = 2131165408;
 			
-			// aapt resource value: 0x7f0700c9
-			public const int buttonPOST = 2131165385;
+			// aapt resource value: 0x7f0700c4
+			public const int buttonPOST = 2131165380;
 			
 			// aapt resource value: 0x7f070063
 			public const int buttonPanel = 2131165283;
@@ -2573,8 +2597,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07009c
 			public const int dlg_tootbackColor = 2131165340;
 			
-			// aapt resource value: 0x7f0700c8
-			public const int editTextTweet2 = 2131165384;
+			// aapt resource value: 0x7f0700c5
+			public const int editTextTweet2 = 2131165381;
 			
 			// aapt resource value: 0x7f07007e
 			public const int edit_query = 2131165310;
@@ -2651,17 +2675,17 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07005f
 			public const int image = 2131165279;
 			
-			// aapt resource value: 0x7f0700c5
-			public const int imageEmojiDictionary = 2131165381;
+			// aapt resource value: 0x7f0700c1
+			public const int imageEmojiDictionary = 2131165377;
 			
-			// aapt resource value: 0x7f0700cd
-			public const int imageViewAvatar = 2131165389;
+			// aapt resource value: 0x7f0700ce
+			public const int imageViewAvatar = 2131165390;
 			
 			// aapt resource value: 0x7f0700a2
 			public const int imageViewEmoji = 2131165346;
 			
-			// aapt resource value: 0x7f0700cb
-			public const int imageViewHeader = 2131165387;
+			// aapt resource value: 0x7f0700cc
+			public const int imageViewHeader = 2131165388;
 			
 			// aapt resource value: 0x7f0700eb
 			public const int imageViewImage0 = 2131165419;
@@ -2678,17 +2702,20 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700f3
 			public const int imageViewToast = 2131165427;
 			
-			// aapt resource value: 0x7f0700c1
-			public const int imageupload = 2131165377;
+			// aapt resource value: 0x7f0700c7
+			public const int imageupload = 2131165383;
 			
-			// aapt resource value: 0x7f0700c2
-			public const int imageupload1 = 2131165378;
+			// aapt resource value: 0x7f0700c8
+			public const int imageupload1 = 2131165384;
 			
-			// aapt resource value: 0x7f0700c3
-			public const int imageupload2 = 2131165379;
+			// aapt resource value: 0x7f0700c9
+			public const int imageupload2 = 2131165385;
 			
-			// aapt resource value: 0x7f0700c4
-			public const int imageupload3 = 2131165380;
+			// aapt resource value: 0x7f0700ca
+			public const int imageupload3 = 2131165386;
+			
+			// aapt resource value: 0x7f0700c0
+			public const int imageuploadAdd = 2131165376;
 			
 			// aapt resource value: 0x7f0700ba
 			public const int info = 2131165370;
@@ -2713,9 +2740,6 @@ namespace FlashCardPager
 			
 			// aapt resource value: 0x7f0700a5
 			public const int linearLayout1 = 2131165349;
-			
-			// aapt resource value: 0x7f0700c0
-			public const int linearLayoutImageButon = 2131165376;
 			
 			// aapt resource value: 0x7f0700dd
 			public const int linearLayoutSettings1_1 = 2131165405;
@@ -2747,8 +2771,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700f2
 			public const int listViewStatus = 2131165426;
 			
-			// aapt resource value: 0x7f0700d1
-			public const int listViewStatusforAccount = 2131165393;
+			// aapt resource value: 0x7f0700d2
+			public const int listViewStatusforAccount = 2131165394;
 			
 			// aapt resource value: 0x7f070061
 			public const int list_item = 2131165281;
@@ -2807,8 +2831,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07004d
 			public const int pin = 2131165261;
 			
-			// aapt resource value: 0x7f0700c7
-			public const int progressBarMediaUpload = 2131165383;
+			// aapt resource value: 0x7f0700c6
+			public const int progressBarMediaUpload = 2131165382;
 			
 			// aapt resource value: 0x7f070006
 			public const int progress_circular = 2131165190;
@@ -2918,8 +2942,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070064
 			public const int spacer = 2131165284;
 			
-			// aapt resource value: 0x7f0700c6
-			public const int spinnerTootRange = 2131165382;
+			// aapt resource value: 0x7f0700c3
+			public const int spinnerTootRange2 = 2131165379;
 			
 			// aapt resource value: 0x7f070008
 			public const int split_action_bar = 2131165192;
@@ -2948,23 +2972,20 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700f1
 			public const int swipelayout = 2131165425;
 			
-			// aapt resource value: 0x7f0700d2
-			public const int switchBrowser = 2131165394;
-			
 			// aapt resource value: 0x7f0700d3
-			public const int switchDisplayOn = 2131165395;
+			public const int switchBrowser = 2131165395;
 			
 			// aapt resource value: 0x7f0700d4
-			public const int switchImagePreview = 2131165396;
+			public const int switchDisplayOn = 2131165396;
 			
 			// aapt resource value: 0x7f0700d5
-			public const int switchImageQuality = 2131165397;
+			public const int switchImagePreview = 2131165397;
 			
 			// aapt resource value: 0x7f0700d6
-			public const int switchTheme = 2131165398;
+			public const int switchImageQuality = 2131165398;
 			
-			// aapt resource value: 0x7f0700d9
-			public const int switchTwitter = 2131165401;
+			// aapt resource value: 0x7f0700d7
+			public const int switchTheme = 2131165399;
 			
 			// aapt resource value: 0x7f07001f
 			public const int tabMode = 2131165215;
@@ -2987,11 +3008,11 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700a8
 			public const int textViewAMAZON = 2131165352;
 			
-			// aapt resource value: 0x7f0700d8
-			public const int textViewAuth = 2131165400;
+			// aapt resource value: 0x7f0700d9
+			public const int textViewAuth = 2131165401;
 			
-			// aapt resource value: 0x7f0700d7
-			public const int textViewCacheClearh = 2131165399;
+			// aapt resource value: 0x7f0700d8
+			public const int textViewCacheClearh = 2131165400;
 			
 			// aapt resource value: 0x7f0700e9
 			public const int textViewContent = 2131165417;
@@ -2999,8 +3020,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700f0
 			public const int textViewCreatedAt = 2131165424;
 			
-			// aapt resource value: 0x7f0700d0
-			public const int textViewFF = 2131165392;
+			// aapt resource value: 0x7f0700d1
+			public const int textViewFF = 2131165393;
 			
 			// aapt resource value: 0x7f0700a7
 			public const int textViewHowToUse = 2131165351;
@@ -3035,11 +3056,11 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f0700db
 			public const int textViewVersion = 2131165403;
 			
-			// aapt resource value: 0x7f0700cf
-			public const int textView_AccountName = 2131165391;
+			// aapt resource value: 0x7f0700d0
+			public const int textView_AccountName = 2131165392;
 			
-			// aapt resource value: 0x7f0700ce
-			public const int textView_DisplayName = 2131165390;
+			// aapt resource value: 0x7f0700cf
+			public const int textView_DisplayName = 2131165391;
 			
 			// aapt resource value: 0x7f07009a
 			public const int text_input_password_toggle = 2131165338;
@@ -3050,8 +3071,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f070015
 			public const int textinput_error = 2131165205;
 			
-			// aapt resource value: 0x7f0700ca
-			public const int textview_wordsCount = 2131165386;
+			// aapt resource value: 0x7f0700cb
+			public const int textview_wordsCount = 2131165387;
 			
 			// aapt resource value: 0x7f0700b8
 			public const int time = 2131165368;
@@ -4086,6 +4107,9 @@ namespace FlashCardPager
 			
 			// aapt resource value: 0x7f090161
 			public const int Base_Widget_Design_TabLayout = 2131296609;
+			
+			// aapt resource value: 0x7f090186
+			public const int DarkDialogTheme = 2131296646;
 			
 			// aapt resource value: 0x7f09001e
 			public const int Platform_AppCompat = 2131296286;
