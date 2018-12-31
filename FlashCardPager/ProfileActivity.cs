@@ -185,7 +185,6 @@ namespace FlashCardPager
             //profile icon get あとでとれるように それまではCache
             setImageViewAsync(avatar_url, imageViewAvatar);
 
-
             //イベント
             mListView.ItemClick += (sender, e) =>
             {

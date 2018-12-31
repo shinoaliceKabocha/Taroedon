@@ -262,7 +262,8 @@ namespace FlashCardPager
         {
             Intent intent = new Intent();
             var edittext = FindViewById<EditText>(Resource.Id.editTextTweet2);
-            int option_num = FindViewById<Spinner>(Resource.Id.spinnerTootRange2).SelectedItemPosition;//0:Public, 1:Private , 2:Direct,
+            var tootRange = FindViewById<Spinner>(Resource.Id.spinnerTootRange2);
+            int option_num = tootRange.SelectedItemPosition;//0:Public, 1:Private , 2:Direct,
             var option = Mastonet.Visibility.Public;
             switch (option_num)
             {
@@ -270,6 +271,7 @@ namespace FlashCardPager
                 case 1: option = Mastonet.Visibility.Private; ; break;  //private
                 case 2: option = Mastonet.Visibility.Direct; ; break;  //direct
                 //case 3: option = Mastonet.Visibility.Unlisted; break;  //Unlisted
+                default: option = Mastonet.Visibility.Public; break;
             }
 
             //media check
@@ -285,11 +287,27 @@ namespace FlashCardPager
             {
                 var this_button = (Button)sender;
                 var progressBar = FindViewById<ProgressBar>(Resource.Id.progressBarMediaUpload);
-                this_button.Enabled = false;
-                progressBar.Visibility = ViewStates.Visible;
+                var emojiDic = FindViewById<ImageView>(Resource.Id.imageEmojiDictionary);
+                var imageUpload = FindViewById<ImageView>(Resource.Id.imageuploadAdd);
+                var tweetRange = FindViewById<ImageView>(Resource.Id.TweetRange);
 
                 try
                 {
+                    /******************  function lock  ******************/
+                    //send button
+                    this_button.Enabled = false;
+                    //progressbar
+                    progressBar.Visibility = ViewStates.Visible;
+                    //emojiDic
+                    emojiDic.Enabled = false;
+                    //imageUp
+                    imageUpload.Enabled = false;
+                    //twitter
+                    tweetRange.Enabled = false;
+                    //toot Range
+                    tootRange.Enabled = false;
+                    /******************  function lock  ******************/
+
                     //リプライする時
                     if (status_id != 0)
                     {
@@ -345,8 +363,20 @@ namespace FlashCardPager
                 }
                 finally
                 {
+                    /******************  function unlock  ******************/
+                    //send button
                     this_button.Enabled = true;
+                    //progressbar
                     progressBar.Visibility = ViewStates.Gone;
+                    //emojiDic
+                    emojiDic.Enabled = true;
+                    //imageUp
+                    imageUpload.Enabled = true;
+                    //twitter
+                    tweetRange.Enabled = true;
+                    //toot Range
+                    tootRange.Enabled = true;
+                    /******************  function unlock  ******************/
                 }
             }
             else

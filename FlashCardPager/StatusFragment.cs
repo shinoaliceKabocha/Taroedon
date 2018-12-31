@@ -136,7 +136,7 @@ namespace FlashCardPager
         }
 
         /***************************************************************
-         *                              update
+         *       1                       update
          **************************************************************/
         private void SwipelayoutPull(object sender, EventArgs e)
         {

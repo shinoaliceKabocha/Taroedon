@@ -23,7 +23,6 @@ namespace FlashCardPager
     {
         List<Status> statuslist;
         LayoutInflater inflater;
-        List<string> imageUrls;
 
         public StatusAdapter(LayoutInflater inflater, List<Status> statuslist)
         {
@@ -49,19 +48,20 @@ namespace FlashCardPager
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             Status status = statuslist[position];
+            StatusController statusController = new StatusController(status);
+
             string accountname = status.Account.AccountName;
             string displayname = status.Account.DisplayName;
-            //rebolog check
-            if (status.Reblog != null) status = status.Reblog;
+            string boostedbyName = displayname + "@" + accountname;
 
             var view = convertView;
             view = inflater.Inflate(Resource.Layout.Status, parent, false);
-            view.SetBackgroundColor(ColorDatabase.TL_BACK);
-
+   
             //表示内容の設定
             ImageView avatar = view.FindViewById<ImageView>(Resource.Id.imageViewAvatar);
             TextView profile = view.FindViewById<TextView>(Resource.Id.textViewProfile);
             TextView content = view.FindViewById<TextView>(Resource.Id.textViewContent);
+            content.Text = "";//init
             TextView createdat = view.FindViewById<TextView>(Resource.Id.textViewCreatedAt);
 
             ImageView[] imageViews = new ImageView[4];
@@ -70,182 +70,35 @@ namespace FlashCardPager
             imageViews[2] = view.FindViewById<ImageView>(Resource.Id.imageViewImage2);
             imageViews[3] = view.FindViewById<ImageView>(Resource.Id.imageViewImage3);
 
+            //background color
+            statusController.SetViewBackColor(view);
+
             //avatar;
             ImageProvider imageProvider = new ImageProvider();
-            imageProvider.ImageIconSetAsync(status.Account.StaticAvatarUrl, avatar);
+            var s = status;
+            if (status.Reblog != null) s = status.Reblog;
+            imageProvider.ImageIconSetAsync(s.Account.StaticAvatarUrl, avatar);
             avatar.Click += (sender, e) =>
             {
-                UserAction.Profile(status.Account, view.Context);
+                UserAction.Profile(s.Account, view.Context);
             };
 
-            //profile
-            profile.SetTextColor(ColorDatabase.PROFILE);
-            ////ブーストされてるか判断する
-            if (accountname != status.Account.AccountName)
-            {
-                //profile.SetTextColor(ColorDatabase.TLTEXT);
-                view.SetBackgroundColor(ColorDatabase.BOOST_BACK);
-            }
-            if(status.Visibility == Visibility.Private)
-            {
-                profile.Text = "🔒";
-            }
-            else
-            {
-                profile.Text = "";
-            }
-            profile.Text += status.Account.DisplayName + "@" + status.Account.AccountName;
+            //profile set
+            statusController.SetStatusToTextView_forProfile(profile, view.Context);
 
-            //replyを確認する
-            if(status.Content.Contains("@"+UserClient.currentAccountName))
-            {
-                view.SetBackgroundColor(ColorDatabase.REPLY_BACK);
-            }
+            //content set
+            statusController.SetStatusToTextView(content, ColorDatabase.TLTEXT, view.Context);
 
-            //content
-            string _content;
-            content.SetText(Html.FromHtml(status.Content), TextView.BufferType.Spannable);
-            _content = content.Text;
+            //created at time set 
+            statusController.SetCreateDate(createdat, boostedbyName);
 
-            try
-            {
-                _content = _content.Substring(0, _content.Length - 2);
-            }
-            catch (Exception e)
-            {
-            }
-
-
-
-            ////画像URL取得 → contentに追加
-            List<string> list = OtherTool.DLG_ITEM_getURL(status);
-            foreach (var add in list)
-            {
-                if (!_content.Contains("@") && add != UserClient.instance)
-                {
-                    if (add.Contains("media") || add.Contains("jpg") || add.Contains("jpeg") )
-                    {
-                        if (!UserAction.bImagePre && !_content.Contains(add))
-                        {
-                            if (add.Length > 30) _content += "\r\nimg:" + add.Substring(0, 30) + "....";
-                            else _content += "\r\nimg:" + add;
-                        }
-                    }
-                }
-            }
-
-            //emoji content set!!
-            EmojiGetTask emojiGetTask = new EmojiGetTask();
-            var emojiPositions = emojiGetTask.EmojiPostions(_content);
-
-            var spannableString = new SpannableString(_content);
-            foreach(EmojiPosition ep in emojiPositions)
-            {
-                Bitmap b = emojiGetTask.GetBitmap(ep.shortcode);
-                if(b != null)
-                {
-                    var imageSpan = new ImageSpan(view.Context, b);
-                    spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
-                }
-            }
-            spannableString.SetSpan(new ForegroundColorSpan(ColorDatabase.TLTEXT), 0, _content.Length, SpanTypes.ExclusiveExclusive);
-            content.TextFormatted = spannableString;
-
-
-            //created at time 
-            createdat.SetTextColor(ColorDatabase.TIME);
-            createdat.Text = "";
-            if (accountname != status.Account.AccountName)
-            {
-                createdat.Text
-                    += "Boosted by " + displayname + "@" + accountname + "\r\n";
-            }
-
-            createdat.Text += "Fav:" + status.FavouritesCount + "  Boost:" + status.ReblogCount + "  "
-                + status.CreatedAt.ToLocalTime() + "";
-
-
-            //プレビューを使う
-            imageUrls = new List<string>();
-            if (UserAction.bImagePre)
-            {
-                //サムネイルの表示
-                int i = 0;
-                imageUrls = OtherTool.ImageUrlPreviewfromStatus(status);
-                for (i = 0; i < imageUrls.Count; i++)
-                {
-                    ImageProvider imageProvider2 = new ImageProvider();
-                    imageProvider2.ImageThumnailSetAsync(imageUrls[i], imageViews[i]);
-                }
-                for (int j = i; j < 4; j++)
-                {
-                    imageViews[j].Visibility = ViewStates.Gone;
-                }
-
-                if (imageUrls.Count <= 2)
-                {
-                    view.FindViewById<LinearLayout>(Resource.Id.Linearlayoutimagedown).Visibility = ViewStates.Gone;
-                    if (imageUrls.Count == 0)
-                    {
-                        view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
-                    }
-                }
-
-                //サムネイル クリックイベント
-                //画質の設定
-                List<string> thumbnail;
-                if (UserAction.bImageQuality)
-                {
-                    thumbnail = OtherTool.ImageUrlRemotefromStatus(status);
-                }
-                else
-                {
-                    thumbnail = OtherTool.ImageUrlPreviewfromStatus(status);
-                }
-                //イベント発行
-                imageViews[0].Click += (sender, e) =>
-                {
-                    if (thumbnail.Count > 0)
-                    {
-                        string u = thumbnail[0];
-                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                    }
-                };
-                imageViews[1].Click += (sender, e) =>
-                {
-                    if (thumbnail.Count > 1)
-                    {
-                        string u = thumbnail[1];
-                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                    }
-                };
-                imageViews[2].Click += (sender, e) =>
-                {
-                    if (thumbnail.Count > 2)
-                    {
-                        string u = thumbnail[2];
-                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                    }
-                };
-                imageViews[3].Click += (sender, e) =>
-                {
-                    if (thumbnail.Count > 3)
-                    {
-                        string u = thumbnail[3];
-                        if (!u.Equals(null)) UserAction.UrlOpen(u, view);
-                    }
-                };
-            }
-            //プレビューを使わない
-            else
-            {
-                for(int k = 0; k < 4; k++)
-                {
-                    imageViews[k].Visibility = ViewStates.Gone;
-                }
-                view.FindViewById<LinearLayout>(Resource.Id.linearlayoutimageup).Visibility = ViewStates.Gone;
-                view.FindViewById<LinearLayout>(Resource.Id.Linearlayoutimagedown).Visibility = ViewStates.Gone;
-            }
+            //Preview set
+            statusController.SetImagePreview(imageViews, view);
+            
+            //animation add
+            //var anim = Android.Views.Animations.AnimationUtils.LoadAnimation(view.Context, Resource.Animation.listViewScroll);
+            //var anim = Android.Views.Animations.AnimationUtils.LoadAnimation(view.Context, Android.Resource.Animation.FadeIn);
+            //view.StartAnimation(anim);
 
             return view;
         }

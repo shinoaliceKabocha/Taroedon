@@ -74,10 +74,13 @@ namespace FlashCardPager
 			public const int design_snackbar_out = 2130968589;
 			
 			// aapt resource value: 0x7f04000e
-			public const int tooltip_enter = 2130968590;
+			public const int listViewScroll = 2130968590;
 			
 			// aapt resource value: 0x7f04000f
-			public const int tooltip_exit = 2130968591;
+			public const int tooltip_enter = 2130968591;
+			
+			// aapt resource value: 0x7f040010
+			public const int tooltip_exit = 2130968592;
 			
 			static Animation()
 			{

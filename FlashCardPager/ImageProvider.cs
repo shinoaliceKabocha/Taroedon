@@ -40,7 +40,7 @@ namespace FlashCardPager
                             try
                             {
                                 bitmap = BitmapFactory.DecodeByteArray(bytedata, 0, bytedata.Length);//byte -> bitmpap
-                                bitmap = Bitmap.CreateScaledBitmap(bitmap, 50, 50, false);//低画質化
+                                bitmap = Bitmap.CreateScaledBitmap(bitmap, 100, 100, false);//低画質化
                                 BinaryManager.WriteImage_To_File(url, bitmap);
                             }
                             catch (Exception ex)

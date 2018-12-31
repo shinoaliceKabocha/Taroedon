@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewProfile" />
             <TextView
-                android:text="content content content content content"
+                android:text=""
                 android:textSize="45px"
 				android:autoLink="web"
 				android:linksClickable="false"
