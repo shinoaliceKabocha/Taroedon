@@ -9,31 +9,40 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
+using Java.Lang;
 
 namespace FlashCardPager
 {
     [Activity(Label = "EmojiDictionaryActivity", Theme = "@android:style/Theme.Material.Light.Dialog.NoActionBar")]
-    public class EmojiDictionaryActivity : Activity
+    public class EmojiDictionaryActivity : Activity, ITextWatcher
     {
+        ListView listView;
+        CustomListAdapter customListAdapter;
+        List<EmojiItem> emojiItems, allEmojiItems;
+        EditText searchEditText;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.EmojiDictionary);
             // Create your application here
             //絵文字辞書内容を全部取得する
-            List<EmojiItem> emojiItems = GetEmojiItems();
+            emojiItems = GetEmojiItems();
+            allEmojiItems = emojiItems;//all set
 
-            var listView = FindViewById<ListView>(Resource.Id.listViewEmojiDictionary);
+            listView = FindViewById<ListView>(Resource.Id.listViewEmojiDictionary);
             listView.SetBackgroundColor(ColorDatabase.TL_BACK);
-            CustomListAdapter customListAdapter = new CustomListAdapter(this, emojiItems);
+            customListAdapter = new CustomListAdapter(this, emojiItems);
             listView.Adapter = customListAdapter;
             customListAdapter.NotifyDataSetChanged();
 
             listView.ItemClick += (sender, e) =>
             {
-                var emojiItem = customListAdapter[e.Position];
+                int p = e.Position - 1;
+                var emojiItem = customListAdapter[p];
 
                 Intent intent = new Intent();
                 intent.PutExtra("shortcode", emojiItem.Shortcode);
@@ -42,6 +51,14 @@ namespace FlashCardPager
                 Finish();
             };
 
+            //search text
+            searchEditText = new EditText(this);
+            searchEditText.AddTextChangedListener(this);
+            searchEditText.SetSingleLine();
+            searchEditText.Hint = "Input search word...";
+            searchEditText.SetHintTextColor(ColorDatabase.TLTEXT);
+            searchEditText.SetTextColor(ColorDatabase.TLTEXT);
+            listView.AddHeaderView(searchEditText);
         }
 
         private List<EmojiItem> GetEmojiItems()
@@ -52,7 +69,6 @@ namespace FlashCardPager
             {
                 if (Directory.Exists(emojiPath))
                 {
-                    //string[] filePaths = Directory.GetFiles(emojiPath);
                     string[] filePaths = Directory.GetFiles(emojiPath);
                     foreach (string filePath in filePaths)
                     {
@@ -71,8 +87,39 @@ namespace FlashCardPager
 
             return rtn;
         }
+
+        private List<EmojiItem> GetEmojiItems(string key)
+        {
+            if (allEmojiItems == null || allEmojiItems.Count == 0)
+            {
+                allEmojiItems = GetEmojiItems();
+            }
+
+            List<EmojiItem> rtn = new List<EmojiItem>();
+            foreach (var s in allEmojiItems)
+            {
+                if (s.Shortcode.Contains(key)) rtn.Add(s);
+            }
+            return rtn;
+        }
+
+        //textwatcher
+        public void AfterTextChanged(IEditable s)
+        {
+            customListAdapter.clear();
+            emojiItems = GetEmojiItems(s.ToString());
+            customListAdapter.addAll(emojiItems);
+            customListAdapter.NotifyDataSetChanged();
+
+        }
+        public void BeforeTextChanged(ICharSequence s, int start, int count, int after) { }
+        public void OnTextChanged(ICharSequence s, int start, int before, int count) { }
+        //textwatcher
+
     }
 
+
+    /* text + Bitmap adapter */
     public class CustomListAdapter : BaseAdapter<EmojiItem>
     {
         List<EmojiItem> emojiItems;
@@ -111,6 +158,19 @@ namespace FlashCardPager
             shortCode.SetTextColor(ColorDatabase.TLTEXT);
 
             return view;
+        }
+
+        public void clear()
+        {
+            emojiItems.Clear();
+        }
+        public void addAll(List<EmojiItem> ts)
+        {
+            if (emojiItems == null) emojiItems = new List<EmojiItem>();
+            foreach(var t in ts)
+            {
+                emojiItems.Add(t);
+            }
         }
     }
 

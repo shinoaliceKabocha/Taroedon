@@ -69,11 +69,15 @@ namespace FlashCardPager
             //avatar
             imageProvider.ImageIconSetAsync(avater_url, avatar);
 
+            var statusController = new StatusController(status);
             //username
-            username.Text = username_text;
+            username.Text = "";
+            statusController.SetStatusToTextView_forProfile(username, Color.White, this);
 
             //content
-            content.SetText(Html.FromHtml(content_text), TextView.BufferType.Normal);
+            content.Text = "";
+            statusController.SetStatusToTextView(content, Color.White, this);
+            //content.SetText(Html.FromHtml(content_text), TextView.BufferType.Normal);
 
             ////time
             //var time = FindViewById<TextView>(Resource.Id.dlg_textView_CreteTime);
@@ -84,7 +88,7 @@ namespace FlashCardPager
             List<EmojiItem> commands_withIcon_list = new List<EmojiItem>();
             for(int i=0; i<itemlist.Count; i++)
             {
-                Android.Util.Log.Info("HOGE", itemlist[i]);
+                //Android.Util.Log.Info("HOGE", itemlist[i]);
 
                 Bitmap bitmap = null;
                 switch (i)

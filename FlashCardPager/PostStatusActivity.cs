@@ -46,7 +46,7 @@ namespace FlashCardPager
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PostStatus);
             //Range init
-            if(spin_position == -1)
+            if (spin_position == -1)
             {
                 //Toot range
                 try
@@ -95,11 +95,11 @@ namespace FlashCardPager
 
             //Emoji Dictionary
             var imageEmojiDictionary = FindViewById<ImageView>(Resource.Id.imageEmojiDictionary);
-            imageEmojiDictionary.Click +=(sender, e) =>
-            {
-                Intent intent = new Intent(this, typeof(EmojiDictionaryActivity));
-                StartActivityForResult(intent, 10);
-            };
+            imageEmojiDictionary.Click += (sender, e) =>
+             {
+                 Intent intent = new Intent(this, typeof(EmojiDictionaryActivity));
+                 StartActivityForResult(intent, 10);
+             };
 
             //Reply時のデータの受取
             try
@@ -132,7 +132,7 @@ namespace FlashCardPager
             //button
             var tweetRange = FindViewById<ImageView>(Resource.Id.TweetRange);
             //resouce set
-            if(tweet_range && sTwiiter_tokens != null)
+            if (tweet_range && sTwiiter_tokens != null)
             {
                 tweetRange.SetImageResource(Resource.Drawable.twitter_yes);
             }
@@ -154,11 +154,11 @@ namespace FlashCardPager
                 //Noのとき
                 else
                 {
-                    if(sTwiiter_tokens == null)
+                    if (sTwiiter_tokens == null)
                     {
                         sTwiiter_tokens = UserAction.GetTokens(pref_twitter);
                     }
-                    if(sTwiiter_tokens != null)
+                    if (sTwiiter_tokens != null)
                     {
                         tweetRange.SetImageResource(Resource.Drawable.twitter_yes);
                         tweet_range = true;
@@ -183,11 +183,11 @@ namespace FlashCardPager
             {
                 //最も若い空き番号を取得する
                 int i = 0;
-                for(i=0; i<UploadAsyncTask.sVsDoneAttachment.Length; i++)
+                for (i = 0; i < UploadAsyncTask.sVsDoneAttachment.Length; i++)
                 {
                     var s = UploadAsyncTask.sVsDoneAttachment[i];
                     if (s == null) break;
-                    else if (s != null && i == UploadAsyncTask.sVsDoneAttachment.Length -1 )
+                    else if (s != null && i == UploadAsyncTask.sVsDoneAttachment.Length - 1)
                     {
                         return;
                     }
@@ -277,9 +277,9 @@ namespace FlashCardPager
             //media check
             media_id_list = new List<long>();
             media_id_list.Clear();
-            foreach(Attachment at in UploadAsyncTask.sVsDoneAttachment)
+            foreach (Attachment at in UploadAsyncTask.sVsDoneAttachment)
             {
-                if(at != null)  media_id_list.Add(at.id);
+                if (at != null) media_id_list.Add(at.id);
             }
 
             //投稿
@@ -319,15 +319,15 @@ namespace FlashCardPager
                     else if (status_id == 0)
                     {
                         //post
-                        var send_status  = await client.PostStatus(edittext.Text, option, null, media_id_list);
+                        var send_status = await client.PostStatus(edittext.Text, option, null, media_id_list);
                         //twitter
                         if (tweet_range)
                         {
-                            if(sTwiiter_tokens != null)
+                            if (sTwiiter_tokens != null)
                             {
                                 string sendText = edittext.Text;
                                 var mediaList = send_status.MediaAttachments;
-                                foreach(var m in mediaList)
+                                foreach (var m in mediaList)
                                 {
                                     sendText += "\n" + m.PreviewUrl;
                                 }
@@ -436,7 +436,7 @@ namespace FlashCardPager
                             edittext.Text = left + " :" + shortcode + ": " + right;
                             edittext.SetSelection(left.Length + shortcode.Length + 4);
                         }
-                        catch(System.Exception e)
+                        catch (System.Exception e)
                         {
                             UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this, ColorDatabase.FAILED);
                         }
@@ -472,7 +472,7 @@ namespace FlashCardPager
             {
                 UploadImageReset(attachments, imageView, i);
             });
-            dlg.SetNegativeButton("Cancel", (sender, e) => {});
+            dlg.SetNegativeButton("Cancel", (sender, e) => { });
             dlg.Create().Show();
         }
 
@@ -496,5 +496,45 @@ namespace FlashCardPager
         }
         public void BeforeTextChanged(ICharSequence s, int start, int count, int after) { }
         public void OnTextChanged(ICharSequence s, int start, int before, int count) { }
+
+
+        //dialog
+        public override void Finish()
+        {
+            ContextThemeWrapper contextThemeWrapper;
+            if (ColorDatabase.mode) contextThemeWrapper = new ContextThemeWrapper(this, Resource.Style.DarkDialogTheme);
+            else contextThemeWrapper = new ContextThemeWrapper(this, Android.Resource.Style.ThemeMaterialLightDialog);
+
+            var dlg = new AlertDialog.Builder(contextThemeWrapper);
+            dlg.SetTitle("投稿を中止しますか？");
+            dlg.SetMessage("データは保存されません");
+            dlg.SetPositiveButton("Yes", (sender, e) =>
+            {
+                base.Finish();
+            });
+            dlg.SetNegativeButton("Cancel", (sender, e) => { });
+
+            int editlength = FindViewById<EditText>(Resource.Id.editTextTweet2).Length();
+            var str = Intent.GetStringExtra("status_AcountName");
+            //imageがあるとき
+            if (UploadAsyncTask.isMedia())
+            {
+                dlg.Create().Show();
+            }
+            //通常Post
+            else if (string.IsNullOrEmpty(str) && editlength > 0)
+            {
+                dlg.Create().Show();
+            }
+            //reply
+            else if(!string.IsNullOrEmpty(str) && editlength > str.Length + 2 /*@+space*/)
+            {
+                dlg.Create().Show();
+            }
+            else
+            {
+                base.Finish();
+            }
+        }
     }
 }

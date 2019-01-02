@@ -20,6 +20,9 @@ using System.Text.RegularExpressions;
 using Android.Util;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Android.Text;
+using Android.Text.Style;
+using Context = Android.Content.Context;
 
 namespace FlashCardPager
 {
@@ -39,6 +42,26 @@ namespace FlashCardPager
             {
                 return null;
             }
+        }
+
+        //textshortcode convert to customemoji
+        public void SetStringConvertEmoji(TextView textView, string content, Color color, Context context) 
+        {
+            var emojiPositions = EmojiPostions(content);
+            var spannableString = new SpannableString(content);
+            foreach (EmojiPosition ep in emojiPositions)
+            {
+                Bitmap b = GetBitmap(ep.shortcode);
+                if (b != null)
+                {
+                    var imageSpan = new ImageSpan(context, b);
+                    spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
+                }
+            }
+            //total set
+            spannableString.SetSpan(
+                new ForegroundColorSpan(color), 0, content.Length, SpanTypes.ExclusiveExclusive);
+            textView.TextFormatted = spannableString;
         }
 
         public async void InitEmojiListAsync()

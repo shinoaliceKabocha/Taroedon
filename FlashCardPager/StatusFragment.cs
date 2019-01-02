@@ -205,9 +205,6 @@ namespace FlashCardPager
             statusAdapter.NotifyDataSetChanged();
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
         }
-
-
-
     }
 }
 

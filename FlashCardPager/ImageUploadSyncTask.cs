@@ -156,6 +156,16 @@ namespace FlashCardPager
             }
         }
 
+        //null check
+        public static bool isMedia()
+        {
+            foreach(var i in sVsDoneAttachment)
+            {
+                if (i != null) return true;
+            }
+            return false;
+        }
+
     }
 
     //独自 media class

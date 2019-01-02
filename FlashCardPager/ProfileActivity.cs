@@ -70,10 +70,14 @@ namespace FlashCardPager
             string _accountName;
             if (locked) _accountName = "🔒  " + accountName;
             else _accountName = accountName;
-            FindViewById<TextView>(Resource.Id.textView_AccountName).Text = _accountName;
+
+            var accaountTextView = FindViewById<TextView>(Resource.Id.textView_AccountName);
+            accaountTextView.Text = "";
+            accaountTextView.Text = _accountName;
 
             string displayName = this.Intent.GetStringExtra("display_name");
-            FindViewById<TextView>(Resource.Id.textView_DisplayName).Text = displayName;
+            var displayNameTextView = FindViewById<TextView>(Resource.Id.textView_DisplayName);
+            new EmojiGetTask().SetStringConvertEmoji(displayNameTextView, displayName, Color.White, this);
 
             string ff = "Follow:"+this.Intent.GetStringExtra("follow") + "  Follower:" + this.Intent.GetStringExtra("follower");
             TextView textViewFF = FindViewById<TextView>(Resource.Id.textViewFF);

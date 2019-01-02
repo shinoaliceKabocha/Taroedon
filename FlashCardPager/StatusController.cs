@@ -153,21 +153,8 @@ namespace FlashCardPager
 
             //emoji set
             EmojiGetTask emojiGetTask = new EmojiGetTask();
-            var emojiPositions = emojiGetTask.EmojiPostions(_content);
+            emojiGetTask.SetStringConvertEmoji(textView, _content, color, context);
 
-            var spannableString = new SpannableString(_content);
-            foreach (EmojiPosition ep in emojiPositions)
-            {
-                Bitmap b = emojiGetTask.GetBitmap(ep.shortcode);
-                if (b != null)
-                {
-                    var imageSpan = new ImageSpan(context, b);
-                    spannableString.SetSpan(imageSpan, ep.start, ep.end, SpanTypes.ExclusiveExclusive);
-                }
-            }
-            //total set
-            spannableString.SetSpan(new ForegroundColorSpan(color), 0, _content.Length, SpanTypes.ExclusiveExclusive);
-            textView.TextFormatted = spannableString;
         }
 
         //     １－１．Profileの鍵付きのやつ１の拡張
@@ -191,6 +178,27 @@ namespace FlashCardPager
             profileTextView.Text += status.Account.DisplayName + "@" + status.Account.AccountName;
 
             SetStatusToTextView(profileTextView, ColorDatabase.PROFILE, context);
+        }
+
+        public virtual void SetStatusToTextView_forProfile(TextView profileTextView, Color color, Context context)
+        {
+            //🔒?
+            if (status.Visibility == Mastonet.Visibility.Private)
+            {
+                profileTextView.Text = "🔒";
+            }
+            //📨？
+            else if (status.Visibility == Mastonet.Visibility.Direct)
+            {
+                profileTextView.Text = "📨";
+            }
+            else
+            {
+                profileTextView.Text = "";
+            }
+            profileTextView.Text += status.Account.DisplayName + "@" + status.Account.AccountName;
+
+            SetStatusToTextView(profileTextView, color, context);
         }
 
         // ２．背景色の変更
