@@ -90,7 +90,6 @@ namespace FlashCardPager
         }
 
 
-
         /* Default テーマ */
         //TimeLine
         //テキストカラー

@@ -165,6 +165,11 @@ namespace FlashCardPager
             }
             return false;
         }
+        //clear list
+        public static void ClearMedia()
+        {
+            sVsDoneAttachment = new Attachment[4] { null, null, null, null };
+        }
 
     }
 

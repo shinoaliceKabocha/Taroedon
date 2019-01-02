@@ -345,6 +345,8 @@ namespace FlashCardPager
                         }
                     }
                     edittext.Text = "";
+                    UploadAsyncTask.ClearMedia();
+                    
                     //toot range
                     var editor_toot = GetSharedPreferences(KEY_RANGE, FileCreationMode.Private).Edit();
                     editor_toot.PutInt(KEY_RANGE, spin_position);
@@ -355,7 +357,7 @@ namespace FlashCardPager
                     editor_tweet.PutBoolean(TWEET_RANGE, tweet_range);
                     editor_tweet.Commit();
 
-                    Finish();
+                    FinishAndRemoveTask();
                 }
                 catch (System.Exception ex)
                 {
