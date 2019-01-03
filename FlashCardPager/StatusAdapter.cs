@@ -94,11 +94,14 @@ namespace FlashCardPager
 
             //Preview set
             statusController.SetImagePreview(imageViews, view);
-            
-            //animation add
-            //var anim = Android.Views.Animations.AnimationUtils.LoadAnimation(view.Context, Resource.Animation.listViewScroll);
-            //var anim = Android.Views.Animations.AnimationUtils.LoadAnimation(view.Context, Android.Resource.Animation.FadeIn);
-            //view.StartAnimation(anim);
+
+            ////animation add
+            //if (position == 0)
+            //{
+            //    //var anim = Android.Views.Animations.AnimationUtils.LoadAnimation(view.Context, Resource.Animation.listViewScroll);
+            //    var anim = Android.Views.Animations.AnimationUtils.LoadAnimation(view.Context, Android.Resource.Animation.FadeIn);
+            //    view.StartAnimation(anim);
+            //}
 
             return view;
         }

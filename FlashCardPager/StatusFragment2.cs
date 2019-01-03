@@ -15,6 +15,7 @@ using Mastonet.Entities;
 using Android.Support.V4.Widget;
 using System.ComponentModel;
 using System.Threading;
+using Notification = Mastonet.Entities.Notification;
 
 namespace FlashCardPager
 {
@@ -104,7 +105,11 @@ namespace FlashCardPager
         private async void GetHNotifyTl()
         {
             ////home get
-            var mstdnlist = await client.GetNotifications();
+            //var mstdnlist = await client.GetNotifications();
+            var mstdnlist = new MastodonList<Notification>();
+            mstdnlist = await client.GetNotifications();
+            //0 follow patch
+            if (mstdnlist.Count == 0) return;
 
             for (int i = mstdnlist.Count-1; i >= 0; i--)
             {

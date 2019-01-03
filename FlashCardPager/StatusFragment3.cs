@@ -97,7 +97,10 @@ namespace FlashCardPager
         private async void GetPublicTl()
         {
             ////home get
-            MastodonList<Status> mstdnlist = await client.GetPublicTimeline();
+            MastodonList<Status> mstdnlist = new MastodonList<Status>();
+            mstdnlist = await client.GetPublicTimeline();
+            //0 follow patch
+            if (mstdnlist.Count == 0) return;
 
             for (int i = 15; i >= 0; i--)
             {
@@ -151,6 +154,7 @@ namespace FlashCardPager
             ////クリアを反映する
             statusAdapter.NotifyDataSetChanged();
 
+            if (streaming == null) streaming = client.GetPublicStreaming();
             streaming.Start();
             GetPublicTl();
             swipelayout.Refreshing = false;

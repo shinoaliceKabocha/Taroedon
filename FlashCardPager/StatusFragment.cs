@@ -94,7 +94,11 @@ namespace FlashCardPager
         private async void GetHomeTl()
         {
             ////home get
-            MastodonList<Status> mstdnlist = await client.GetHomeTimeline();
+            //MastodonList<Status> mstdnlist = await client.GetHomeTimeline();
+            MastodonList<Status> mstdnlist = new MastodonList<Status>();
+            mstdnlist = await client.GetHomeTimeline();
+            //0 follow patch
+            if (mstdnlist.Count == 0) return;
 
             for (int i = 15; i >= 0; i--)
             {
@@ -159,6 +163,7 @@ namespace FlashCardPager
             ////ƒNƒŠƒA‚ð”½‰f‚·‚é
             statusAdapter.NotifyDataSetChanged();
 
+            if (streaming == null) streaming = client.GetUserStreaming();
             streaming.Start();
             GetHomeTl();
             swipelayout.Refreshing = false;
