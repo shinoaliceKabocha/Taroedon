@@ -2600,8 +2600,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07009c
 			public const int dlg_tootbackColor = 2131165340;
 			
-			// aapt resource value: 0x7f0700c5
-			public const int editTextTweet2 = 2131165381;
+			// aapt resource value: 0x7f0700c6
+			public const int editTextTweet2 = 2131165382;
 			
 			// aapt resource value: 0x7f07007e
 			public const int edit_query = 2131165310;
@@ -2834,8 +2834,8 @@ namespace FlashCardPager
 			// aapt resource value: 0x7f07004d
 			public const int pin = 2131165261;
 			
-			// aapt resource value: 0x7f0700c6
-			public const int progressBarMediaUpload = 2131165382;
+			// aapt resource value: 0x7f0700c5
+			public const int progressBarMediaUpload = 2131165381;
 			
 			// aapt resource value: 0x7f070006
 			public const int progress_circular = 2131165190;

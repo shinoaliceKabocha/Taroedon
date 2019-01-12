@@ -23,6 +23,7 @@ namespace FlashCardPager
         private static List<Status> statuses;
         private static MastodonClient client;
         private static TimelineStreaming streaming;
+        private static bool streaming_flg = false;
         private static StatusAdapter statusAdapter;
         private static SwipeRefreshLayout swipelayout;
         private static ListView listView;
@@ -112,11 +113,13 @@ namespace FlashCardPager
         private async void UserStreamRun()
         {
             if(streaming==null) streaming = client.GetUserStreaming();
+            streaming_flg = true;
             streaming.Start();
 
             streaming.OnUpdate += (sender, e) =>
             {
                 statuses.Insert(0, e.Status);
+                //先頭行が見えているときに，２０行を維持する設計
                 if(listView.FirstVisiblePosition == 0)
                 {
                     while (statuses.Count >= 20)
@@ -165,6 +168,7 @@ namespace FlashCardPager
 
             if (streaming == null) streaming = client.GetUserStreaming();
             streaming.Start();
+            streaming_flg = true;
             GetHomeTl();
             swipelayout.Refreshing = false;
             mWorker = null;
@@ -173,6 +177,7 @@ namespace FlashCardPager
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             streaming.Stop();
+            streaming_flg = false;
             statuses.Clear();
             statusAdapter.NotifyDataSetChanged();
         }
@@ -184,7 +189,39 @@ namespace FlashCardPager
         {
             try
             {
-                if (listView.LastVisiblePosition == (listView.Count - 1))
+                //先頭行が見えている状態 On
+                if(listView.FirstVisiblePosition == 0)
+                {
+                    //off -> on となったときの処理
+                    if (!streaming_flg)
+                    {
+                        streaming_flg = true;
+                        //update function
+                        mWorker = new BackgroundWorker();
+                        mWorker.DoWork += Worker_DoWork;
+                        mWorker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                        mWorker.RunWorkerAsync();
+                    }
+
+                    if(streaming == null)
+                    {
+                        streaming = new UserClient().getClient().GetUserStreaming();
+                    }
+                    streaming.Start();
+                    streaming_flg = true;
+                }
+                //先頭行が見えていない → StreamingOff 適当に２番目にSet
+                else if(listView.FirstVisiblePosition == 2)
+                {
+                    if(streaming != null)
+                    {
+                        streaming.Stop();
+                        streaming_flg = false;
+                    }
+                }
+
+                //次の投稿の取得
+                else if (listView.LastVisiblePosition == (listView.Count - 1))
                 {
                     listView.ScrollStateChanged -= Listview_ScrollStateChanged;
 

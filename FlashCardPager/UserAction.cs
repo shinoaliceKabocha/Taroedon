@@ -154,7 +154,14 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
+                try
+                {
+                    UrlWebView(item_url, view);
+                }
+                catch(Exception e)
+                {
+                    Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
+                }
             }
         }
 
@@ -170,7 +177,14 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
+                try
+                {
+                    UrlWebView(item_url, view);
+                }
+                catch (Exception e)
+                {
+                    Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
+                }
             }
         }
 
@@ -186,8 +200,24 @@ namespace FlashCardPager
             }
             catch (Exception ex)
             {
-                Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
+                try
+                {
+                    UrlWebView(url, view);
+                }
+                catch (Exception e)
+                {
+                    Toast_BottomFIllHorizontal_Show(URL_FAILED, view.Context, ColorDatabase.FAILED);
+                }
             }
+        }
+
+        private static void UrlWebView(string url, View view)
+        {
+            Toast_BottomFIllHorizontal_Show("Chromeがあるともっと良きです", view.Context, ColorDatabase.INFO);
+
+            Intent intent = new Intent(view.Context, typeof(BrowserActivity));
+            intent.PutExtra("url", url);
+            view.Context.StartActivity(intent);
         }
 
 
