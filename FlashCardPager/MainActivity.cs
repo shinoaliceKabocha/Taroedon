@@ -44,11 +44,27 @@ namespace FlashCardPager
                     StartActivity(intent1);
                     Finish();
                 }
-                //userdata set
-                var _cl = new UserClient();
-                _cl.setClient(instance, clientId, clientSecret, accessToken, redirectUri);
+
+                //check networking
+                NetworkStatus networkStatus = new NetworkStatus(this.ApplicationContext);
+                if (networkStatus.IsNetwork())
+                {
+                    //userdata set
+                    var _cl = new UserClient();
+                    _cl.setClient(instance, clientId, clientSecret, accessToken, redirectUri);
+                }
+                else
+                {
+                    throw new Java.Net.UnknownHostException("offline");
+                }
+
             }
-            catch(Exception e)
+            catch (Java.Net.UnknownHostException e)
+            {
+                UserAction.Toast_BottomFIllHorizontal_Show("ネットワークの接続状態が悪いようです\n時間をおいて起動してください", this, ColorDatabase.INFO);
+                this.Finish();
+            }
+            catch (Exception e)
             {
                 UserAction.Toast_BottomFIllHorizontal_Show("ユーザ情報が破損したようです．\nすいませんが再登録してください．．．", this, ColorDatabase.INFO);
                 Intent intent1 = new Intent(this, typeof(SettingsActivity));

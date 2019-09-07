@@ -21,6 +21,8 @@ using Context = Android.Content.Context;
 using Android.Support.CustomTabs;
 using System.IO;
 using Newtonsoft.Json;
+using Android.Net;
+
 
 namespace FlashCardPager
 {
@@ -558,4 +560,21 @@ namespace FlashCardPager
             Toast.MakeText(view.Context, "URL エラー", ToastLength.Short).Show();
         }
     }
+
+    public class NetworkStatus
+    {
+        private Context mContext;
+        public NetworkStatus(Context context)
+        {
+            this.mContext = context;
+        }
+
+        public bool IsNetwork()
+        {
+            ConnectivityManager connectivityManager = (ConnectivityManager)mContext.GetSystemService(Context.ConnectivityService);
+            NetworkInfo networkInfo = connectivityManager.ActiveNetworkInfo;
+            return networkInfo != null && networkInfo.IsConnectedOrConnecting;
+        }
+    }
+
 }

@@ -39,7 +39,7 @@ namespace FlashCardPager
 
             FindViewById<TextView>(Resource.Id.textViewSettings1_1).LongClick+=(sender, e) =>
             {
-                e_instance.Text = "taroedon.com";
+                e_instance.Text = "mstdn-workers.com";
             };
 
             AuthenticationClient authClient2 = null;

@@ -27,11 +27,9 @@ namespace FlashCardPager
             //まずはじめに
             var textviewMessage = FindViewById<TextView>(Resource.Id.textViewMessage);
             textviewMessage.Text =
-                "ハジメマシテ．本アプリの作者 かぼちゃ(@taroedon @taroedon.com)と申します．\n"
-                + "本アプリは，Android向けMastodonクライアントアプリケーションです．"
+                "本アプリは，Android向けMastodonクライアントアプリケーションです．"
                 + "\n\n"
-                + "大体のインスタンスに対応できるかと思います.\n"
-                + "気に入って頂けたらドクペをください．";
+                + "大体のインスタンスに対応できるかと思います.";
 
             //このアプリについて
             var textViewHowToUse = FindViewById<TextView>(Resource.Id.textViewHowToUse);

@@ -33,7 +33,7 @@
             <EditText
                 android:textSize="15dp"
                 android:text=""
-                android:hint="taroedon.com"
+                android:hint="(For example)\nmstdn-workers.com"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/edittextSettings1_Instance"
