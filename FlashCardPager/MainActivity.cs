@@ -210,8 +210,30 @@ namespace FlashCardPager
 
         //protected override void OnStart()
         //{
-        //    UserAction.Toast_TopFIllHorizontal_Show("onStart", this, ColorDatabase.TLTEXT);
         //    base.OnStart();
+
+        //    Android.Util.Log.Debug("MHT", "onstart");
+        //    NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
+        //    string channelId = "default";
+        //    NotificationChannel channel = new NotificationChannel(channelId, "name", NotificationImportance.Default);
+        //    channel.EnableVibration(true);
+        //    channel.Description = "descrip";
+        //    channel.CanShowBadge();
+        //    channel.EnableLights(true);
+        //    channel.SetShowBadge(true);
+        //    channel.LockscreenVisibility = NotificationVisibility.Public;
+
+        //    Notification.Builder builder = new Notification.Builder(this, channelId);
+        //    builder.SetWhen(DateTime.Now.Millisecond);
+        //    builder.SetAutoCancel(true);
+        //    builder.SetChannelId(channelId);
+        //    builder.SetSmallIcon(Resource.Drawable.Icon);
+        //    builder.SetContentTitle("title");
+        //    builder.SetContentText("content");
+        //    Notification notification = builder.Build();
+
+        //    notificationManager.Notify(Resource.String.app_name, notification);
+        //    Android.Util.Log.Debug("MHT", "onstart end");
         //}
 
         //protected override void OnStop()
