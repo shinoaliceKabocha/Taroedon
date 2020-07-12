@@ -1,5 +1,4 @@
 # Taroedon
-https://play.google.com/store/apps/details?id=com.TaroedonMobile.app&hl=ja
 
 ## Desctiption
 * Taroedon is a simple mastodon client.
