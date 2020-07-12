@@ -1,27 +1,36 @@
-FlashCardPager 
-==============
+# Taroedon
+https://play.google.com/store/apps/details?id=com.TaroedonMobile.app&hl=ja
 
-**FlashCardPager** is a sample app that accompanies the article,
-[ViewPager](http://developer.xamarin.com/guides/android/user_interface/viewpager/).
+## Desctiption
+* Taroedon is a simple mastdon client.
 
-This sample demonstrates how to use `ViewPager` and `PagerTabStrip` 
-together to implement an app that presents a series of math problems on 
-flash cards. The user can swipe left and right through the flash cards 
-and tap on a math problem to reveal the answer. 
+## Function
 
-This app creates a `Fragment` for each flash card and implements an 
-adapter derived from `FragmentPagerAdapter`. The heavy lifting of this 
-app takes place in **FlashCardDeckAdapter.cs**, which adapts a flash 
-card deck (implemented in **FlashCardDeck.cs**) to a `ViewPager` that 
-is located and initialized in **MainActivity.cs**. The `ViewPager` 
-layout includes a `PagerTabStrip` in **Main.axml**. Note that this app 
-depends on 
-[Android Support Library v4](https://components.xamarin.com/gettingstarted/xamandroidsupportv4-18). 
+### Main function
+* multiple columns (Home, Mention, Global)
+* Support TimeLine Steaming API.
+* Display 'emoji' on the timeline.
+* Display and post a list of 'emoji' from the posting screen.
+* Tap the screen to display tooltips such as Boost or Fav etc...
 
+### Useful 
+* You can post to Twitter at the same time.
+* Shortcuts for posting favorites on the timeline by long tap.
 
-Author
-------
+### User Profile
+* Display User profile screen from user icon on timeline.
+* Support user Follow/Unfollow
 
-Copyright 2016 Xamarin
+### Setting items
+* Browser switching settings
+* Do not turn off the screen during startup
+* Disable/enable image preview
+* Image preview image quality setting
+* Dark theme
+* Cash clear
+* Twitter authentication
 
-Created by Mark Mclemore
+## Author
+----
+Copyright 2018-2020 Maehata Kenta
+
