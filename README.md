@@ -2,7 +2,7 @@
 https://play.google.com/store/apps/details?id=com.TaroedonMobile.app&hl=ja
 
 ## Desctiption
-* Taroedon is a simple mastdon client.
+* Taroedon is a simple mastodon client.
 
 ## Function
 
@@ -31,6 +31,6 @@ https://play.google.com/store/apps/details?id=com.TaroedonMobile.app&hl=ja
 * Twitter authentication
 
 ## Author
-----
+
 Copyright 2018-2020 Maehata Kenta
 
