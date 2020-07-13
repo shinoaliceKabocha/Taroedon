@@ -49,7 +49,7 @@ namespace Taroedon
                 if (networkStatus.IsNetwork())
                 {
                     //userdata set
-                    var _cl = new UserClient();
+                    var _cl = UserClient.getInstance();
                     _cl.setClient(instance, clientId, clientSecret, accessToken, redirectUri);
                 }
                 else
@@ -163,7 +163,7 @@ namespace Taroedon
         //title
         private async Task Setting_ToolbarTitle()
         {
-            var currentuser = await new UserClient().getClient().GetCurrentUser();
+            var currentuser = await UserClient.getInstance().getClient().GetCurrentUser();
             TOOLBAR_TITLE = currentuser.DisplayName + "@" + currentuser.AccountName;
             UserClient.currentAccountName = currentuser.AccountName;//currentAccountNameを使い回す
 

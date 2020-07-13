@@ -71,7 +71,7 @@ namespace Taroedon
          **************************************************************/
         private static async void FavAsync(Status status, View view)
         {
-            Mastonet.MastodonClient clientfav = new UserClient().getClient();
+            Mastonet.MastodonClient clientfav = UserClient.getInstance().getClient();
             try
             {
                 await clientfav.Favourite(status.Id);
@@ -105,7 +105,7 @@ namespace Taroedon
  
         private static async void BoostAsync(Status status, View view)
         {
-            Mastonet.MastodonClient clientReb = new UserClient().getClient();
+            Mastonet.MastodonClient clientReb = UserClient.getInstance().getClient();
             try
             {
                 await clientReb.Reblog(status.Id);

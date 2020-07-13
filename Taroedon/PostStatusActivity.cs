@@ -26,7 +26,7 @@ namespace Taroedon
     [Activity(Label = "", Theme = "@style/PostTheme", ScreenOrientation = ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateVisible)]
     public class PostStatusActivity : Activity, Android.Text.ITextWatcher
     {
-        Mastonet.MastodonClient client = new UserClient().getClient();
+        Mastonet.MastodonClient client = UserClient.getInstance().getClient();
         long status_id;
         List<long> media_id_list;
         static int spin_position = -1;//default

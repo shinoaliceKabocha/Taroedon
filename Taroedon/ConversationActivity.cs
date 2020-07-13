@@ -17,7 +17,7 @@ namespace Taroedon
     [Activity(Label = "ConversationActivity", Theme = "@style/PostTheme")]
     public class ConversationActivity : Activity
     {
-        Mastonet.MastodonClient client = new UserClient().getClient();
+        Mastonet.MastodonClient client = UserClient.getInstance().getClient();
         List<Status> statuses = new List<Status>();
         private ListView mListView;
         private StatusAdapter mStatusAdapter;

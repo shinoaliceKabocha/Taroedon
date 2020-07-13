@@ -25,6 +25,14 @@ namespace Taroedon
         public static string accessToken { get; set; }
         public static string currentAccountName { get; set; }
 
+        private UserClient() { }
+        private static UserClient _userClientInstance = new UserClient();
+
+        public static UserClient getInstance()
+        {
+            return _userClientInstance;
+        }
+
         public MastodonClient getClient()
         {
             var appRegistration = new AppRegistration

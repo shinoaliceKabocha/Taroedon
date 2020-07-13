@@ -91,7 +91,7 @@ namespace Taroedon
             buttonFF.Click += (sender, e) =>
             {
                 //client
-                var client = new UserClient().getClient();
+                var client = UserClient.getInstance().getClient();
 
                 //follow
                 if (buttonFF.Text == FOLLOW)
@@ -221,7 +221,7 @@ namespace Taroedon
 
         private async void SetAccountStatusesAsync(long id, ListView listview, StatusAdapter adapter, LayoutInflater layoutInflater)
         {
-            Mastonet.MastodonClient client = new UserClient().getClient();
+            Mastonet.MastodonClient client = UserClient.getInstance().getClient();
             statuses = await client.GetAccountStatuses(id);
             mStatusAdapter = new StatusAdapter(layoutInflater, statuses);
 
@@ -256,7 +256,7 @@ namespace Taroedon
             }
             else
             {
-                var client = new UserClient().getClient();
+                var client = UserClient.getInstance().getClient();
                 if(UserClient.currentAccountName == accountName)
                 {
                     button.Text = "My Account";
@@ -302,7 +302,7 @@ namespace Taroedon
         }
         private async Task GetTLdown(Status status)
         {
-            var mstdnlist = await new UserClient().getClient().GetAccountStatuses(status.Account.Id, status.Id);
+            var mstdnlist = await UserClient.getInstance().getClient().GetAccountStatuses(status.Account.Id, status.Id);
             if (mstdnlist == null)
             {
                 UserAction.Toast_BottomFIllHorizontal_Show(UserAction.UNKNOWN, this.ApplicationContext, ColorDatabase.FAILED);

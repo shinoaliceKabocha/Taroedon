@@ -38,6 +38,15 @@ namespace Taroedon
             return fragment;
         }
 
+        public override void OnDestroyView()
+        {
+            Android.Util.Log.Debug("Taroedon", "pubic OnDestroyView");
+            base.OnDestroyView();
+            listView = null;
+            swipelayout = null;
+            streaming.Stop();
+        }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.StatusListView_Fragment, container, false);
@@ -80,13 +89,15 @@ namespace Taroedon
             //swipe down
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
 
+            statuses.Clear();
             //Auth
-            if (client == null) client = new UserClient().getClient();
-            if (statuses.Count == 0)
+            if (client == null) 
             {
-                GetPublicTl();
+                client = UserClient.getInstance().getClient();
                 PublicStreamRun();
             }
+            GetPublicTl();
+            streaming.Start();
 
             return view;
         }
@@ -96,8 +107,9 @@ namespace Taroedon
         / **************************************************************/
         private async void GetPublicTl()
         {
-            MastodonList<Status> mstdnlist = new MastodonList<Status>();
-            mstdnlist = await client.GetPublicTimeline();
+            if (statusAdapter == null) return;
+
+            MastodonList<Status> mstdnlist = await client.GetPublicTimeline();
             //0 follow patch
             if (mstdnlist.Count == 0) return;
 
@@ -111,8 +123,10 @@ namespace Taroedon
 
         private async void PublicStreamRun()
         {
-            if (streaming == null) streaming = client.GetPublicStreaming();
-            streaming.Start();
+            if (streaming == null)
+            {
+                streaming = client.GetPublicStreaming();
+            }
 
             streaming.OnUpdate += (sender, e) =>
             {

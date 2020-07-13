@@ -39,6 +39,15 @@ namespace Taroedon
             return fragment;
         }
 
+        public override void OnDestroyView()
+        {
+            Android.Util.Log.Debug("Taroedon", "Home OnDestroyView");
+            base.OnDestroyView();
+            listView = null;
+            swipelayout = null;
+            streaming.Stop();
+        }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.StatusListView_Fragment, container, false);
@@ -75,13 +84,15 @@ namespace Taroedon
             swipelayout.Refresh += SwipelayoutPull;
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
 
+            statuses.Clear();
             //Auth
-            if (client==null) client = new UserClient().getClient();
-            if (statuses.Count == 0)
+            if (client==null)
             {
-                GetHomeTl();
+                client = UserClient.getInstance().getClient();
                 UserStreamRun();
             }
+            GetHomeTl();
+            streaming.Start();
 
             return view;
         }
@@ -91,9 +102,9 @@ namespace Taroedon
         / **************************************************************/
         private async void GetHomeTl()
         {
-            ////home get
-            MastodonList<Status> mstdnlist = new MastodonList<Status>();
-            mstdnlist = await client.GetHomeTimeline();
+            if (statusAdapter == null) return;
+            MastodonList<Status> mstdnlist = await client.GetHomeTimeline();
+
             //0 follow patch
             if (mstdnlist.Count == 0) return;
 
@@ -107,9 +118,10 @@ namespace Taroedon
 
         private async void UserStreamRun()
         {
-            if(streaming==null) streaming = client.GetUserStreaming();
-            streaming_flg = true;
-            streaming.Start();
+            if (streaming == null)
+            {
+                streaming = client.GetUserStreaming();
+            }
 
             streaming.OnUpdate += (sender, e) =>
             {
@@ -178,37 +190,7 @@ namespace Taroedon
         {
             try
             {
-                if(listView.FirstVisiblePosition == 0)
-                {
-                    //off -> on
-                    if (!streaming_flg)
-                    {
-                        streaming_flg = true;
-                        //update function
-                        mWorker = new BackgroundWorker();
-                        mWorker.DoWork += Worker_DoWork;
-                        mWorker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-                        mWorker.RunWorkerAsync();
-                    }
-
-                    if(streaming == null)
-                    {
-                        streaming = new UserClient().getClient().GetUserStreaming();
-                    }
-                    streaming.Start();
-                    streaming_flg = true;
-                }
-                //StreamingOff
-                else if(listView.FirstVisiblePosition == 2)
-                {
-                    if(streaming != null)
-                    {
-                        streaming.Stop();
-                        streaming_flg = false;
-                    }
-                }
-
-                else if (listView.LastVisiblePosition == (listView.Count - 1))
+                if (listView.LastVisiblePosition == (listView.Count - 1))
                 {
                     listView.ScrollStateChanged -= Listview_ScrollStateChanged;
 

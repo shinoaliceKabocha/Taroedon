@@ -93,7 +93,7 @@ namespace Taroedon
             listView.ScrollStateChanged += Listview_ScrollStateChanged;
 
             //Auth
-            if (client == null) client = new UserClient().getClient();
+            if (client == null) client = UserClient.getInstance().getClient();
             if (notifications.Count == 0) GetHNotifyTl();
 
             return view;
